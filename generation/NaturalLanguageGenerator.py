@@ -4,17 +4,19 @@ from simplenlg.realiser.english import *
 from simplenlg.phrasespec import *
 from simplenlg.features import *
 
-class NaturalLanguageGenerator: 
-    
+
+class NaturalLanguageGenerator:
+
     def __init__(self):
         lexicon = Lexicon.getDefaultLexicon()
         self.ngl_factory = NLGFactory(lexicon)
         self.realiser = Realiser(lexicon)
 
     def greetings(self) -> str:
-        # Create a sentence with the form "Hello, I'm Obi1 and I will question you about Jedi culture. We can start the interview now. What is your name?"
+        # Create a sentence with the form "Hello, I'm Obi1 and I will question you about Jedi culture. We can start
+        # the interview now. What is your name?"
         s_0 = self.ngl_factory.createClause("Hello")
-        
+
         # Create a sentence with the form "I am Obi1"
         subj_1 = self.ngl_factory.createNounPhrase("I")
         verb_1 = self.ngl_factory.createVerbPhrase("be")
@@ -56,7 +58,7 @@ class NaturalLanguageGenerator:
         obj_3.setDeterminer("the")
         s_3 = self.ngl_factory.createClause(subj_3, verb_3, obj_3)
         s_3.setFeature(Feature.MODAL, "can")
-        
+
         # Create a sentence with the form "What is your name?"
         subj_4 = self.ngl_factory.createNounPhrase("name")
         verb_4 = self.ngl_factory.createVerbPhrase("be")
@@ -67,7 +69,8 @@ class NaturalLanguageGenerator:
         s_4.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.WHAT_OBJECT)
 
         # I tie the three sentences together with a new line
-        return self.realiser.realiseSentence(c_2) + '\n' + self.realiser.realiseSentence(s_3) + '\n' + self.realiser.realiseSentence(s_4)
+        return self.realiser.realiseSentence(c_2) + '\n' + self.realiser.realiseSentence(
+            s_3) + '\n' + self.realiser.realiseSentence(s_4)
 
     def greets_user(self, name: str = None) -> str:
         # Create a sentence with the form "Hello, name"
@@ -100,8 +103,8 @@ class NaturalLanguageGenerator:
         return self.realiser.realiseSentence(s_1)
 
         # TODO: implement the question
-    
-    
+
+
 if __name__ == "__main__":
     nlg = NaturalLanguageGenerator()
     nlg.greetings()
