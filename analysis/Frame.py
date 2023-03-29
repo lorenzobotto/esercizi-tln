@@ -1,4 +1,6 @@
 import re
+from regex import regQuestion1
+
 class Frame:
     def __init__(self,question,domain,intent,regex_set: dict = None, **kwargs):
         self.question = question
@@ -25,12 +27,12 @@ class Frame:
                     print(match.group())
                     print("Abbiamo frase negativa --> errore")
                     return("male")
-            for pattern in self.regex[x][1]:
+            for pattern in self.regex[x][0]:
                 match = re.search(pattern, sentence) 
                 if match:
                     print(match.group())
                     print("Abbiamo frase giusta --> ok")
-                    #self.slot[x] = match.group()#scrivo nello slot
+                    self.slot[x] = match.group()#scrivo nello slot
                     return("buono")
             return("ripeti o backup")
 
@@ -39,11 +41,9 @@ class Frame:
 #{slot1: tuple(set(regexPositive),set(regexNegative)) 
 # slot2: tuple(set(regexPositive),set(regexNegative)}
 if __name__ == "__main__":
-    reg = {"coruscant": tuple([set({"coruscant", "cor[a-z]{1,3}ant", "(located|situated) on cor[a-z]{1,3}ant"}),
-                          set({"(is not|isn't) on cor[a-z]{1,3}ant", "(is not|isn't) (located|situated) on cor[a-z]{1,3}ant","(located|situated) on ((?!cor[a-z]{1,3}ant).)*$"})])}
-    f1 = Frame("headquarters","headquarters","banana",reg,coruscant="")
+    f1 = Frame("headquarters","headquarters","banana",regQuestion1,coruscant="")
     print(f1.slot)
-    f1.resolve("The headquarters of the Jedi Order is not situated on banana.")
+    f1.resolve("The headquarters of the Jedi Order is situated on corusant")
     print(f1.slot)
     pass
 

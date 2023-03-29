@@ -105,9 +105,9 @@ q3PosPattern2 = "knowledge"
 q3PosPattern3 = "(self discipline|self-discipline)"
 
 #pattern per frasi con negazione
-q3NegPattern1="(is not|isn't) (the force|force)"
-q3NegPattern2="(is not|isn't) knowledge"
-q3NegPattern3="(is not|isn't) (self discipline|self-discipline)"
+q3NegPattern1="(is not|isn't|not) (the force|force)"
+q3NegPattern2="(is not|isn't|not) knowledge"
+q3NegPattern3="(is not|isn't|not) (self discipline|self-discipline)"
 
 regQuestion3 = {"pillars": tuple([set({q3PosPattern1,q3PosPattern2,q3PosPattern3}),
                           set({q3NegPattern1,q3NegPattern2,q3NegPattern3})])}
