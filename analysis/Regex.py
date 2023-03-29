@@ -27,8 +27,6 @@ The planet Coruscant does not exist in the Star Wars universe.
 ---------------------------------------------frasi stronze
 The headquarters of the Sith Order is located on Coruscant instead of the Jedi Order. 
 """
-#frase da testare
-phrase = "isn't coruscant"
 
 #pattern per frasi positive
 q1PosPattern1 = "coruscant" #funziona se ce la parola
@@ -44,7 +42,7 @@ q1NegPattern2= "(is not|isn't) (located|situated) on cor[a-z]{1,3}ant"
 q1NegPattern3 = "(is not|isn't) (located|situated) on (any planet|a planet)"
 q1NegPattern4 = "(is not|isn't) cor[a-z]{1,3}ant"
 q1NegPattern5 = "(located|situated) on ((?!cor[a-z]{1,3}ant).)*$" #dico che il centro di comando e situato su un altro pianeta
-q1NegPattern6 = "((?!cor[a-z]{1,3}ant).)*$" #dico il nome di un altra citta
+q1NegPattern6 = "^((?!cor[a-z]{1,3}ant).)*$"#dico il nome di un altra citta
 
 regQuestion1 = {"coruscant": tuple([set({q1PosPattern1,q1PosPattern2,q1PosPattern3,q1PosPattern4,q1PosPattern5}),
                           set({q1NegPattern1,q1NegPattern2,q1NegPattern3,q1NegPattern4,q1NegPattern5,q1NegPattern6})])}
@@ -101,8 +99,6 @@ the tree pillars of jedi culture is The force, knowledge and self-discipline
 NEGATIVE
 
 """
-#frase da testare
-phrase = ""
 
 #pattern per frasi positive
 q3PosPattern1 = "(the force|force)"
@@ -118,7 +114,7 @@ regQuestion3 = {"pillars": tuple([set({q3PosPattern1,q3PosPattern2,q3PosPattern3
                           set({q3NegPattern1,q3NegPattern2,q3NegPattern3})])}
 
 
-#Domanda: Who is the grand master of the jedi council ?---------------------------------------------------------------------------------------------------------------------------------
+#Domanda: Who is the grand master of the jedi council ?------------------------------------------------------------------------------------------------------------------
 """
 POSITIVE
 --------------------------------
@@ -128,13 +124,136 @@ yoda is the grandmaster of the council
 
 NEGATIVE
 --------------------------------
+the grand master of the jedi council is anakin 
+anakin
+"""
+#pattern per frasi positive
+q6PosPattern1 = "yoda"
 
+#pattern per frasi con negazioneSW
+q6NegPattern1="is ((?!yoda).)*$" 
+q6NegPattern2="^((?!yoda).)*$" 
+q6NegPattern3="grand master of the jedi council is ((?!yoda).)*$" #se formula la classica risposta ma con un altro nome
+q6NegPattern4="(is not|not|isn't) yoda" 
+
+regQuestion6 = {"council": tuple([set({q6PosPattern1}),
+                          set({q6NegPattern1,q6NegPattern2,q6NegPattern3,q6NegPattern4})])}
+
+#Domanda: What color are the lightsabers of the sith ?-------------------------------------------------------------------------------------------------------------------
+"""
+POSITIVE
+--------------------------------
+Red
+is red
+the color of the lightsaber of the sith is red
+
+NEGATIVE
+--------------------------------
+the color of the lightsaber of the sith is red (altro colore)
+(altro colore)
 
 """
+#pattern per frasi positive
+q7PosPattern1 = "red"
+q7PosPattern2 = "is red"
+
+#pattern per frasi con negazioneSW
+q7NegPattern1="is ((?!red).)*$" 
+q7NegPattern2="^((?!red).)*$" 
+q7NegPattern3="(is not|not|isn't) red" 
+q7NegPattern4="(don't have|have no) color" 
+
+regQuestion7 = {"color": tuple([set({q7PosPattern1,q7PosPattern2}),
+                          set({q7NegPattern1,q7NegPattern2,q7NegPattern3,q7NegPattern4})])}
+
+#Domanda: Where is Master Yoda hiding after escaping from Order 66?-------------------------------------------------------------------------------------------------------------------
+"""
+POSITIVE
+--------------------------------
+dagobah
+dagoba
+is dagobah
+the planet where he hid is dagobah
+
+NEGATIVE
+--------------------------------
+(non dagobah)
+not 
+
+"""
+q9PosPattern1 = "dagobah"
+
+#pattern per frasi con negazioneSW
+q9NegPattern1="is ((?!dagobah).)*$" 
+q9NegPattern2="^((?!dagobah).)*$" 
+q9NegPattern3="the planet where he hid is ((?!yoda).)*$" 
+q9NegPattern4="(is not|not|isn't) dagobah" 
+
+regQuestion9 = {"dagobah": tuple([set({q9PosPattern1}),
+                          set({q9NegPattern1,q9NegPattern2,q9NegPattern3,q9NegPattern4})])}
+
+#Domanda: What is the most important role a jedi can play ?-------------------------------------------------------------------------------------------------------------------
+"""
+POSITIVE
+--------------------------------
+master
+jedi master
+The role of jedi master/teacher
+the most important role a jedi can play is master
+the most important role a jedi can play is that of master
+
+NEGATIVE
+--------------------------------
+(non maestro)
+the most important role a jedi can play is not that of master
+
+"""
+q8PosPattern1 = "master"
+q8PosPattern2 = "jedi (master|teacher)"
+q8PosPattern3 = "role of (master|teacher)"
+
+#pattern per frasi con negazioneSW
+q8NegPattern1="^((?!master).)*$" 
+q8NegPattern2="is ((?!master).)*$" 
+q8NegPattern3="role of ((?!master).)*$" 
+q8NegPattern4="(is not|not|isn't) dagobah" 
+
+regQuestion8 = {"master": tuple([set({q8PosPattern1,q8PosPattern2,q8PosPattern3}),
+                          set({q8NegPattern1,q8NegPattern2,q8NegPattern3,q8NegPattern4})])}
+
+#Domanda: Is anakin Skywalker a jedi master ?-------------------------------------------------------------------------------------------------------------------
+"""
+POSITIVE
+--------------------------------
+no
+no anakin has never received/recognized the rank of master
+It was not granted to him
+he didn't receive it
+
+NEGATIVE
+--------------------------------
+yes
+yes he received it
+yes they recognized him
+he was granted/allowed
+
+"""
+q10PosPattern1 = "no"
+q10PosPattern2 = "(has|have|was) never (received|granted|recognized|allowed)"
+q10PosPattern3 = "(not|didn't|did not) (received|granted|recognized|allowed)"
+
+
+#pattern per frasi con negazioneSW
+q10NegPattern1="yes"
+q10NegPattern2="(received|granted|recognized) (it|him)"
+q10NegPattern3="was (received|granted|recognized|allowed)"
+
+regQuestion10 = {"anakin": tuple([set({q10PosPattern1,q10PosPattern2,q10PosPattern3}),
+                          set({q10NegPattern1,q10NegPattern2,q10NegPattern3})])}
 
 
 #testiamo se il pattern crea un match
-match = re.search(q2NegPattern4, "It can have 0") 
+match = re.search(q10NegPattern3,"no he didn't get it") 
 
 if match:
   print(match.group())
