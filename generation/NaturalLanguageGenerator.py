@@ -134,7 +134,7 @@ class NaturalLanguageGenerator:
         obj_2.addPreModifier(adv_2)
         s_2 = self.nlg_factory.createClause(verb_2, obj_2)
         rs_s2 = self.realiser.realiseSentence(s_2)
-        self.affirmative_answers.update({rs_s2 : 1})
+        self.affirmative_answers.update({rs_s2 : 0})
 
         # 3. Create a sentence with the form "You are absolutely correct! You have a great understanding of the topic at hand."
         # Create a sentence with the form "You are absolutely correct!"
@@ -163,7 +163,7 @@ class NaturalLanguageGenerator:
         s_4.addPostModifier(prep_5)
 
         # I tie the two sentences together with a space
-        self.affirmative_answers.update({self.realiser.realiseSentence(s_3)[:-1] + " " + self.realiser.realiseSentence(s_4) : 1})
+        self.affirmative_answers.update({self.realiser.realiseSentence(s_3)[:-1] + " " + self.realiser.realiseSentence(s_4) : 0})
 
         # 4. Create a sentence with the form "You are spot on! Your answer perfectly aligns with the correct solution."
         # Create a sentence with the form "You are spot on!"
@@ -192,7 +192,7 @@ class NaturalLanguageGenerator:
         s_7.addPostModifier(prep_2)
 
         # I tie the two sentences together with a space
-        self.affirmative_answers.update({self.realiser.realiseSentence(s_6)[:-1] + " " + self.realiser.realiseSentence(s_7) : 1})
+        self.affirmative_answers.update({self.realiser.realiseSentence(s_6)[:-1] + " " + self.realiser.realiseSentence(s_7) : 0})
 
         # 5. Create a sentence with the form "Bingo! You got it right. Your response is completely accurate."
         # Create a sentence with the form "Bingo!"
@@ -217,10 +217,10 @@ class NaturalLanguageGenerator:
         adv_10 = self.nlg_factory.createWord("completely", LexicalCategory.ADVERB)
         obj_10.addPreModifier(adv_10)
         s_10 = self.nlg_factory.createClause(subj_10, verb_10, obj_10)
-        self.affirmative_answers.update({self.realiser.realiseSentence(s_8)[:-1] + " " + self.realiser.realiseSentence(s_9) + " " + self.realiser.realiseSentence(s_10) : 1})
+        self.affirmative_answers.update({self.realiser.realiseSentence(s_8)[:-1] + " " + self.realiser.realiseSentence(s_9) + " " + self.realiser.realiseSentence(s_10) : 0})
 
     def affirmative_answer(self) -> str:
-        # Extract the sentences that have not been used yet
+        # Extract the affirmative sentences that have not been used yet
         returnable_sentences = [key for key, value in self.affirmative_answers.items() if value == 1]
 
         # I randomly select one of the sentences
@@ -236,7 +236,8 @@ class NaturalLanguageGenerator:
         return affirmative_sentence
     
     def generate_negative_answers(self):
-        # Create a sentence with the form "I'm sorry, but that's false."
+        # 1. Create a sentence with the form "I'm sorry, but that's false."
+        # Create a sentence with the form "I'm sorry."
         subj_1 = self.nlg_factory.createNounPhrase("I")
         verb_1 = self.nlg_factory.createVerbPhrase("be")
         obj_1 = self.nlg_factory.createNounPhrase("sorry")
@@ -259,7 +260,7 @@ class NaturalLanguageGenerator:
         # I add the sentence to the dictionary
         self.negative_answers.update({self.realiser.realiseSentence(c_1) : 1})
 
-        # Create a sentence with the form "It doesn't match with my prior knowledge."
+        # 2. Create a sentence with the form "It doesn't match with my prior knowledge."
         # Create a sentence with the form "It doesn't match"
         pron_3 = self.nlg_factory.createWord("it", LexicalCategory.PRONOUN)
         verb_3 = self.nlg_factory.createVerbPhrase("do match")
@@ -284,16 +285,98 @@ class NaturalLanguageGenerator:
         c_1.addCoordinate(s_4)
 
         # I add the sentence to the dictionary
-        self.negative_answers.update({self.realiser.realiseSentence(c_1) : 1})
-        print(self.realiser.realiseSentence(c_1))
+        self.negative_answers.update({self.realiser.realiseSentence(c_1) : 0})
 
-    def negative_answer(self) -> str:
-        print(self.negative_answers)
+        # 3. Create a sentence with the form "That's not the answer that i expected."
+        # Create a sentence with the form "That's not the answer"
+        subj_5 = self.nlg_factory.createNounPhrase("that")
+        verb_5 = self.nlg_factory.createVerbPhrase("be")
+        verb_5.setFeature(Feature.NEGATED, True)
+        obj_5 = self.nlg_factory.createNounPhrase("the", "answer")
+        s_5 = self.nlg_factory.createClause(subj_5, verb_5, obj_5)
+
+        # Create a sentence with the form "that i expected."
+        subj_6 = self.nlg_factory.createNounPhrase("I")
+        verb_6 = self.nlg_factory.createVerbPhrase("expect")
+        verb_6.setFeature(Feature.TENSE, Tense.PAST)
+        s_6 = self.nlg_factory.createClause(subj_6, verb_6)
+        s_5.addComplement(s_6)
+        
+        # I add the sentence to the dictionary
+        self.negative_answers.update({self.realiser.realiseSentence(s_5) : 0})
+
+        # 4. Create a sentence with the form "I don't really think so."
+        subj_7 = self.nlg_factory.createNounPhrase("I")
+        verb_7 = self.nlg_factory.createVerbPhrase("think")
+        verb_7.setFeature(Feature.NEGATED, True)
+        adv_7 = self.nlg_factory.createAdverbPhrase("really")
+        verb_7.addComplement(adv_7)
+        adv_8 = self.nlg_factory.createAdverbPhrase("so")
+        verb_7.addComplement(adv_8)
+        s_7 = self.nlg_factory.createClause(subj_7, verb_7)
+        
+        # I add the sentence to the dictionary
+        self.negative_answers.update({self.realiser.realiseSentence(s_7) : 0})
+
+        # 5. Create a sentence with the form "I'm sorry, I doubt that's the correct answer."
+        # Create a sentence with the form "I'm sorry"
+        subj_8 = self.nlg_factory.createNounPhrase("I")
+        verb_8 = self.nlg_factory.createVerbPhrase("be")
+        obj_8 = self.nlg_factory.createNounPhrase("sorry")
+        s_8 = self.nlg_factory.createClause(subj_8, verb_8, obj_8)
+        
+        # Create a sentence with the form "I doubt that's the correct answer."
+        subj_9 = self.nlg_factory.createNounPhrase("I")
+        verb_9 = self.nlg_factory.createVerbPhrase("doubt")
+        s_9 = self.nlg_factory.createClause(subj_9, verb_9)
+
+        # I tie the two sentences together with a comma
+        c_9 = self.nlg_factory.createCoordinatedPhrase()
+        c_9.setConjunction(",")
+        c_9.addCoordinate(s_8)
+        c_9.addCoordinate(s_9)
+
+        
+        # Create a sentence with the form "that's the correct answer."
+        subj_10 = self.nlg_factory.createNounPhrase("that")
+        verb_10 = self.nlg_factory.createVerbPhrase("be")
+        obj_10 = self.nlg_factory.createNounPhrase("the", "answer")
+        adj_10 = self.nlg_factory.createAdjectivePhrase("correct")
+        obj_10.addModifier(adj_10)
+        s_10 = self.nlg_factory.createClause(subj_10, verb_10, obj_10)
+
+        c_10 = self.nlg_factory.createCoordinatedPhrase()
+        c_10.setConjunction("")
+        c_10.addCoordinate(c_9)
+        c_10.addCoordinate(s_10)
+        
+        # I add the sentence to the dictionary
+        self.negative_answers.update({self.realiser.realiseSentence(c_10) : 0})
+
+    def generate_answer(self, affirmative: bool) -> str:
+        # Extract the negative sentences that have not been used yet
+        sentences = self.affirmative_answers if affirmative else self.negative_answers
+        returnable_sentences = [key for key, value in sentences.items() if value == 1]
+
+        # I randomly select one of the sentences
+        extracted_sentence = random.choice(returnable_sentences)
+
+        # I update the dictionary to mark the sentence as used
+        sentences[extracted_sentence] = 0
+
+        # I reset the dictionary if all the sentences have been used
+        if (len(returnable_sentences) == 1):
+            if (affirmative):
+                self.affirmative_answers = self.affirmative_answers.fromkeys(self.affirmative_answers, 1)
+            else:
+                self.negative_answers = self.negative_answers.fromkeys(self.negative_answers, 1)
+
+        return extracted_sentence
     
 if __name__ == "__main__":
     nlg = NaturalLanguageGenerator()
     nlg.greetings()
     nlg.greets_user()
     nlg.ask_nth_question("How many children can a Jedi have?")
-    nlg.affirmative_answer()
-    nlg.negative_answer()
+    nlg.generate_answer(True)
+    nlg.generate_answer(False)
