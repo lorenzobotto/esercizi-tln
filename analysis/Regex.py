@@ -47,7 +47,6 @@ q1NegPattern6 = "^((?!cor[a-z]{1,3}ant).)*$"#dico il nome di un altra citta
 regQuestion1 = {"coruscant": tuple([set({q1PosPattern1,q1PosPattern2,q1PosPattern3,q1PosPattern4,q1PosPattern5}),
                           set({q1NegPattern1,q1NegPattern2,q1NegPattern3,q1NegPattern4,q1NegPattern5,q1NegPattern6})])}
 
-
 #Domanda: How many children can a Jedi have?---------------------------------------------------------------------------------------------------------------------------------
 """
 POSITIVE
@@ -113,6 +112,70 @@ q3NegPattern3="(is not|isn't) (self discipline|self-discipline)"
 regQuestion3 = {"pillars": tuple([set({q3PosPattern1,q3PosPattern2,q3PosPattern3}),
                           set({q3NegPattern1,q3NegPattern2,q3NegPattern3})])}
 
+#Domanda: What powers the lightsabers ?-------------------------------------------------------------------------------------------------------
+"""
+POSITIVE
+--------------------------------------------------
+kyber crystal
+kyber
+lightsabers are powered by a kiber crystal
+
+NEGATIVE
+(altra parola)
+cristal (non kyber)
+not kyber crystal
+kyber
+are not powered by anything
+"""
+
+#pattern per frasi positive
+q4PosPattern1 = "kyber cristal"
+q4PosPattern2 = "kyber"
+q4PosPattern3 = "powered by a kiber crystal"
+
+#pattern per frasi con negazione
+q4NegPattern1="^((?!kyber).)*$"
+q4NegPattern2="((?!kyber).)*$ cristal"
+q4NegPattern3="(is not|not|isn't) kiber cristal"
+q4NegPattern4="(is not|not|isn't) (powered|power)"
+
+regQuestion4 = {"kyber": tuple([set({q4PosPattern1,q4PosPattern2,q4PosPattern3}),
+                          set({q4NegPattern1,q4NegPattern2,q4NegPattern3,q4NegPattern4})])}
+
+#Domanda: What order did Emperor Palpatine issue ? -------------------------------------------------------------------------------------------------------
+"""
+POSITIVE
+--------------------------------------------------
+order 66
+66
+sixty-six
+the order sixty-six
+he gave the order 66
+he issued the order 66
+
+NEGATIVE
+(qualunque altro numero)
+not sixty-six
+the order (altro numero)
+"""
+
+#pattern per frasi positive
+q5PosPattern1 = "(66|sixty-six|sixty six)"
+q5PosPattern2 = "order (66|sixty-six|sixty six)"
+q5PosPattern3 = "(gave|issued) the order (66|sixty-six|sixty six)"
+q5PosPattern4 = "to (gave|issue) order (66|sixty-six|sixty six)"
+q5PosPattern5 = "it is order (66|sixty-six|sixty six)"
+
+#pattern per frasi con negazione
+q5NegPattern1="^((?!(66|sixty-six|sixty six)).)*$"
+q5NegPattern2="order ((?!(66|sixty-six|sixty six)).)*$"
+q5NegPattern3="(is not|not|isn't) (66|sixty-six|sixty six)"
+q5NegPattern4="(is not|not|isn't) order (66|sixty-six|sixty six)"
+q5NegPattern5="(is not|not|isn't) to (gave|issue) order (66|sixty-six|sixty six)"
+q5NegPattern6="(don't|do not) (think|belive|suppose|assume|repute|opine) it's order (66|sixty-six|sixty six)"
+
+regQuestion5 = {"order": tuple([set({q5PosPattern1,q5PosPattern2,q5PosPattern3,q5PosPattern4,q5PosPattern5}),
+                          set({q5NegPattern1,q5NegPattern2,q5NegPattern3,q5NegPattern4,q5NegPattern5,q5NegPattern6})])}  
 
 #Domanda: Who is the grand master of the jedi council ?------------------------------------------------------------------------------------------------------------------
 """
@@ -136,7 +199,7 @@ q6NegPattern2="^((?!yoda).)*$"
 q6NegPattern3="grand master of the jedi council is ((?!yoda).)*$" #se formula la classica risposta ma con un altro nome
 q6NegPattern4="(is not|not|isn't) yoda" 
 
-regQuestion6 = {"council": tuple([set({q6PosPattern1}),
+regQuestion6 = {"yoda": tuple([set({q6PosPattern1}),
                           set({q6NegPattern1,q6NegPattern2,q6NegPattern3,q6NegPattern4})])}
 
 #Domanda: What color are the lightsabers of the sith ?-------------------------------------------------------------------------------------------------------------------
@@ -251,9 +314,8 @@ q10NegPattern3="was (received|granted|recognized|allowed)"
 regQuestion10 = {"anakin": tuple([set({q10PosPattern1,q10PosPattern2,q10PosPattern3}),
                           set({q10NegPattern1,q10NegPattern2,q10NegPattern3})])}
 
-
 #testiamo se il pattern crea un match
-match = re.search(q10NegPattern3,"no he didn't get it") 
+match = re.search(q5NegPattern5,"I don't think it's order 66") 
 
 if match:
   print(match.group())
