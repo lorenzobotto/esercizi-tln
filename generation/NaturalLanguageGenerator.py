@@ -12,7 +12,9 @@ class NaturalLanguageGenerator:
         self.nlg_factory = NLGFactory(lexicon)
         self.realiser = Realiser(lexicon)
         self.affirmative_answers = dict()
+        self.negative_answers = dict()
         self.generate_affirmative_answers()
+        self.generate_negative_answers()
 
     def greetings(self) -> str:
         # Create a sentence with the form "Hello, I'm Obi1 and I will question you about Jedi culture. We can start the interview now. What is your name?"
@@ -233,6 +235,60 @@ class NaturalLanguageGenerator:
 
         return affirmative_sentence
     
+    def generate_negative_answers(self):
+        # Create a sentence with the form "I'm sorry, but that's false."
+        subj_1 = self.nlg_factory.createNounPhrase("I")
+        verb_1 = self.nlg_factory.createVerbPhrase("be")
+        obj_1 = self.nlg_factory.createNounPhrase("sorry")
+        s_1 = self.nlg_factory.createClause(subj_1, verb_1, obj_1)
+
+        # Create a sentence with the form "but that's false."
+        prep_2 = self.nlg_factory.createPrepositionPhrase("but")
+        subj_2 = self.nlg_factory.createNounPhrase("that")
+        verb_2 = self.nlg_factory.createVerbPhrase("be")
+        obj_2 = self.nlg_factory.createNounPhrase("false")
+        subj_2.addPreModifier(prep_2)
+        s_2 = self.nlg_factory.createClause(subj_2, verb_2, obj_2)
+
+        # I tie the two sentences together with a comma
+        c_1 = self.nlg_factory.createCoordinatedPhrase()
+        c_1.setConjunction(",")
+        c_1.addCoordinate(s_1)
+        c_1.addCoordinate(s_2)
+        
+        # I add the sentence to the dictionary
+        self.negative_answers.update({self.realiser.realiseSentence(c_1) : 1})
+
+        # Create a sentence with the form "It doesn't match with my prior knowledge."
+        # Create a sentence with the form "It doesn't match"
+        pron_3 = self.nlg_factory.createWord("it", LexicalCategory.PRONOUN)
+        verb_3 = self.nlg_factory.createVerbPhrase("do match")
+        verb_3.setFeature(Feature.NEGATED, True)
+        s_3 = self.nlg_factory.createClause(pron_3, verb_3)
+        
+        # Create a sentence with the form "with my prior knowledge."
+        prep_4 = self.nlg_factory.createPrepositionPhrase("with")
+        subj_4 = self.nlg_factory.createNounPhrase("knowledge")
+        adj_4 = self.nlg_factory.createAdjectivePhrase("prior")
+        subj_4.addModifier(adj_4)
+        pron_4 = self.nlg_factory.createWord("I", LexicalCategory.PRONOUN)
+        pron_4.setFeature(Feature.POSSESSIVE, True)
+        subj_4.setDeterminer(pron_4)
+        prep_4.addComplement(subj_4)
+        s_4 = self.nlg_factory.createClause(prep_4)
+
+        # I tie the two sentences together without conjunction
+        c_1 = self.nlg_factory.createCoordinatedPhrase()
+        c_1.setConjunction("")
+        c_1.addCoordinate(s_3)
+        c_1.addCoordinate(s_4)
+
+        # I add the sentence to the dictionary
+        self.negative_answers.update({self.realiser.realiseSentence(c_1) : 1})
+        print(self.realiser.realiseSentence(c_1))
+
+    def negative_answer(self) -> str:
+        print(self.negative_answers)
     
 if __name__ == "__main__":
     nlg = NaturalLanguageGenerator()
@@ -240,3 +296,4 @@ if __name__ == "__main__":
     nlg.greets_user()
     nlg.ask_nth_question("How many children can a Jedi have?")
     nlg.affirmative_answer()
+    nlg.negative_answer()
