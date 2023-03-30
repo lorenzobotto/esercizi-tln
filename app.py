@@ -6,10 +6,10 @@ controller = DialogController()
 DContextModel = DContextModel()
 
 
-def print_words(string):
+def print_words(string, wait: float = 0):
     words = string.split()
     for i, word in enumerate(words):
-        time.sleep(0.2)
+        time.sleep(wait)
         if i == 0:
             print(word, end="")
         else:
@@ -19,8 +19,9 @@ def print_words(string):
 def main():
     while controller.proceed:
         output = controller.output_text()
-        print_words(output)
-        time.sleep(5000)
+        print_words(output, 0)
+        user_response = input("\nInput: ")
+        print(user_response)
 
 
 if __name__ == "__main__":

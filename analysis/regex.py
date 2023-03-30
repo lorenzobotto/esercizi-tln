@@ -17,7 +17,6 @@ def resolve(sentence, frame_list: list):
                     response[0] = True if pos_match else False
                     if not response[1] and response[0]:
                         temp_slot[slot.key] = pos_match
-
             frame.modify_slot(temp_slot)
     return response
 
@@ -368,14 +367,14 @@ regQuestion10 = {"anakin": tuple([({q10PosPattern1, q10PosPattern2, q10PosPatter
 # testiamo se il pattern crea un match
 match = re.search(q5NegPattern5, "I don't think it's order 66")
 
-if match:
-    print(match.group())
-    print("TRUE")
-else:
-    print("pattern not found")
+# if match:
+#     print(match.group())
+#     print("TRUE")
+# else:
+#     print("pattern not found")
 
 reg_questions = regQuestion1 | regQuestion2 | regQuestion3 | regQuestion4 | regQuestion5 | \
                 regQuestion6 | regQuestion7 | regQuestion8 | regQuestion9 | regQuestion10
 
-if __name__ == "main":
-    resolve()
+# if __name__ == "main":
+#     resolve()

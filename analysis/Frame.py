@@ -1,5 +1,4 @@
 import re
-from regex import regQuestion1
 
 
 class Frame:
@@ -14,7 +13,7 @@ class Frame:
 
     @property
     def complete(self):
-        return True if len([res for res in self.slot.items() if not res[1]]) == 0 else False
+        return len([res for res in self.slot.items() if not res[1]]) == 0
 
 
 

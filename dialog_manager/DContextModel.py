@@ -1,6 +1,7 @@
 from analysis.Frame import Frame
 from analysis.regex import resolve
 
+
 class DContextModel:
     def __init__(self):
         self.domain_ontology = []  # as a list of Frames
@@ -10,4 +11,9 @@ class DContextModel:
         self.domain_ontology.append(new_frame)
 
     def decipher_response(self, user_response: str, question_id):
-        feedback = resolve(user_response, [frame for frame in self.domain_ontology if frame.question == question_id])
+        pos, neg = resolve(user_response, [frame for frame in self.domain_ontology if frame.question == question_id])
+        if pos and not neg:
+            incomplete_frames = [frame.slot["domain"] for frame in self.domain_ontology if not frame.complete]
+
+
+

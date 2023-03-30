@@ -4,6 +4,14 @@ from simplenlg.realiser.english import *
 from simplenlg.phrasespec import *
 from simplenlg.features import *
 import random
+from enum import Enum
+
+
+class Response(Enum):
+    CORRECT = 0  # [True, False]
+    INCORRECT = 1  # [False, True]
+    UNCERTAIN = 2  # [True, True] or [True, False] but some frames are incomplete
+    BACKUP = 3  # [False, False]
 
 
 class NaturalLanguageGenerator:
@@ -14,8 +22,8 @@ class NaturalLanguageGenerator:
         self.realiser = Realiser(lexicon)
         self.affirmative_answers = {}
         self.negative_answers = {}
-        self.generate_affirmative_answers()
-        self.generate_negative_answers()
+        self._generate_affirmative_answers()
+        self._generate_negative_answers()
 
     def greetings(self) -> str:
         # Create a sentence with the form "Hello, I'm Obi1 and I will question you about Jedi culture. We can start the interview now. What is your name?"
@@ -112,7 +120,7 @@ class NaturalLanguageGenerator:
         s_1 = self.nlg_factory.createSentence(question)
         return self.realiser.realiseSentence(s_1)
 
-    def generate_affirmative_answers(self):
+    def _generate_affirmative_answers(self):
         # 1. Create a sentence with the form "Yes, that's correct."
         s_0 = self.nlg_factory.createClause("Yes")
         verb_1 = self.nlg_factory.createVerbPhrase("that's")
@@ -222,8 +230,8 @@ class NaturalLanguageGenerator:
         obj_10.addPreModifier(adv_10)
         s_10 = self.nlg_factory.createClause(subj_10, verb_10, obj_10)
 
-        self.affirmative_answers.update(
-            f"{self.realiser.realiseSentence(s_8)[:-1]} {self.realiser.realiseSentence(s_9)} {self.realiser.realiseSentence(s_10): 0}")
+        self.affirmative_answers.update({
+            f"{self.realiser.realiseSentence(s_8)[:-1]} {self.realiser.realiseSentence(s_9)} {self.realiser.realiseSentence(s_10)}": 0})
 
     # def affirmative_answer(self) -> str:
     #     # Extract the affirmative sentences that have not been used yet
@@ -241,7 +249,7 @@ class NaturalLanguageGenerator:
     #
     #     return affirmative_sentence
 
-    def generate_negative_answers(self):
+    def _generate_negative_answers(self):
         # 1. Create a sentence with the form "I'm sorry, but that's false."
         # Create a sentence with the form "I'm sorry."
         subj_1 = self.nlg_factory.createNounPhrase("I")
