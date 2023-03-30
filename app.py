@@ -6,6 +6,9 @@ controller = DialogController()
 DContextModel = DContextModel()
 
 
+def ask_input(): return input("\n?- ")
+
+
 def print_words(string, wait: float = 0):
     words = string.split()
     for i, word in enumerate(words):
@@ -20,8 +23,7 @@ def main():
     while controller.proceed:
         output = controller.output_text()
         print_words(output, 0)
-        user_response = input("\nInput: ")
-        print(user_response)
+        response = ask_input()
 
 
 if __name__ == "__main__":
