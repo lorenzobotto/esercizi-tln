@@ -10,19 +10,17 @@ class DContextModel:
         self.domain_ontology.append(new_frame)
 
     def _create_frames(self):
-        pass
-    generic_frame_1 = Frame(question="user", domain="info", intent="user", **{"name": None, "sex":None})
-    # generic_frame_2 = Frame()
-    qst1_frame_1 = Frame(domain="coruscant", intent="qst1")
-    qst2_frame_2 = Frame(domain="children", intent="qst2")
-    qst2_frame_3 = Frame(domain="pillars", intent="qst3")
-    qst2_frame_4 = Frame(domain="kyber", intent="qst4")
-    qst2_frame_5 = Frame(domain="order", intent="qst5")
-    qst2_frame_6 = Frame(domain="yoda", intent="qst6")
-    qst2_frame_7 = Frame(domain="color", intent="qst7")
-    qst2_frame_8 = Frame(domain="dagobah", intent="qst8")
-    qst2_frame_9 = Frame(domain="master", intent="qst9")
-    qst2_frame_10 = Frame(domain="anakin", intent="qst10")
+        generic_frame_1 = Frame(domain="info", intent="user", **{"name": None, "sex":None})
+        qst1_frame_1 = Frame(domain="coruscant", intent="qst1")
+        qst2_frame_1 = Frame(domain="children", intent="qst2")
+        qst3_frame_1 = Frame(domain="pillars", intent="qst3")
+        qst4_frame_1 = Frame(domain="kyber", intent="qst4")
+        qst5_frame_1 = Frame(domain="order", intent="qst5")
+        qst6_frame_1 = Frame(domain="yoda", intent="qst6")
+        qst7_frame_1 = Frame(domain="color", intent="qst7")
+        qst8_frame_1 = Frame(domain="dagobah", intent="qst8")
+        qst9_frame_1 = Frame(domain="master", intent="qst9")
+        qst10_frame_1 = Frame(domain="anakin", intent="qst10")
 
     def decipher_response(self, user_response: str, domain: str):
         pos, neg = resolve(user_response, [frame for frame in self.domain_ontology if frame.slot["domain"] == domain])

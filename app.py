@@ -13,10 +13,7 @@ def print_words(string, wait: float = 0):
     words = string.split()
     for i, word in enumerate(words):
         time.sleep(wait)
-        if i == 0:
-            print(word, end="")
-        else:
-            print(" " + word, end="")
+        print(word, end="") if i == 0 else print(f" {word}", end="")
 
 
 def main():
