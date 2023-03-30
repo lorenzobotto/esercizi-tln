@@ -22,8 +22,10 @@ class NaturalLanguageGenerator:
         self.realiser = Realiser(lexicon)
         self.affirmative_answers = {}
         self.negative_answers = {}
+        self.uncertain_answers = {}
         self._generate_affirmative_answers()
         self._generate_negative_answers()
+        self._generate_uncertain_answers()
 
     def greetings(self) -> str:
         # Create a sentence with the form "Hello, I'm Obi1 and I will question you about Jedi culture. We can start the interview now. What is your name?"
@@ -350,6 +352,90 @@ class NaturalLanguageGenerator:
         # I add the sentence to the dictionary
         self.negative_answers.update({self.realiser.realiseSentence(c_10): 0})
 
+    def _generate_uncertain_answers(self):
+        # 1. Create a sentence with the form "Sorry, I didn't catch that. Could you please repeat?"
+        # Create a sentence with the form "Sorry"
+        s_0 = self.nlg_factory.createClause("Sorry")
+
+        # Create a sentence with the form "I didn't catch that."
+        subj_1 = self.nlg_factory.createNounPhrase("I")
+        verb_1 = self.nlg_factory.createVerbPhrase("catch")
+        verb_1.setFeature(Feature.NEGATED, True)
+        verb_1.setFeature(Feature.TENSE, Tense.PAST)
+        obj_1 = self.nlg_factory.createNounPhrase("that")
+        s_1 = self.nlg_factory.createClause(subj_1, verb_1, obj_1)
+
+        # I tie the two sentences together with a comma
+        c_1 = self.nlg_factory.createCoordinatedPhrase()
+        c_1.setConjunction(",")
+        c_1.addCoordinate(s_0)
+        c_1.addCoordinate(s_1)
+
+        # Create a sentence with the form "Could you please repeat?"
+        subj_2 = self.nlg_factory.createNounPhrase("you")
+        verb_2 = self.nlg_factory.createVerbPhrase("repeat")
+        verb_2.addModifier("please")
+        s_2 = self.nlg_factory.createClause(subj_2, verb_2)
+        s_2.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
+        s_2.setFeature(Feature.MODAL, "could")
+
+        # I add the sentence to the dictionary
+        self.uncertain_answers.update({
+            f"{self.realiser.realiseSentence(c_1)} {self.realiser.realiseSentence(s_2)}": 1
+        })
+
+        # 2. Create a sentence with the form "I'm sorry, I didn't quite understand what you said. Can you say it again?"
+        # Create a sentence with the form "I'm sorry"
+        subj_3 = self.nlg_factory.createNounPhrase("I")
+        verb_3 = self.nlg_factory.createVerbPhrase("be")
+        obj_3 = self.nlg_factory.createNounPhrase("sorry")
+        s_3 = self.nlg_factory.createClause(subj_3, verb_3, obj_3)
+
+        # Create a sentence with the form "I didn't quite understand"
+        subj_4 = self.nlg_factory.createNounPhrase("I")
+        verb_4 = self.nlg_factory.createVerbPhrase("understand")
+        verb_4.setFeature(Feature.NEGATED, True)
+        verb_4.setFeature(Feature.TENSE, Tense.PAST)
+        adv_4 = self.nlg_factory.createWord("quite", LexicalCategory.ADVERB)
+        verb_4.addModifier(adv_4)
+        s_4 = self.nlg_factory.createClause(subj_4, verb_4)
+        
+        # Create a sentence with the form "what you said."
+        p_5 = self.nlg_factory.createPrepositionPhrase("what")
+        subj_5 = self.nlg_factory.createNounPhrase("you")
+        verb_5 = self.nlg_factory.createVerbPhrase("say")
+        verb_5.setFeature(Feature.TENSE, Tense.PAST)
+        subj_5.addPreModifier(p_5)
+        s_5 = self.nlg_factory.createClause(subj_5, verb_5)
+        
+        # I tie the three sentences together with a space
+        c_5 = self.nlg_factory.createCoordinatedPhrase()
+        c_5.setConjunction("")
+        c_5.addCoordinate(s_4)
+        c_5.addCoordinate(s_5)
+
+        # I tie the two sentences together with a comma
+        c_6 = self.nlg_factory.createCoordinatedPhrase()
+        c_6.setConjunction(",")
+        c_6.addCoordinate(s_3)
+        c_6.addCoordinate(c_5)
+
+        # Create a sentence with the form "Can you say it again?"
+        subj_7 = self.nlg_factory.createNounPhrase("you")
+        verb_7 = self.nlg_factory.createVerbPhrase("say")
+        obj_7 = self.nlg_factory.createNounPhrase("again")
+        pron_7 = self.nlg_factory.createWord("it", LexicalCategory.PRONOUN)
+        obj_7.addPreModifier(pron_7)
+        s_7 = self.nlg_factory.createClause(subj_7, verb_7, obj_7)
+        s_7.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
+        s_7.setFeature(Feature.MODAL, "can")
+
+        # I add the sentence to the dictionary
+        self.uncertain_answers.update({
+            f"{self.realiser.realiseSentence(c_6)} {self.realiser.realiseSentence(s_7)}": 1
+        })
+
+
     def generate_answer(self, type: Enum) -> str:
         # Extract the negative sentences that have yet to be used
         sentences = self.affirmative_answers if type == Response.CORRECT else self.negative_answers
@@ -372,6 +458,7 @@ class NaturalLanguageGenerator:
 
 if __name__ == "__main__":
     nlg = NaturalLanguageGenerator()
+    print(nlg.uncertain_answers)
     Response = Enum("Response", ["CORRECT", "INCORRECT"])
     nlg.greetings()
     nlg.greets_user()
