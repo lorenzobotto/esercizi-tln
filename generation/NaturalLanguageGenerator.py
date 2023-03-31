@@ -435,6 +435,62 @@ class NaturalLanguageGenerator:
             f"{self.realiser.realiseSentence(c_6)} {self.realiser.realiseSentence(s_7)}": 1
         })
 
+        # 3. Create a sentence with the form "Sorry, I missed what you just said. Could you say it again, please?"
+        # Create a sentence with the form "Sorry"
+        s_8 = self.nlg_factory.createClause("Sorry")
+
+        # Create a sentence with the form "I missed"
+        subj_9 = self.nlg_factory.createNounPhrase("I")
+        verb_9 = self.nlg_factory.createVerbPhrase("miss")
+        verb_9.setFeature(Feature.TENSE, Tense.PAST)
+        s_9 = self.nlg_factory.createClause(subj_9, verb_9)
+
+        # I tie the two sentences together with a comma
+        c_8 = self.nlg_factory.createCoordinatedPhrase()
+        c_8.setConjunction(",")
+        c_8.addCoordinate(s_8)
+        c_8.addCoordinate(s_9)
+
+        # Create a sentence with the form "what you just said."
+        p_10 = self.nlg_factory.createPrepositionPhrase("what")
+        subj_10 = self.nlg_factory.createNounPhrase("you")
+        verb_10 = self.nlg_factory.createVerbPhrase("say")
+        verb_10.setFeature(Feature.TENSE, Tense.PAST)
+        adv_10 = self.nlg_factory.createWord("just", LexicalCategory.ADVERB)
+        verb_10.addModifier(adv_10)
+        subj_10.addPreModifier(p_10)
+        s_10 = self.nlg_factory.createClause(subj_10, verb_10)
+        
+        # I tie the two sentences together with a space
+        c_9 = self.nlg_factory.createCoordinatedPhrase()
+        c_9.setConjunction("")
+        c_9.addCoordinate(c_8)
+        c_9.addCoordinate(s_10)
+        
+        # Create a sentence with the form "Could you say it again?"
+        subj_11 = self.nlg_factory.createNounPhrase("you")
+        verb_11 = self.nlg_factory.createVerbPhrase("say")
+        obj_11 = self.nlg_factory.createNounPhrase("again")
+        pron_11 = self.nlg_factory.createWord("it", LexicalCategory.PRONOUN)
+        obj_11.addPreModifier(pron_11)
+        s_11 = self.nlg_factory.createClause(subj_11, verb_11, obj_11)
+        s_11.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
+        s_11.setFeature(Feature.MODAL, "could")
+
+        # Create a sentence with the form "please?"
+        s_12 = self.nlg_factory.createClause("please?")
+
+        # I tie the two sentences together with a comma
+        c_10 = self.nlg_factory.createCoordinatedPhrase()
+        c_10.setConjunction(",")
+        c_10.addCoordinate(s_11)
+        c_10.addCoordinate(s_12)
+
+        # I add the sentence to the dictionary
+        self.uncertain_answers.update({
+            f"{self.realiser.realiseSentence(c_9)} {self.realiser.realiseSentence(c_10)}": 1
+        })
+
 
     def generate_answer(self, type: Enum) -> str:
         # Extract the negative sentences that have yet to be used
