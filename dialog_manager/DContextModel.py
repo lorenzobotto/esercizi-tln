@@ -10,6 +10,7 @@ class DContextModel:
         self.domain_ontology = []  # as a list of Frames
         self.user_name = None
         self.sex = None
+        self.correct_answers = 0
         self._create_frames()
 
     # for future use

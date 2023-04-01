@@ -10,9 +10,9 @@ class DialogController:
     def __init__(self, n_questions: int = 3):
         assert 3 <= n_questions <= 10, "invalid number of questions!"
         self.scenario = Turn.INTRO
-        self.last_response = None
+        self.last_response = Response.CORRECT
         self.attempts = 0
-        self.proceed = True
+        self.done = False
         self.nlg = NaturalLanguageGenerator()
         self.synth = SpeechSynthesis()
         self.context_model = DContextModel()
@@ -34,7 +34,7 @@ class DialogController:
     def _backup_strategy(self):
         pass
 
-    def output_text(self):
+    def generate_initiative_text(self):
         match self.scenario:
             case Turn.INTRO:
                 return self.nlg.greetings()
@@ -42,12 +42,18 @@ class DialogController:
                 if self.last_response != Response.CORRECT:
                     # implement a logic for when we are reacting to a new
                     pass
-                key = next(self.qst_generator)
-                self.current_qst = (key, self.questions_dictionary[key])
-                return self.nlg.ask_nth_question(self.current_qst[1])
+                else:
+                    key = next(self.qst_generator)
+                    self.current_qst = (key, self.questions_dictionary[key])
+                    return self.nlg.ask_nth_question(self.current_qst[1])
             case Turn.OUTRO:
-                pass
-            case _:
+                self.done = True
+                if self.context_model.correct_answers >= len(self.questions_dictionary):
+                    #promosso
+                    pass
+                else:
+                    pass
+                    #bocciato
                 pass
 
     def elaborate_user_input(self, user_input: str):
@@ -59,13 +65,15 @@ class DialogController:
             case Turn.QUESTION:
                 self.last_response = self.context_model.decipher_response(user_input, self.current_qst[0])
                 if self.last_response == Response.CORRECT:
-                    self.proceed = True
                     self.n_questions_to_ask -= 1
+                    self.attempts = 0
+                    self.context_model.correct_answers += 1
                 else:
-                    self.proceed = False
                     self.attempts += 1
+                if self.n_questions_to_ask == 0:
+                    self.scenario = Turn.OUTRO
                 return self.nlg.generate_answer(self.last_response)
+
             case Turn.OUTRO:
-                pass
-            case _:
+                #ci aspettiamo un input di saluto?
                 pass
