@@ -4,7 +4,8 @@ from simplenlg.realiser.english import *
 from simplenlg.phrasespec import *
 from simplenlg.features import *
 import random
-from dialog_manager.DContextModel import Response
+
+from utils.enumerators import Response
 
 
 class NaturalLanguageGenerator:
@@ -21,13 +22,13 @@ class NaturalLanguageGenerator:
         self._generate_uncertain_answers()
 
     def greetings(self) -> str:
-        # Create a sentence with the form "Hello, I'm Obi1 and I will question you about Jedi culture. We can start the interview now. What is your name?"
+        # Create a sentence with the form "Hello, I'm Obi-1 and I will question you about Jedi culture. We can start the interview now. What is your name?"
         s_0 = self.nlg_factory.createClause("Hello")
 
-        # Create a sentence with the form "I am Obi1"
+        # Create a sentence with the form "I am Obi-1"
         subj_1 = self.nlg_factory.createNounPhrase("I")
         verb_1 = self.nlg_factory.createVerbPhrase("be")
-        obj_1 = self.nlg_factory.createNounPhrase("Obi1")
+        obj_1 = self.nlg_factory.createNounPhrase("Obi-1")
         s_1 = self.nlg_factory.createClause(subj_1, verb_1, obj_1)
 
         # Create a sentence with the form "I will question you"

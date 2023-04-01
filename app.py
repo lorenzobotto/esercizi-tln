@@ -1,26 +1,24 @@
-import re
-import time
+from utils.enumerators import Turn
 from dialog_manager.DialogController import DialogController
+from utils.io_utilities import *
 
 controller = DialogController()
 
 
-def ask_input(): return input("\n?- ")
-
-
-def print_words(string, wait: float = 0):
-    words = re.findall(r'\S+|\n', string)
-    for i in range(len(words)):
-        time.sleep(wait)
-        print(words[i], end="") if i == 0 or words[i - 1] == "\n" else print(f" {words[i]}", end="")
-
-
 def main():
-    while controller.proceed:
+    # print("Loading Obi-1...")
+    # loading_bar_anim()
+    while True:
         output_text = controller.output_text()
         print_words(output_text, 0)
         user_input = ask_input()
-        print_words(controller.elaborate_user_input(user_input)+"\n")
+        response = controller.elaborate_user_input(user_input)
+        # if controller.scenario == Turn.QUESTION:
+        #     three_dots_anim()
+        print_words(f"{response}\n")
+
+        if controller.proceed and controller.scenario == Turn.OUTRO:
+            break
 
 
 if __name__ == "__main__":

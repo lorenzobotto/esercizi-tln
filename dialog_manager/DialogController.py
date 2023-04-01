@@ -1,15 +1,9 @@
 import shelve
 import random
-from enum import Enum
 from dialog_manager.DContextModel import DContextModel
 from generation.NaturalLanguageGenerator import NaturalLanguageGenerator
 from speech.SpeechSynthesis import SpeechSynthesis
-
-
-class Turn(Enum):
-    INTRO = 0
-    QUESTION = 1
-    OUTRO = 2
+from utils.enumerators import Turn
 
 
 class DialogController:
