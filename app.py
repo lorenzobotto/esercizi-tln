@@ -1,26 +1,25 @@
+import re
 import time
 from dialog_manager.DialogController import DialogController
-from dialog_manager.DContextModel import DContextModel
 
 controller = DialogController()
-DContextModel = DContextModel()
 
 
 def ask_input(): return input("\n?- ")
 
 
 def print_words(string, wait: float = 0):
-    words = string.split()
-    for i, word in enumerate(words):
+    words = re.findall(r'\S+|\n', string)
+    for i in range(len(words)):
         time.sleep(wait)
-        print(word, end="") if i == 0 else print(f" {word}", end="")
+        print(words[i], end="") if i == 0 or words[i - 1] == "\n" else print(f" {words[i]}", end="")
 
 
 def main():
     while controller.proceed:
-        output = controller.output_text()
-        print_words(output, 0)
-        response = ask_input()
+        print_words(controller.output_text(), 0.2)
+        user_input = ask_input()
+        print_words(controller.elaborate_user_input(user_input))
 
 
 if __name__ == "__main__":

@@ -4,14 +4,6 @@ from simplenlg.realiser.english import *
 from simplenlg.phrasespec import *
 from simplenlg.features import *
 import random
-from enum import Enum
-
-
-class Response(Enum):
-    CORRECT = 0  # [True, False]
-    INCORRECT = 1  # [False, True]
-    UNCERTAIN = 2  # [True, True] or [True, False] but some frames are incomplete
-    BACKUP = 3  # [False, False]
 
 
 class NaturalLanguageGenerator:
@@ -416,7 +408,7 @@ class NaturalLanguageGenerator:
         adv_4 = self.nlg_factory.createWord("quite", LexicalCategory.ADVERB)
         verb_4.addModifier(adv_4)
         s_4 = self.nlg_factory.createClause(subj_4, verb_4)
-        
+
         # Create a sentence with the form "what you said."
         p_5 = self.nlg_factory.createPrepositionPhrase("what")
         subj_5 = self.nlg_factory.createNounPhrase("you")
@@ -424,7 +416,7 @@ class NaturalLanguageGenerator:
         verb_5.setFeature(Feature.TENSE, Tense.PAST)
         subj_5.addPreModifier(p_5)
         s_5 = self.nlg_factory.createClause(subj_5, verb_5)
-        
+
         # I tie the three sentences together with a space
         c_5 = self.nlg_factory.createCoordinatedPhrase()
         c_5.setConjunction("")
@@ -477,20 +469,20 @@ class NaturalLanguageGenerator:
         verb_10.addModifier(adv_10)
         subj_10.addPreModifier(p_10)
         s_10 = self.nlg_factory.createClause(subj_10, verb_10)
-        
+
         # I tie the two sentences together with a space
         c_9 = self.nlg_factory.createCoordinatedPhrase()
         c_9.setConjunction("")
         c_9.addCoordinate(c_8)
         c_9.addCoordinate(s_10)
-        
+
         # Create a sentence with the form "Could you say that one more time"
         subj_11 = self.nlg_factory.createNounPhrase("you")
         verb_11 = self.nlg_factory.createVerbPhrase("say")
         s_11 = self.nlg_factory.createClause(subj_11, verb_11)
         s_11.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
         s_11.setFeature(Feature.MODAL, "could")
-        
+
         noun_12 = self.nlg_factory.createClause("time")
         adv_12 = self.nlg_factory.createWord("one more", LexicalCategory.ADJECTIVE)
         noun_12.addFrontModifier(adv_12)
@@ -519,7 +511,7 @@ class NaturalLanguageGenerator:
         verb_13.setFeature(Feature.TENSE, Tense.PAST)
         verb_13.setFeature(Feature.NEGATED, True)
         s_13 = self.nlg_factory.createClause(subj_13, verb_13, obj_13)
-        
+
         # Create a sentence with the form "Could you please reiterate your point?"
         subj_14 = self.nlg_factory.createNounPhrase("you")
         verb_14 = self.nlg_factory.createVerbPhrase("reiterate")
@@ -532,7 +524,7 @@ class NaturalLanguageGenerator:
         s_14 = self.nlg_factory.createClause(subj_14, verb_14, obj_14)
         s_14.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
         s_14.setFeature(Feature.MODAL, "could")
-        
+
         # I add the sentence to the dictionary
         self.uncertain_answers.update({
             f"{self.realiser.realiseSentence(s_13)} {self.realiser.realiseSentence(s_14)}": 1
@@ -572,15 +564,14 @@ class NaturalLanguageGenerator:
         verb_17.addModifier(adv_17)
         verb_17.setFeature(Feature.TENSE, Tense.PAST)
         verb_17.setFeature(Feature.NEGATED, True)
-        s_17 = self.nlg_factory.createClause(subj_17, verb_17, obj_17)    
-        
+        s_17 = self.nlg_factory.createClause(subj_17, verb_17, obj_17)
+
         # I add the sentence to the dictionary
         self.uncertain_answers.update({
             f"{self.realiser.realiseSentence(c_11)[:-1]}? {self.realiser.realiseSentence(s_17)}": 1
         })
-        
 
-    def generate_answer(self, response_type: Enum) -> str:                
+    def generate_answer(self, response_type: Enum) -> str:
         # Extract the negative or affirmative sentences that have yet to be used
         match response_type:
             case Response.CORRECT:
@@ -606,7 +597,7 @@ class NaturalLanguageGenerator:
                     self.negative_answers = self.negative_answers.fromkeys(self.negative_answers, 1)
                 case Response.UNCERTAIN:
                     self.uncertain_answers = self.uncertain_answers.fromkeys(self.uncertain_answers, 1)
-        
+
         return extracted_sentence
 
 

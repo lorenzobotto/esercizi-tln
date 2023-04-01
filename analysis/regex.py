@@ -32,12 +32,11 @@ import shelve
 #         regex_db["anakin"] = tuple([({q10PosPattern1, q10PosPattern2, q10PosPattern3}),
 #                                     ({q10NegPattern1, q10NegPattern2, q10NegPattern3})])
 
-
 def resolve(sentence, frame_list: list):
     lwr_sentence = sentence.lower()
     response = [False, False]
     temp_slot = {}
-    with shelve.open("regex") as reg_questions:
+    with shelve.open("databases/regex_db/regex") as reg_questions:
         for frame in frame_list:
             key = frame.slot["domain"]
             reg_set = reg_questions[key]
@@ -52,7 +51,6 @@ def resolve(sentence, frame_list: list):
                             temp_slot[slot.key] = pos_match
                 frame.modify_slot(temp_slot)
     return response
-
 
 
 # Domanda: Where is the headquarters of the Jedi Order located
