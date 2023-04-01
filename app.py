@@ -17,9 +17,10 @@ def print_words(string, wait: float = 0):
 
 def main():
     while controller.proceed:
-        print_words(controller.output_text(), 0.2)
+        output_text = controller.output_text()
+        print_words(output_text, 0)
         user_input = ask_input()
-        print_words(controller.elaborate_user_input(user_input))
+        print_words(controller.elaborate_user_input(user_input)+"\n")
 
 
 if __name__ == "__main__":

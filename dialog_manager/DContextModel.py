@@ -22,6 +22,7 @@ class DContextModel:
         self.domain_ontology = []  # as a list of Frames
         self.user_name = None
         self.sex = None
+        self._create_frames()
 
     # for future use
     def _add_frame_to_domain_ontology(self, new_frame: Frame):
@@ -56,7 +57,8 @@ class DContextModel:
         return self.user_name is not None
 
     def decipher_response(self, user_response: str, domain: str):
-        pos, neg = resolve(user_response, [frame for frame in self.domain_ontology if frame.slot["domain"] == domain])
+        frame_list = [frame for frame in self.domain_ontology if frame.slot["domain"] == domain]
+        pos, neg = resolve(user_response, frame_list)
         incomplete_frames = False
         if pos and not neg:
             incomplete_frames = len([frame.slot["domain"] for frame in self.domain_ontology if not frame.complete]) > 0

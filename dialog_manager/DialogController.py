@@ -8,17 +8,8 @@ from speech.SpeechSynthesis import SpeechSynthesis
 
 class Turn(Enum):
     INTRO = 0
-    FIRST_QST = 1
-    SECOND_QST = 2
-    THIRD_QST = 3
-    FOURTH_QST = 4
-    FIFTH_QST = 5
-    SIXTH_QST = 6
-    SEVENTH_QST = 7
-    EIGHTH_QST = 8
-    NINTH_QST = 9
-    TENTH_QST = 10
-    OUTRO = 11
+    QUESTION = 1
+    OUTRO = 2
 
 
 class DialogController:
@@ -29,46 +20,34 @@ class DialogController:
         self.nlg = NaturalLanguageGenerator()
         self.synth = SpeechSynthesis()
         self.context_model = DContextModel()
-        self.questions_generator = self._generate_questions(n_questions)
-        # self.
+        self.n_questions = n_questions
+        self.questions_dictionary = {}
+        with shelve.open("databases/questions_db/questions") as questions_db:
+            chosen_questions_keys = random.sample(list(questions_db), self.n_questions)  # n questions from the db
+            self.questions_dictionary = {key: questions_db[key] for key in chosen_questions_keys}
+
+        self.qst_generator = self._generate_questions()
+        self.current_qst = None
+        self.__questions_left = n_questions
+
+    @property
+    def questions_left(self):
+        return self.n_questions - self.scenario.value
 
     def next_turn(self, idx=None):
         self.scenario = Turn(self.scenario.value + 1) if idx is None else Turn(idx)
 
-    def _generate_questions(self, n_questions):
-        self.dictionary = {}
-        with shelve.open("databases/questions_db/questions") as questions_db:
-            chosen_questions_keys = random.sample(list(questions_db), n_questions)  # 3 random questions from the db
-            self.dictionary = {key: questions_db[key] for key in chosen_questions_keys}
-        yield from self.dictionary
+    def _generate_questions(self):
+        yield from self.questions_dictionary
 
     def output_text(self):
         match self.scenario:
             case Turn.INTRO:
                 return self.nlg.greetings()
-            case Turn.FIRST_QST:
-                # question = self.nlg.ask_nth_question()
-                pass
-            case Turn.SECOND_QST:
-                # second string
-                pass
-            case Turn.THIRD_QST:
-                # third question
-                pass
-            case Turn.FOURTH_QST:
-                pass
-            case Turn.FIFTH_QST:
-                pass
-            case Turn.SIXTH_QST:
-                pass
-            case Turn.SEVENTH_QST:
-                pass
-            case Turn.EIGHTH_QST:
-                pass
-            case Turn.NINTH_QST:
-                pass
-            case Turn.TENTH_QST:
-                pass
+            case Turn.QUESTION:
+                key = next(self.qst_generator)
+                self.current_qst = (key, self.questions_dictionary[key])
+                return self.nlg.ask_nth_question(self.current_qst[1])
             case Turn.OUTRO:
                 pass
             case _:
@@ -80,26 +59,9 @@ class DialogController:
                 self.context_model.find_name(user_input)
                 self.next_turn()
                 return self.nlg.greets_user(self.context_model.user_name)
-            case Turn.FIRST_QST:
-                pass
-            case Turn.SECOND_QST:
-                pass
-            case Turn.THIRD_QST:
-                pass
-            case Turn.FOURTH_QST:
-                pass
-            case Turn.FIFTH_QST:
-                pass
-            case Turn.SIXTH_QST:
-                pass
-            case Turn.SEVENTH_QST:
-                pass
-            case Turn.EIGHTH_QST:
-                pass
-            case Turn.NINTH_QST:
-                pass
-            case Turn.TENTH_QST:
-                pass
+            case Turn.QUESTION:
+                response = self.context_model.decipher_response(user_input, self.current_qst[0])
+                return self.nlg.generate_answer(response)
             case Turn.OUTRO:
                 pass
             case _:

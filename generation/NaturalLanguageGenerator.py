@@ -4,6 +4,7 @@ from simplenlg.realiser.english import *
 from simplenlg.phrasespec import *
 from simplenlg.features import *
 import random
+from dialog_manager.DContextModel import Response
 
 
 class NaturalLanguageGenerator:
@@ -571,7 +572,7 @@ class NaturalLanguageGenerator:
             f"{self.realiser.realiseSentence(c_11)[:-1]}? {self.realiser.realiseSentence(s_17)}": 1
         })
 
-    def generate_answer(self, response_type: Enum) -> str:
+    def generate_answer(self, response_type: Response) -> str:
         # Extract the negative or affirmative sentences that have yet to be used
         match response_type:
             case Response.CORRECT:
@@ -580,6 +581,8 @@ class NaturalLanguageGenerator:
                 sentences = self.negative_answers
             case Response.UNCERTAIN:
                 sentences = self.uncertain_answers
+            case _:
+                sentences = {"a": "vuoto"}
         returnable_sentences = [key for key, value in sentences.items() if value == 1]
 
         # I randomly select one of the sentences
@@ -603,7 +606,6 @@ class NaturalLanguageGenerator:
 
 if __name__ == "__main__":
     nlg = NaturalLanguageGenerator()
-    Response = Enum("Response", ["CORRECT", "INCORRECT", "UNCERTAIN"])
     nlg.greetings()
     nlg.greets_user()
     nlg.ask_nth_question("How many children can a Jedi have?")

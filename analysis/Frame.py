@@ -1,12 +1,12 @@
 class Frame:
-    # def __init__(self, question, domain, intent, regex_set: dict = None, **kwargs):
+
     def __init__(self, domain, intent, **kwargs):
         self.slot = {"domain": domain, "intent": intent} | kwargs
         self.__complete = False
         # self.regex = regex_set
 
     def modify_slot(self, edit):  # edit = dict
-        self.slot |= edit  # modify the value of the slot
+        self.slot |= edit  # adds a new slot or modifies the value of an existing one
 
     @property
     def complete(self):

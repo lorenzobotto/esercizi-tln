@@ -38,18 +38,18 @@ def resolve(sentence, frame_list: list):
     temp_slot = {}
     with shelve.open("databases/regex_db/regex") as reg_questions:
         for frame in frame_list:
-            key = frame.slot["domain"]
-            reg_set = reg_questions[key]
+            slot_key = frame.slot["domain"]
+            reg_set = reg_questions[slot_key]
             for slot in frame.slot:
-                if slot.key not in ["domain", "intent"]:
+                if slot not in ["domain", "intent"]:
                     for neg_pattern in reg_set[1]:
                         response[1] = True if re.search(neg_pattern, lwr_sentence) else False
                     for pos_pattern in reg_set[0]:
                         pos_match = re.search(pos_pattern, lwr_sentence)
                         response[0] = True if pos_match else False
                         if not response[1] and response[0]:
-                            temp_slot[slot.key] = pos_match
-                frame.modify_slot(temp_slot)
+                            temp_slot[slot] = pos_match
+                    frame.modify_slot(temp_slot)
     return response
 
 
