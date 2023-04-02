@@ -4,7 +4,6 @@ from simplenlg.realiser.english import *
 from simplenlg.phrasespec import *
 from simplenlg.features import *
 import random
-
 from utils.enumerators import Response
 
 
@@ -613,3 +612,13 @@ if __name__ == "__main__":
     nlg.generate_answer(Response.CORRECT)
     nlg.generate_answer(Response.INCORRECT)
     nlg.generate_answer(Response.UNCERTAIN)
+
+
+    # initiative(turn: Turn, last_response: Response, question: str,  passed:bool)
+        # INTRO -> greetings()
+        # QUESTION -> CORRECT ask_nth_question | INCORRECT ... | BACKUP ... | UNCERTAIN
+        # OUTRO -> BOCCIATO | PROMOSSO (unico metodo)
+
+    # response(turn: Turn, last_respose: Response, name: str)
+        # INTRO -> greets_user(name)
+        # QUESTION -> generate_answer(last_response)

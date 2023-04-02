@@ -34,12 +34,15 @@ class DialogController:
     def _backup_strategy(self):
         pass
 
-    def generate_initiative_text(self):
+    def elaborate_initiative(self):
+        if self.n_questions_to_ask == 0:
+            self.scenario = Turn.OUTRO
         match self.scenario:
             case Turn.INTRO:
                 return self.nlg.greetings()
             case Turn.QUESTION:
                 if self.last_response != Response.CORRECT:
+                    # self.nlg.prompt_initiative(Response.INCORRECT)
                     # implement a logic for when we are reacting to a new
                     pass
                 else:
@@ -48,12 +51,12 @@ class DialogController:
                     return self.nlg.ask_nth_question(self.current_qst[1])
             case Turn.OUTRO:
                 self.done = True
-                if self.context_model.correct_answers >= len(self.questions_dictionary):
-                    #promosso
+                if self.context_model.correct_answers >= len(self.questions_dictionary)/2:
+                    # promosso
                     pass
                 else:
                     pass
-                    #bocciato
+                    # bocciato
                 pass
 
     def elaborate_user_input(self, user_input: str):
@@ -68,12 +71,14 @@ class DialogController:
                     self.n_questions_to_ask -= 1
                     self.attempts = 0
                     self.context_model.correct_answers += 1
-                else:
+                elif self.attempts == 0:
                     self.attempts += 1
-                if self.n_questions_to_ask == 0:
-                    self.scenario = Turn.OUTRO
+                elif self.attempts == 1:
+                    self.n_questions_to_ask -= 1
+                    self.attempts = 0
+                    return self.nlg.generate_answer(Response.INCORRECT)
                 return self.nlg.generate_answer(self.last_response)
 
             case Turn.OUTRO:
-                #ci aspettiamo un input di saluto?
+                # ci aspettiamo un input di saluto?
                 pass

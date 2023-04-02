@@ -50,7 +50,8 @@ class DContextModel:
         pos, neg = resolve(user_response, frame_list)
         incomplete_frames = False
         if pos and not neg:
-            incomplete_frames = len([frame.slot["domain"] for frame in self.domain_ontology if not frame.complete]) > 0
+            incomplete_frames = len([frame for frame in self.domain_ontology
+                                     if frame.slot["domain"] == domain and not frame.complete]) > 0
 
         match (pos, neg, incomplete_frames):
             case (True, False, False):
