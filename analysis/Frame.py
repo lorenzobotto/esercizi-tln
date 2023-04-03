@@ -11,12 +11,22 @@ class Frame:
     @property
     def complete(self):
         return len([res for res in self.slot.items() if not res[1]]) == 0
+    
+    @property
+    def total_slot_number(self):
+        return (len(self.slot)-2)
+    
+    @property
+    def missing_slot_number(self):
+        return (len(self.slot)-2)-(len([res for res in self.slot.items() if res[1]])-2)
 
-# # {slot1: tuple(set(regexPositive),set(regexNegative))
-# # slot2: tuple(set(regexPositive),set(regexNegative)}
+# {slot1: tuple(set(regexPositive),set(regexNegative))
+# slot2: tuple(set(regexPositive),set(regexNegative)}
 # if __name__ == "__main__":
-#     f1 = Frame("headquarters", "headquarters", "banana", regQuestion1, coruscant="")
+#     f1 = Frame("headquarters", "headquarters", coruscant=None,banana="banana",lorenzo="")
 #     print(f1.slot)
-#     f1.resolve("The headquarters of the Jedi Order is situated on corusant")
-#     print(f1.slot)
+#     print(f1.total_slot_number)
+#     print(f1.missing_slot_number)
+#     #f1.resolve("The headquarters of the Jedi Order is situated on corusant")
+#     #Vprint(f1.slot)
 #     pass
