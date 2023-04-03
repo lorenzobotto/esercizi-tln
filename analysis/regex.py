@@ -85,7 +85,7 @@ def resolve(sentence, frame_list: list):
                         pos_match = re.search(pos_pattern, lwr_sentence)
                         if pos_match:
                             response[0] = True
-                        if not response[1] and response[0]:
+                        if not response[1] and response[0] and pos_match:
                             temp_slot[slot] = pos_match
                     frame.modify_slot(temp_slot)
     return response
