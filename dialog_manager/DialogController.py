@@ -11,7 +11,7 @@ class DialogController:
         assert 3 <= n_questions <= 10, "invalid number of questions!"
         self.scenario = Turn.INTRO
         self.last_response = Response.CORRECT
-        self.attempts = 0
+        self.retry = False
         self.done = False
         self.nlg = NaturalLanguageGenerator()
         self.synth = SpeechSynthesis()
@@ -36,7 +36,7 @@ class DialogController:
 
     def elaborate_initiative(self):
         if self.n_questions_to_ask == 0:
-            self.scenario = Turn.OUTRO
+            self.next_turn()
         match self.scenario:
             case Turn.INTRO:
                 return self.nlg.greetings()
@@ -69,16 +69,16 @@ class DialogController:
                 self.last_response = self.context_model.decipher_response(user_input, self.current_qst[0])
                 if self.last_response == Response.CORRECT:
                     self.n_questions_to_ask -= 1
-                    self.attempts = 0
+                    self.retry = True
                     self.context_model.correct_answers += 1
-                elif self.attempts == 0:
-                    self.attempts += 1
-                elif self.attempts == 1:
+                elif not self.retry:
+                    self.retry = True
+                elif self.retry:
                     self.n_questions_to_ask -= 1
-                    self.attempts = 0
+                    self.retry = False
+                    self.last_response = Response.CORRECT
                     return self.nlg.generate_answer(Response.INCORRECT)
                 return self.nlg.generate_answer(self.last_response)
-
             case Turn.OUTRO:
                 # ci aspettiamo un input di saluto?
                 pass
