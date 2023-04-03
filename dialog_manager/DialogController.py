@@ -69,7 +69,7 @@ class DialogController:
                 self.last_response = self.context_model.decipher_response(user_input, self.current_qst[0])
                 if self.last_response == Response.CORRECT:
                     self.n_questions_to_ask -= 1
-                    self.retry = True
+                    self.retry = False
                     self.context_model.correct_answers += 1
                 elif not self.retry:
                     self.retry = True
