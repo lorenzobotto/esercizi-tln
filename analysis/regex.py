@@ -2,35 +2,49 @@ import re
 import shelve
 
 
-# def create_db():
-#     with shelve.open("regex") as regex_db:
-#         # regex_db = regQuestion1 | regQuestion2 | regQuestion3 | regQuestion4 | regQuestion5 | \
-#         #                 regQuestion6 | regQuestion7 | regQuestion8 | regQuestion9 | regQuestion10
-#         # print(regex_db)
-#         regex_db["coruscant"] = tuple([({q1PosPattern1, q1PosPattern2, q1PosPattern3, q1PosPattern4, q1PosPattern5}),
-#                                        ({q1NegPattern1, q1NegPattern2, q1NegPattern3, q1NegPattern4, q1NegPattern5,
-#                                          q1NegPattern6})])
-#         regex_db["children"] = tuple([({q2PosPattern1, q2PosPattern2, q2PosPattern3, q2PosPattern4, q2PosPattern5,
-#                                         q2PosPattern6, q2PosPattern7, q2PosPattern8}),
-#                                       ({q2NegPattern1, q2NegPattern2, q2NegPattern3, q2NegPattern4, q2NegPattern5,
-#                                         q2NegPattern6})])
-#         regex_db["pillars"] = tuple([({q3PosPattern1, q3PosPattern2, q3PosPattern3}),
-#                                      ({q3NegPattern1, q3NegPattern2, q3NegPattern3})])
-#         regex_db["kyber"] = tuple([({q4PosPattern1, q4PosPattern2, q4PosPattern3}),
-#                                    ({q4NegPattern1, q4NegPattern2, q4NegPattern3, q4NegPattern4})])
-#         regex_db["order"] = tuple([({q5PosPattern1, q5PosPattern2, q5PosPattern3, q5PosPattern4, q5PosPattern5}),
-#                                    ({q5NegPattern1, q5NegPattern2, q5NegPattern3, q5NegPattern4, q5NegPattern5,
-#                                      q5NegPattern6})])
-#         regex_db["yoda"] = tuple([({q6PosPattern1}),
-#                                   ({q6NegPattern1, q6NegPattern2, q6NegPattern3, q6NegPattern4})])
-#         regex_db["color"] = tuple([({q7PosPattern1, q7PosPattern2}),
-#                                    ({q7NegPattern1, q7NegPattern2, q7NegPattern3, q7NegPattern4})])
-#         regex_db["dagobah"] = tuple([({q8PosPattern1, q8PosPattern2, q8PosPattern3}),
-#                                      ({q8NegPattern1, q8NegPattern2, q8NegPattern3, q8NegPattern4})])
-#         regex_db["master"] = tuple([({q9PosPattern1}),
-#                                     ({q9NegPattern1, q9NegPattern2, q9NegPattern3, q9NegPattern4})])
-#         regex_db["anakin"] = tuple([({q10PosPattern1, q10PosPattern2, q10PosPattern3}),
-#                                     ({q10NegPattern1, q10NegPattern2, q10NegPattern3})])
+def create_db():
+    with shelve.open("regex") as regex_db:
+        # regex_db = regQuestion1 | regQuestion2 | regQuestion3 | regQuestion4 | regQuestion5 | \
+        #                 regQuestion6 | regQuestion7 | regQuestion8 | regQuestion9 | regQuestion10
+        # print(regex_db)
+        regex_db["coruscant"] = tuple([({q1PosPattern1, q1PosPattern2, q1PosPattern3, q1PosPattern4, q1PosPattern5}),
+                                    ({q1NegPattern1, q1NegPattern2, q1NegPattern3, q1NegPattern4, q1NegPattern5,
+                                      q1NegPattern6})])
+        regex_db["children"] = tuple([({q2PosPattern1, q2PosPattern2, q2PosPattern3, q2PosPattern4, q2PosPattern5,
+                                     q2PosPattern6, q2PosPattern7, q2PosPattern8}),
+                                    ({q2NegPattern1, q2NegPattern2, q2NegPattern3, q2NegPattern4, q2NegPattern5,
+                                     q2NegPattern6})])
+        regex_db["force"] = tuple([({q3PosPattern1_1,}),
+                                  ({q3NegPattern1_1,})])
+        regex_db["knowledge"] = tuple([({q3PosPattern1_2}),
+                                  ({q3NegPattern1_2})])
+        regex_db["self discipline"] = tuple([({q3PosPattern1_3}),
+                                  ({q3NegPattern1_3})])
+        regex_db["kyber"] = tuple([({q4PosPattern1, q4PosPattern2, q4PosPattern3}),
+                                ({q4NegPattern1, q4NegPattern2, q4NegPattern3, q4NegPattern4})])
+        regex_db["order"] = tuple([({q5PosPattern1, q5PosPattern2, q5PosPattern3, q5PosPattern4, q5PosPattern5}),
+                                ({q5NegPattern1, q5NegPattern2, q5NegPattern3, q5NegPattern4, q5NegPattern5,
+                                  q5NegPattern6})])
+        regex_db["yoda"] = tuple([({q6PosPattern1}),
+                               ({q6NegPattern1, q6NegPattern2, q6NegPattern3, q6NegPattern4})])
+        regex_db["color"] = tuple([({q7PosPattern1, q7PosPattern2}),
+                                ({q7NegPattern1, q7NegPattern2, q7NegPattern3, q7NegPattern4})])
+        regex_db["dagobah"] = tuple([({q9PosPattern1}),
+                                  ({q9NegPattern1, q9NegPattern2, q9NegPattern3, q9NegPattern4})])
+        regex_db["master"] = tuple([({q8PosPattern1, q8PosPattern2, q8PosPattern3}),
+                                 ({q8NegPattern1, q8NegPattern2, q8NegPattern3, q8NegPattern4})])
+        regex_db["anakin"] = tuple([({q10PosPattern1, q10PosPattern2, q10PosPattern3}),
+                                  ({q10NegPattern1, q10NegPattern2, q10NegPattern3})])
+        regex_db["commander"]= tuple([({q11PosPattern1_2,q11PosPattern2_2,q11PosPattern3_2,q11PosPattern4_2}),
+                                  ({q11NegPattern1_2,q11NegPattern2_2,q11NegPattern3_2,q11NegPattern4_2})])
+        regex_db["general"]= tuple([({q11PosPattern1_1,q11PosPattern2_1,q11PosPattern3_1,q11PosPattern4_1}),
+                                  ({q11NegPattern1_1,q11NegPattern2_1,q11NegPattern3_1,q11NegPattern4_1})])
+        regex_db["guardian"]=tuple([({q12PosPattern1_1,q12PosPattern2_1,q12PosPattern3_1}),
+                                  ({q12NegPattern1_1,q12NegPattern2_1})])
+        regex_db["sentinel"]=tuple([({q12PosPattern1_2,q12PosPattern2_2,q12PosPattern3_2}),
+                                  ({q12NegPattern1_2,q12NegPattern2_2})])
+        regex_db["consular"]=tuple([({q12PosPattern1_3,q12PosPattern2_3,q12PosPattern3_3}),
+                                  ({q12NegPattern1_2,q12NegPattern2_2})])
 
 def resolve(sentence, frame_list: list):
     lwr_sentence = sentence.lower()
@@ -60,7 +74,7 @@ def resolve_mod(sentence, frame_list: list):
         for frame in frame_list:
             for slot in frame.slot:
                 if slot not in ["domain", "intent"]:
-                    reg_set = reg_questions[slot]
+                    reg_set = reg_questions[slot]#prendiamo la chiave dello slot e cerchiamo fra le regex
                     for neg_pattern in reg_set[1]:
                         response[1] = True if re.search(neg_pattern, lwr_sentence) else False
                     for pos_pattern in reg_set[0]:
@@ -532,7 +546,10 @@ regQuestion12_3 = {"consular": tuple([({q12PosPattern1_3,q12PosPattern2_3,q12Pos
 #     print("pattern not found")
 
 
-# if __name__ == "__main__":
-#     resolve()
-#     # with shelve.open("regex") as regexp_db:
-#     #     print(regexp_db.keys())
+if __name__ == "__main__":
+    
+    #resolve()
+    #create_db()
+    with shelve.open("regex") as regexp_db:
+        for reg in regexp_db:
+            print(reg)
