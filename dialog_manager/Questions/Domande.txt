@@ -27,3 +27,9 @@ A: On the planet Dagobah
 
 Q: Is Anakin Skywalker a jedi master ?
 A: No Anakin has never received the rank of master
+ 
+Q: What are the two roles that a Jedi can assume in the military hierarchy?
+A: Commander and General 
+
+Q: what are the three jedi orders?
+A: the guardians, the sentinels, the consular

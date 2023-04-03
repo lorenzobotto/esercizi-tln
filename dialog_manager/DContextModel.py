@@ -19,16 +19,18 @@ class DContextModel:
 
     def _create_frames(self):
         self.domain_ontology.append(Frame(domain="info", intent="user", **{"name": None, "sex": None}))
-        self.domain_ontology.append(Frame(domain="coruscant", intent="qst1"))
-        self.domain_ontology.append(Frame(domain="children", intent="qst2"))
-        self.domain_ontology.append(Frame(domain="pillars", intent="qst3"))
-        self.domain_ontology.append(Frame(domain="kyber", intent="qst4"))
-        self.domain_ontology.append(Frame(domain="order", intent="qst5"))
-        self.domain_ontology.append(Frame(domain="yoda", intent="qst6"))
-        self.domain_ontology.append(Frame(domain="color", intent="qst7"))
-        self.domain_ontology.append(Frame(domain="dagobah", intent="qst8"))
-        self.domain_ontology.append(Frame(domain="master", intent="qst9"))
-        self.domain_ontology.append(Frame(domain="anakin", intent="qst10"))
+        self.domain_ontology.append(Frame(domain="coruscant", intent="qst1",**{"coruscant":None}))
+        self.domain_ontology.append(Frame(domain="children", intent="qst2",**{"children":None}))
+        self.domain_ontology.append(Frame(domain="pillars", intent="qst3",**{"force":None,"knowledge":None,"self discipline":None}))
+        self.domain_ontology.append(Frame(domain="kyber", intent="qst4",**{"kyber":None}))
+        self.domain_ontology.append(Frame(domain="order", intent="qst5",**{"order":None}))
+        self.domain_ontology.append(Frame(domain="yoda", intent="qst6",**{"yoda":None}))
+        self.domain_ontology.append(Frame(domain="color", intent="qst7",**{"color":None}))
+        self.domain_ontology.append(Frame(domain="dagobah", intent="qst8",**{"dagobah":None}))
+        self.domain_ontology.append(Frame(domain="master", intent="qst9",**{"master":None}))
+        self.domain_ontology.append(Frame(domain="anakin", intent="qst10",**{"anakin":None}))
+        self.domain_ontology.append(Frame(domain="role", intent="qst11",**{"general":None,"commander":None}))
+        self.domain_ontology.append(Frame(domain="orders", intent="qst12",**{"guardian":None,"sentinel":None,"consular":None}))
 
     def find_name(self, user_greetings):
         with shelve.open("databases/names_db/names") as names_db:
