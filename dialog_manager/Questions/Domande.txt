@@ -27,3 +27,9 @@ A: On the planet Dagobah
 
 Q: Is Anakin Skywalker a jedi master ?
 A: No Anakin has never received the rank of master
+
+Q: What troops is the army of the republic based on? 
+A: Clone trooper
+ 
+Q: What are the two roles that a Jedi can assume in the military hierarchy?
+A: Commander and General 

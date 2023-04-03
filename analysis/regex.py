@@ -142,6 +142,7 @@ regQuestion2 = {"children": tuple([({q2PosPattern1, q2PosPattern2, q2PosPattern3
                                      q2NegPattern6})])}
 
 # Domanda: What are the three pillars of Jedi culture?---------------------------------------------------------------------------------------------------------------------------------
+#this question is divided into 3 slot
 """
 POSITIVE
 --------------------------------------------------
@@ -157,18 +158,30 @@ NEGATIVE
 
 """
 
-# pattern per frasi positive
-q3PosPattern1 = "(the force|force)"
-q3PosPattern2 = "knowledge"
-q3PosPattern3 = "(self discipline|self-discipline)"
+# pattern per frasi positive prmo slot
+q3PosPattern1_1 = "(the force|force)"
 
-# pattern per frasi con negazione
-q3NegPattern1 = "(is not|isn't|not) (the force|force)"
-q3NegPattern2 = "(is not|isn't|not) knowledge"
-q3NegPattern3 = "(is not|isn't|not) (self discipline|self-discipline)"
+# pattern per frasi con negazione primo slot
+q3NegPattern1_1 = "(is not|isn't|not) (the force|force)"
 
-regQuestion3 = {"pillars": tuple([({q3PosPattern1, q3PosPattern2, q3PosPattern3}),
-                                  ({q3NegPattern1, q3NegPattern2, q3NegPattern3})])}
+regQuestion3_1 = {"force": tuple([({q3PosPattern1_1,}),
+                                  ({q3NegPattern1_1,})])}
+# pattern per frasi positive secondo slot
+q3PosPattern1_2 = "knowledge"
+
+# pattern per frasi con negazione secondo slot
+q3NegPattern1_2 = "(is not|isn't|not) knowledge"
+
+regQuestion3_2 = {"knowledge": tuple([({q3PosPattern1_2}),
+                                  ({q3NegPattern1_2})])}
+# pattern per frasi positive terzo slot
+q3PosPattern1_3 = "(self discipline|self-discipline)"
+
+# pattern per frasi con negazione terzo slot
+q3NegPattern1_3 = "(is not|isn't|not) (self discipline|self-discipline)"
+
+regQuestion3_3 = {"self discipline": tuple([({q3PosPattern1_3}),
+                                  ({q3NegPattern1_3})])}
 
 # Domanda: What powers the lightsabers ?-------------------------------------------------------------------------------------------------------
 """
@@ -372,8 +385,61 @@ q10NegPattern3 = "was (received|granted|recognized|allowed)"
 regQuestion10 = {"anakin": tuple([({q10PosPattern1, q10PosPattern2, q10PosPattern3}),
                                   ({q10NegPattern1, q10NegPattern2, q10NegPattern3})])}
 
+# Domanda: What are the two roles that a Jedi can assume in the military hierarchy ? -------------------------------------------------------------------------------------------------------------------
+"""
+POSITIVE slot 1
+--------------------------------
+general
+role of general
+the general
+
+
+NEGATIVE slot 1
+--------------------------------
+not the role of general
+not general
+
+POSITIVE slot 2
+--------------------------------
+commander
+the role of commander
+the commander
+
+NEGATIVE slot 2
+--------------------------------
+not the role of commander
+not the position of commander
+not commander
+
+"""
+q11PosPattern1_1 = "(general|generals)"
+q11PosPattern2_1 = "role of (general|generals)"
+q11PosPattern3_1 = "the (general|generals)"
+q11PosPattern4_1 = "can be (general|generals)"
+
+q10NegPattern1_1 = "^((?!(general|commander)).)*$"
+q10NegPattern2_1 = "(not|didn't|did not) (general|generals)"
+q10NegPattern3_1 = "(not|didn't|did not) the (position|role) of (general|generals)"
+q10NegPattern4_1 = "(can't|can not) be (general|generals)"
+
+regQuestion11_1 = {"general": tuple([({}),
+                                  ({})])}
+
+q11PosPattern1_2 = "(commander|commanders)"
+q11PosPattern2_2 = "role of (commander|commanders)"
+q11PosPattern3_2 = "the (commander|commanders)"
+q11PosPattern4_2 = "can be (commander|commanders)"
+
+q10NegPattern1_2 = "^((?!(general|commander|generals|commanders)).)*$"
+q10NegPattern2_2 = "(not|didn't|did not) (commander|commanders)"
+q10NegPattern3_2 = "(not|didn't|did not) the (position|role) of (commander|commanders)"
+q10NegPattern4_2 = "(can't|can not) be (commander|commanders)"
+
+regQuestion11_1 = {"Commander": tuple([({}),
+                                  ({})])}
+
 # testiamo se il pattern crea un match
-match = re.search(q5NegPattern5, "I don't think it's order 66")
+#match = re.search(q5NegPattern5, "I don't think it's order 66")
 
 # if match:
 #     print(match.group())
