@@ -8,7 +8,7 @@ from utils.enumerators import Turn, Response
 
 class DialogController:
     def __init__(self, n_questions: int = 3):
-        assert 3 <= n_questions <= 10, "invalid number of questions!"
+        assert 3 <= n_questions <= 12, "invalid number of questions!"
         self.scenario = Turn.INTRO
         self.last_response = Response.CORRECT
         self.retry = False
