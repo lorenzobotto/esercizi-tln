@@ -5,7 +5,7 @@ from simplenlg.phrasespec import *
 from simplenlg.features import *
 import random
 from utils.enumerators import Response
-
+from utils.enumerators import Turn
 
 class NaturalLanguageGenerator:
 
@@ -20,7 +20,7 @@ class NaturalLanguageGenerator:
         self._generate_negative_answers()
         self._generate_uncertain_answers()
 
-    def greetings(self) -> str:
+    def _greetings(self) -> str:
         # Create a sentence with the form "Hello, I'm Obi-1 and I will question you about Jedi culture. We can start the interview now. What is your name?"
         s_0 = self.nlg_factory.createClause("Hello")
 
@@ -78,11 +78,11 @@ class NaturalLanguageGenerator:
         return self.realiser.realiseSentence(c_2) + '\n' + self.realiser.realiseSentence(
             s_3) + '\n' + self.realiser.realiseSentence(s_4)
 
-    def greets_user(self, name: str = None) -> str:
+    def _greets_user(self, name: str) -> str:
         # Create a sentence with the form "Hello, name!" if the name is not None, otherwise "Hello, aspiring Padawan!"
         s_0 = self.nlg_factory.createClause("Hello")
         if name:
-            subj_1 = self.nlg_factory.createNounPhrase(name + "!")
+            subj_1 = self.nlg_factory.createNounPhrase(name)
             s_1 = self.nlg_factory.createClause(subj_1)
             c_1 = self.nlg_factory.createCoordinatedPhrase()
             c_1.setConjunction(",")
@@ -110,7 +110,7 @@ class NaturalLanguageGenerator:
         s_2.addPostModifier(prep_1)
         return self.realiser.realiseSentence(c_1)[:-1] + '\n' + self.realiser.realiseSentence(s_2)
 
-    def ask_nth_question(self, question) -> str:
+    def _ask_nth_question(self, question) -> str:
         # Create a sentence with for the question extracted from a PD
         s_1 = self.nlg_factory.createSentence(question)
         return self.realiser.realiseSentence(s_1)
@@ -572,7 +572,7 @@ class NaturalLanguageGenerator:
             f"{self.realiser.realiseSentence(c_11)[:-1]}? {self.realiser.realiseSentence(s_17)}": 1
         })
 
-    def generate_answer(self, response_type: Response) -> str:
+    def _generate_answer(self, response_type: Response) -> str:
         # Extract the negative or affirmative sentences that have yet to be used
         match response_type:
             case Response.CORRECT:
@@ -602,23 +602,36 @@ class NaturalLanguageGenerator:
                     self.uncertain_answers = self.uncertain_answers.fromkeys(self.uncertain_answers, 1)
 
         return extracted_sentence
+    
+
+    def response(self, turn: Turn, last_respose: Response = None, name: str = None) -> str:
+        match turn:
+            case Turn.INTRO:
+                return self._greets_user(name)
+            case Turn.QUESTION:
+                return self._generate_answer(last_respose)
+        pass
+
+    def initiative(self, turn: Turn, last_response: Response = None, question: str = None, passed: bool = None) -> str:
+        match turn:
+            case Turn.INTRO:
+                return self._greetings()
+            case Turn.QUESTION:
+                match last_response:
+                    case Response.CORRECT:
+                        return self._ask_nth_question(question)
+            case Turn.OUTRO:
+                pass
 
 
 if __name__ == "__main__":
     nlg = NaturalLanguageGenerator()
-    nlg.greetings()
-    nlg.greets_user()
-    nlg.ask_nth_question("How many children can a Jedi have?")
-    nlg.generate_answer(Response.CORRECT)
-    nlg.generate_answer(Response.INCORRECT)
-    nlg.generate_answer(Response.UNCERTAIN)
+    print(nlg.initiative(Turn.QUESTION, Response.CORRECT, "Ciaooo????"))
+    print(nlg.response(Turn.INTRO, None, "Giovanni"))
+    print(nlg.response(Turn.QUESTION, Response.INCORRECT))
 
 
     # initiative(turn: Turn, last_response: Response, question: str,  passed:bool)
         # INTRO -> greetings()
         # QUESTION -> CORRECT ask_nth_question | INCORRECT ... | BACKUP ... | UNCERTAIN
         # OUTRO -> BOCCIATO | PROMOSSO (unico metodo)
-
-    # response(turn: Turn, last_respose: Response, name: str)
-        # INTRO -> greets_user(name)
-        # QUESTION -> generate_answer(last_response)
