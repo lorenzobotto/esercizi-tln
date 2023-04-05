@@ -655,20 +655,17 @@ class NaturalLanguageGenerator:
                 match last_response:
                     case Response.CORRECT:
                         return self._ask_nth_question(kwargs["question"])
-                    case Response.BACKUP:
-                        return self._generate_answer(True, last_response)
-                    case Response.INCORRECT:
-                        if kwargs and kwargs["question"]:
-                            return self._ask_nth_question(kwargs["question"])
-                        else:
-                            return self._generate_answer(True, last_response)
                     case Response.UNCERTAIN:
-                        if kwargs and kwargs["total_slots"] and kwargs["incomplete_slots"]:
-                            return f"Non ho capito bene, hai {kwargs['total_slots']} slot, di cui {kwargs['incomplete_slots']} non sono stati ancora compilati."
-                        else:
-                            return self._generate_answer(True, last_response)
+                        return self._generate_answer(True, last_response)
+                    case Response.INCOMPLETE:
+                        return f"Non ho capito bene, hai {kwargs['total_slots']} slot, di cui {kwargs['incomplete_slots']} non sono stati ancora compilati."
             case Turn.OUTRO:
-                pass
+                passed = "Passato!" if kwargs["passed"] else "Bocciato!"
+                tot_qst = kwargs["tot_qst"]
+                correct_qst = kwargs["correct_qst"]
+                return f"Hai risposto correttamente a {correct_qst} domande su {tot_qst}, sei stato {passed}"
+                
+                
 
 
 if __name__ == "__main__":

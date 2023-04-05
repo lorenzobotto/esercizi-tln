@@ -15,5 +15,5 @@ class Sex(Enum):
 class Response(Enum):
     CORRECT = 0  # [True, False]
     INCORRECT = 1  # [False, True]
-    UNCERTAIN = 2  # [True, True] or [True, False] but some frames are incomplete
-    BACKUP = 3  # [False, False]
+    UNCERTAIN = 2  # [True, True] or [False, False]
+    INCOMPLETE = 3  # [True, False] but some frames are incomplete
