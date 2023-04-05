@@ -15,7 +15,7 @@ def main():
             break
         user_input = ask_input()
         response = controller.elaborate_user_input(user_input)
-        # if controller.scenario == Turn.QUESTION:
+        # if controller.turn == Turn.QUESTION:
         #     three_dots_anim()
         print_words(f"{response}\n")
 

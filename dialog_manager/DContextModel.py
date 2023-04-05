@@ -19,18 +19,20 @@ class DContextModel:
 
     def _create_frames(self):
         self.domain_ontology.append(Frame(domain="info", intent="user", **{"name": None, "sex": None}))
-        self.domain_ontology.append(Frame(domain="coruscant", intent="qst1",**{"coruscant":None}))
-        self.domain_ontology.append(Frame(domain="children", intent="qst2",**{"children":None}))
-        self.domain_ontology.append(Frame(domain="pillars", intent="qst3",**{"force":None,"knowledge":None,"self discipline":None}))
-        self.domain_ontology.append(Frame(domain="kyber", intent="qst4",**{"kyber":None}))
-        self.domain_ontology.append(Frame(domain="order", intent="qst5",**{"order":None}))
-        self.domain_ontology.append(Frame(domain="yoda", intent="qst6",**{"yoda":None}))
-        self.domain_ontology.append(Frame(domain="color", intent="qst7",**{"color":None}))
-        self.domain_ontology.append(Frame(domain="master", intent="qst8",**{"master":None}))
-        self.domain_ontology.append(Frame(domain="dagobah", intent="qst9",**{"dagobah":None}))
-        self.domain_ontology.append(Frame(domain="anakin", intent="qst10",**{"anakin":None}))
-        self.domain_ontology.append(Frame(domain="role", intent="qst11",**{"general":None,"commander":None}))
-        self.domain_ontology.append(Frame(domain="orders", intent="qst12",**{"guardian":None,"sentinel":None,"consular":None}))
+        self.domain_ontology.append(Frame(domain="coruscant", intent="qst1", **{"coruscant": None}))
+        self.domain_ontology.append(Frame(domain="children", intent="qst2", **{"children": None}))
+        self.domain_ontology.append(
+            Frame(domain="pillars", intent="qst3", **{"force": None, "knowledge": None, "self discipline": None}))
+        self.domain_ontology.append(Frame(domain="kyber", intent="qst4", **{"kyber": None}))
+        self.domain_ontology.append(Frame(domain="order", intent="qst5", **{"order": None}))
+        self.domain_ontology.append(Frame(domain="yoda", intent="qst6", **{"yoda": None}))
+        self.domain_ontology.append(Frame(domain="color", intent="qst7", **{"color": None}))
+        self.domain_ontology.append(Frame(domain="master", intent="qst8", **{"master": None}))
+        self.domain_ontology.append(Frame(domain="dagobah", intent="qst9", **{"dagobah": None}))
+        self.domain_ontology.append(Frame(domain="anakin", intent="qst10", **{"anakin": None}))
+        self.domain_ontology.append(Frame(domain="role", intent="qst11", **{"general": None, "commander": None}))
+        self.domain_ontology.append(
+            Frame(domain="orders", intent="qst12", **{"guardian": None, "sentinel": None, "consular": None}))
 
     def find_name(self, user_greetings):
         with shelve.open("databases/names_db/names") as names_db:
@@ -50,15 +52,15 @@ class DContextModel:
     def decipher_response(self, user_response: str, domain: str):
         frame_list = [frame for frame in self.domain_ontology if frame.slots["domain"] == domain]
         pos, neg = resolve(user_response, frame_list)
-        incomplete_frames = len([frame for frame in self.domain_ontology if
-                                 frame.slots["domain"] == domain and not frame.complete]) > 0 and pos and not neg
+        are_frames_complete = len([frame for frame in self.domain_ontology if
+                                   frame.slots["domain"] == domain and not frame.complete]) == 0
 
-        match (pos, neg, incomplete_frames):
-            case (True, False, False):
+        match (pos, neg, are_frames_complete):
+            case (True, False, True):
                 return Response.CORRECT
             case (False, True, _):
                 return Response.INCORRECT
-            case (True, True, _) | (True, False, True):
+            case (True, True, _) | (False, False, _), _:
                 return Response.UNCERTAIN
-            case (False, False, _), _:
-                return Response.BACKUP
+            case (True, False, False):
+                return Response.INCOMPLETE

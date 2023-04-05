@@ -6,10 +6,12 @@ from simplenlg.features import *
 import random
 
 import sys
+
 sys.path.append('C:\\Users\\lores\\Desktop\\mazzei-chatbot')
 
 from utils.enumerators import Response
 from utils.enumerators import Turn
+
 
 class NaturalLanguageGenerator:
 
@@ -637,7 +639,7 @@ class NaturalLanguageGenerator:
             else:
                 self.retry_initiative = self.retry_initiative.fromkeys(self.retry_initiative, 1)
 
-        return extracted_sentence 
+        return extracted_sentence
 
     def response(self, turn: Turn, last_response: Response = None, name: str = None) -> str:
         match turn:
@@ -664,19 +666,16 @@ class NaturalLanguageGenerator:
                 tot_qst = kwargs["tot_qst"]
                 correct_qst = kwargs["correct_qst"]
                 return f"Hai risposto correttamente a {correct_qst} domande su {tot_qst}, sei stato {passed}"
-                
-                
 
 
-if __name__ == "__main__":
-    nlg = NaturalLanguageGenerator()
-    # print(nlg.initiative(Turn.QUESTION, Response.CORRECT, question="Cosa è il 2+2?"))
-    # print(nlg.response(Turn.INTRO, None, "Giovanni"))
-    print(nlg.initiative(Turn.QUESTION, Response.UNCERTAIN, total_slots=3, incomplete_slots=2))
-    # print(nlg.initiative(Turn.QUESTION, Response.BACKUP))
-
+# if __name__ == "__main__":
+#     nlg = NaturalLanguageGenerator()
+#     # print(nlg.initiative(Turn.QUESTION, Response.CORRECT, question="Cosa è il 2+2?"))
+#     # print(nlg.response(Turn.INTRO, None, "Giovanni"))
+#     print(nlg.initiative(Turn.QUESTION, Response.UNCERTAIN, total_slots=3, incomplete_slots=2))
+#     # print(nlg.initiative(Turn.QUESTION, Response.BACKUP))
 
     # initiative(turn: Turn, last_response: Response, question: str,  passed:bool)
-        # INTRO -> greetings()
-        # QUESTION -> CORRECT ask_nth_question | INCORRECT ... | BACKUP ... | UNCERTAIN
-        # OUTRO -> BOCCIATO | PROMOSSO (unico metodo)
+    # INTRO -> greetings()
+    # QUESTION -> CORRECT ask_nth_question | INCORRECT ... | BACKUP ... | UNCERTAIN
+    # OUTRO -> BOCCIATO | PROMOSSO (unico metodo)

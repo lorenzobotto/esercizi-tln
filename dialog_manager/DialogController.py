@@ -9,7 +9,7 @@ from utils.enumerators import Turn, Response
 class DialogController:
     def __init__(self, n_questions: int = 3):
         assert 3 <= n_questions <= 12, "invalid number of questions!"
-        self.scenario = Turn.INTRO
+        self.turn = Turn.INTRO
         self.last_response = Response.CORRECT
         self.retry = False
         self.done = False
@@ -26,7 +26,7 @@ class DialogController:
         self.current_qst = None
 
     def next_turn(self, idx=None):
-        self.scenario = Turn(self.scenario.value + 1) if idx is None else Turn(idx)
+        self.turn = Turn(self.turn.value + 1) if idx is None else Turn(idx)
 
     def _generate_questions(self):
         yield from self.questions_dictionary
@@ -37,34 +37,33 @@ class DialogController:
     def elaborate_initiative(self):
         if self.n_questions_to_ask == 0:
             self.next_turn()
-        match self.scenario:
+        match self.turn:
             case Turn.INTRO:
-                return self.nlg.greetings()
-            case Turn.QUESTION:
-                if self.last_response != Response.CORRECT:
-                    # self.nlg.prompt_initiative(Response.INCORRECT)
-                    # implement a logic for when we are reacting to a new
-                    pass
-                else:
-                    key = next(self.qst_generator)
-                    self.current_qst = (key, self.questions_dictionary[key])
-                    return self.nlg.ask_nth_question(self.current_qst[1])
+                return self.nlg.initiative(self.turn)
             case Turn.OUTRO:
                 self.done = True
-                if self.context_model.correct_answers >= len(self.questions_dictionary)/2:
-                    # promosso
-                    pass
+                kwargs = {
+                    "tot_qst": self.n_questions_to_ask,
+                    "correct_qst": self.context_model.correct_answers,
+                    "passed": (self.context_model.correct_answers / self.n_questions_to_ask >= 1 / 2)
+                }
+                return self.nlg.initiative(turn=self.turn, kwargs=kwargs)
+            case Turn.QUESTION:
+                if self.last_response == Response.CORRECT:
+                    key = next(self.qst_generator)
+                    self.current_qst = (key, self.questions_dictionary[key])
+                    return self.nlg.initiative(turn=self.turn,
+                                               last_response=self.last_response, **{"question": self.current_qst[1]})
                 else:
-                    pass
-                    # bocciato
-                pass
+                    return self.nlg.initiative(turn=self.turn)
 
     def elaborate_user_input(self, user_input: str):
-        match self.scenario:
+        match self.turn:
             case Turn.INTRO:
                 self.context_model.find_name(user_input)
+                response = self.nlg.response(turn=self.turn, **{"name": self.context_model.user_name})
                 self.next_turn()
-                return self.nlg.greets_user(self.context_model.user_name)
+                return response
             case Turn.QUESTION:
                 self.last_response = self.context_model.decipher_response(user_input, self.current_qst[0])
                 if self.last_response == Response.CORRECT:
@@ -79,6 +78,3 @@ class DialogController:
                     self.last_response = Response.CORRECT
                     return self.nlg.generate_answer(Response.INCORRECT)
                 return self.nlg.generate_answer(self.last_response)
-            case Turn.OUTRO:
-                # ci aspettiamo un input di saluto?
-                pass
