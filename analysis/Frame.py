@@ -10,7 +10,7 @@ class Frame:
         self.slots |= edit  # adds a new slots or modifies the value of an existing one
 
     @property
-    def complete(self):
+    def is_complete(self):
         return len([res for res in self.slots.items() if not res[1]]) == 0
 
     @property

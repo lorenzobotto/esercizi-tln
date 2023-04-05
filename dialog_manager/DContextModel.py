@@ -50,17 +50,15 @@ class DContextModel:
         return self.user_name is not None
 
     def decipher_response(self, user_response: str, domain: str):
-        frame_list = [frame for frame in self.domain_ontology if frame.slots["domain"] == domain]
-        pos, neg = resolve(user_response, frame_list)
-        are_frames_complete = len([frame for frame in self.domain_ontology if
-                                   frame.slots["domain"] == domain and not frame.complete]) == 0
-
-        match (pos, neg, are_frames_complete):
+        frame = next(frm for frm in self.domain_ontology if frm.slots["domain"] == domain)
+        pos, neg = resolve(user_response, frame)
+        match (pos, neg, frame.is_complete):
             case (True, False, True):
-                return Response.CORRECT
+                resp = Response.CORRECT
             case (False, True, _):
-                return Response.INCORRECT
+                resp =  Response.INCORRECT
             case (True, True, _) | (False, False, _), _:
-                return Response.UNCERTAIN
+                resp =  Response.UNCERTAIN
             case (True, False, False):
-                return Response.INCOMPLETE
+                resp =  Response.INCOMPLETE
+        return resp, frame

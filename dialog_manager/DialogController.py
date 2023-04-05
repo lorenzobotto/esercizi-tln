@@ -43,11 +43,11 @@ class DialogController:
             case Turn.OUTRO:
                 self.done = True
                 kwargs = {
-                    "tot_qst": self.n_questions_to_ask,
+                    "tot_qst": len(self.questions_dictionary),
                     "correct_qst": self.context_model.correct_answers,
-                    "passed": (self.context_model.correct_answers / self.n_questions_to_ask >= 1 / 2)
+                    "passed": (self.context_model.correct_answers / len(self.questions_dictionary) >= (1 / 2))
                 }
-                return self.nlg.initiative(turn=self.turn, kwargs=kwargs)
+                return self.nlg.initiative(turn=self.turn, **kwargs)
             case Turn.QUESTION:
                 if self.last_response == Response.CORRECT:
                     key = next(self.qst_generator)
@@ -65,7 +65,14 @@ class DialogController:
                 self.next_turn()
                 return response
             case Turn.QUESTION:
-                self.last_response = self.context_model.decipher_response(user_input, self.current_qst[0])
+                kwargs = {}
+                resp, frame = self.context_model.decipher_response(user_input, self.current_qst[0])
+                if resp == Response.INCOMPLETE and not self.retry:
+                    kwargs = {"total_slots": len(frame.slots - 2), "complete_slots": frame.complete_slots}
+                elif resp == Response.INCOMPLETE:
+                    resp = Response.INCORRECT
+                self.last_response = resp
+                response = self.nlg.response(turn=self.turn, last_response=self.last_response, **kwargs)
                 if self.last_response == Response.CORRECT:
                     self.n_questions_to_ask -= 1
                     self.retry = False
@@ -76,5 +83,4 @@ class DialogController:
                     self.n_questions_to_ask -= 1
                     self.retry = False
                     self.last_response = Response.CORRECT
-                    return self.nlg.generate_answer(Response.INCORRECT)
-                return self.nlg.generate_answer(self.last_response)
+                return response

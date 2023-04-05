@@ -614,7 +614,7 @@ class NaturalLanguageGenerator:
                 case Response.UNCERTAIN:
                     sentences = self.uncertain_answers
                 case Response.INCOMPLETE:
-                    return f"Non ho capito bene, hai {kwargs['total_slots']} slot, di cui {kwargs['incomplete_slots']} non sono stati ancora compilati."
+                    return f"Non ho capito bene, hai {kwargs['total_slots']} slot, ma ne hai azzeccate solo {kwargs['complete_slots']} non sono stati ancora compilati."
         else:
             sentences = self.retry_initiative
         returnable_sentences = [key for key, value in sentences.items() if value == 1]

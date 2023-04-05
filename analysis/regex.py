@@ -1,5 +1,6 @@
 import re
 import shelve
+from analysis.Frame import Frame
 
 
 #
@@ -68,29 +69,27 @@ import shelve
 #     return response
 #
 
-def resolve(sentence, frame_list: list):
+def resolve(sentence, frame: Frame):
     lwr_sentence = sentence.lower()
     response = [False, False]
     temp_slot = {}
     with shelve.open("databases/regex_db/regex") as reg_questions:
-        for frame in frame_list:
-            for slot in frame.slots:
-                if slot not in ["domain", "intent"]:
-                    reg_set = reg_questions[slot]  # prendiamo la chiave dello slots e cerchiamo fra le regex
-                    for neg_pattern in reg_set[1]:
-                        if re.search(neg_pattern, lwr_sentence):
-                            response[1] = True
-                            break
-                    for pos_pattern in reg_set[0]:
-                        pos_match = re.search(pos_pattern, lwr_sentence)
-                        if pos_match:
-                            response[0] = True
-                        if not response[1] and response[0]:
+        for slot in frame.slots:
+            if slot not in ["domain", "intent"]:
+                reg_set = reg_questions[slot]  # prendiamo la chiave dello slots e cerchiamo fra le regex
+                for neg_pattern in reg_set[1]:
+                    if re.search(neg_pattern, lwr_sentence):
+                        response[1] = True
+                        break
+                for pos_pattern in reg_set[0]:
+                    pos_match = re.search(pos_pattern, lwr_sentence)
+                    if pos_match:
+                        response[0] = True
+                        if not response[1]:
                             temp_slot[slot] = pos_match
                             frame.modify_slot(temp_slot)
-                            break
+                        break
     return response
-
 
 # Domanda: Where is the headquarters of the Jedi Order located
 # ?---------------------------------------------------------------------------------------------------------------------------------
