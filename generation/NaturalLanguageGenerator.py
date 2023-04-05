@@ -5,9 +5,8 @@ from simplenlg.phrasespec import *
 from simplenlg.features import *
 import random
 
-import sys
-
-sys.path.append('C:\\Users\\lores\\Desktop\\mazzei-chatbot')
+# import sys
+# sys.path.append('C:\\Users\\lores\\Desktop\\mazzei-chatbot')
 
 from utils.enumerators import Response
 from utils.enumerators import Turn
@@ -21,11 +20,11 @@ class NaturalLanguageGenerator:
         self.realiser = Realiser(lexicon)
         self.affirmative_answers = {}
         self.negative_answers = {}
-        self.backup_answers = {}
+        self.uncertain_answers = {}
         self.retry_initiative = {}
         self._generate_affirmative_answers()
         self._generate_negative_answers()
-        self._generate_backup_answers()
+        self._generate_uncertain_answers()
         self._generate_retry_initiative()
 
     def _greetings(self) -> str:
@@ -370,7 +369,7 @@ class NaturalLanguageGenerator:
             self.realiser.realiseSentence(c_10): 1
         })
 
-    def _generate_backup_answers(self):
+    def _generate_uncertain_answers(self):
         # 1. Create a sentence with the form "Sorry, I didn't catch that."
         # Create a sentence with the form "Sorry"
         s_0 = self.nlg_factory.createClause("Sorry")
@@ -390,7 +389,7 @@ class NaturalLanguageGenerator:
         c_1.addCoordinate(s_1)
 
         # I add the sentence to the dictionary
-        self.backup_answers.update({
+        self.uncertain_answers.update({
             self.realiser.realiseSentence(c_1): 1
         })
 
@@ -431,7 +430,7 @@ class NaturalLanguageGenerator:
         c_6.addCoordinate(c_5)
 
         # I add the sentence to the dictionary
-        self.backup_answers.update({
+        self.uncertain_answers.update({
             self.realiser.realiseSentence(c_6): 1
         })
 
@@ -468,7 +467,7 @@ class NaturalLanguageGenerator:
         c_9.addCoordinate(s_10)
 
         # I add the sentence to the dictionary
-        self.backup_answers.update({
+        self.uncertain_answers.update({
             self.realiser.realiseSentence(c_9): 1
         })
 
@@ -481,7 +480,7 @@ class NaturalLanguageGenerator:
         s_13 = self.nlg_factory.createClause(subj_13, verb_13, obj_13)
 
         # I add the sentence to the dictionary
-        self.backup_answers.update({
+        self.uncertain_answers.update({
             self.realiser.realiseSentence(s_13): 1
         })
 
@@ -496,7 +495,7 @@ class NaturalLanguageGenerator:
         s_17 = self.nlg_factory.createClause(subj_17, verb_17, obj_17)
 
         # I add the sentence to the dictionary
-        self.backup_answers.update({
+        self.uncertain_answers.update({
             self.realiser.realiseSentence(s_17): 1
         })
 
@@ -604,7 +603,7 @@ class NaturalLanguageGenerator:
             f"{self.realiser.realiseSentence(c_11)[:-1]}?": 1
         })
 
-    def _generate_answer(self, initiative_type: bool, response_type: Response) -> str:
+    def _generate_answer(self, initiative_type: bool, response_type: Response, **kwargs) -> str:
         # Extract the negative or affirmative sentences that have yet to be used
         if not initiative_type:
             match response_type:
@@ -612,10 +611,10 @@ class NaturalLanguageGenerator:
                     sentences = self.affirmative_answers
                 case Response.INCORRECT:
                     sentences = self.negative_answers
-                case Response.BACKUP:
-                    sentences = self.backup_answers
-                case _:
-                    sentences = {"a": "vuoto"}
+                case Response.UNCERTAIN:
+                    sentences = self.uncertain_answers
+                case Response.INCOMPLETE:
+                    return f"Non ho capito bene, hai {kwargs['total_slots']} slot, di cui {kwargs['incomplete_slots']} non sono stati ancora compilati."
         else:
             sentences = self.retry_initiative
         returnable_sentences = [key for key, value in sentences.items() if value == 1]
@@ -634,19 +633,19 @@ class NaturalLanguageGenerator:
                         self.affirmative_answers = self.affirmative_answers.fromkeys(self.affirmative_answers, 1)
                     case Response.INCORRECT:
                         self.negative_answers = self.negative_answers.fromkeys(self.negative_answers, 1)
-                    case Response.BACKUP:
-                        self.backup_answers = self.backup_answers.fromkeys(self.backup_answers, 1)
+                    case Response.UNCERTAIN:
+                        self.uncertain_answers = self.uncertain_answers.fromkeys(self.uncertain_answers, 1)
             else:
                 self.retry_initiative = self.retry_initiative.fromkeys(self.retry_initiative, 1)
 
-        return extracted_sentence
+        return extracted_sentence 
 
-    def response(self, turn: Turn, last_response: Response = None, name: str = None) -> str:
+    def response(self, turn: Turn, last_response: Response = None, **kwargs) -> str:
         match turn:
             case Turn.INTRO:
-                return self._greets_user(name)
+                return self._greets_user(kwargs["name"])
             case Turn.QUESTION:
-                return self._generate_answer(False, last_response)
+                return self._generate_answer(False, last_response, **kwargs)
         pass
 
     def initiative(self, turn: Turn, last_response: Response = None, **kwargs) -> str:
@@ -657,15 +656,15 @@ class NaturalLanguageGenerator:
                 match last_response:
                     case Response.CORRECT:
                         return self._ask_nth_question(kwargs["question"])
-                    case Response.UNCERTAIN:
+                    case Response.UNCERTAIN | Response.INCOMPLETE | Response.INCORRECT:
                         return self._generate_answer(True, last_response)
-                    case Response.INCOMPLETE:
-                        return f"Non ho capito bene, hai {kwargs['total_slots']} slot, di cui {kwargs['incomplete_slots']} non sono stati ancora compilati."
             case Turn.OUTRO:
                 passed = "Passato!" if kwargs["passed"] else "Bocciato!"
                 tot_qst = kwargs["tot_qst"]
                 correct_qst = kwargs["correct_qst"]
                 return f"Hai risposto correttamente a {correct_qst} domande su {tot_qst}, sei stato {passed}"
+                
+                
 
 
 # if __name__ == "__main__":
