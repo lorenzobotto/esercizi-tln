@@ -4,6 +4,10 @@ from simplenlg.realiser.english import *
 from simplenlg.phrasespec import *
 from simplenlg.features import *
 import random
+
+import sys
+sys.path.append('C:\\Users\\lores\\Desktop\\mazzei-chatbot')
+
 from utils.enumerators import Response
 from utils.enumerators import Turn
 
@@ -15,10 +19,12 @@ class NaturalLanguageGenerator:
         self.realiser = Realiser(lexicon)
         self.affirmative_answers = {}
         self.negative_answers = {}
-        self.uncertain_answers = {}
+        self.backup_answers = {}
+        self.retry_initiative = {}
         self._generate_affirmative_answers()
         self._generate_negative_answers()
-        self._generate_uncertain_answers()
+        self._generate_backup_answers()
+        self._generate_retry_initiative()
 
     def _greetings(self) -> str:
         # Create a sentence with the form "Hello, I'm Obi-1 and I will question you about Jedi culture. We can start the interview now. What is your name?"
@@ -362,8 +368,8 @@ class NaturalLanguageGenerator:
             self.realiser.realiseSentence(c_10): 1
         })
 
-    def _generate_uncertain_answers(self):
-        # 1. Create a sentence with the form "Sorry, I didn't catch that. Could you please repeat?"
+    def _generate_backup_answers(self):
+        # 1. Create a sentence with the form "Sorry, I didn't catch that."
         # Create a sentence with the form "Sorry"
         s_0 = self.nlg_factory.createClause("Sorry")
 
@@ -381,20 +387,12 @@ class NaturalLanguageGenerator:
         c_1.addCoordinate(s_0)
         c_1.addCoordinate(s_1)
 
-        # Create a sentence with the form "Could you please repeat?"
-        subj_2 = self.nlg_factory.createNounPhrase("you")
-        verb_2 = self.nlg_factory.createVerbPhrase("repeat")
-        verb_2.addModifier("please")
-        s_2 = self.nlg_factory.createClause(subj_2, verb_2)
-        s_2.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
-        s_2.setFeature(Feature.MODAL, "could")
-
         # I add the sentence to the dictionary
-        self.uncertain_answers.update({
-            f"{self.realiser.realiseSentence(c_1)} {self.realiser.realiseSentence(s_2)}": 1
+        self.backup_answers.update({
+            self.realiser.realiseSentence(c_1): 1
         })
 
-        # 2. Create a sentence with the form "I'm sorry, I didn't quite understand what you said. Can you say it again?"
+        # 2. Create a sentence with the form "I'm sorry, I didn't quite understand what you said."
         # Create a sentence with the form "I'm sorry"
         subj_3 = self.nlg_factory.createNounPhrase("I")
         verb_3 = self.nlg_factory.createVerbPhrase("be")
@@ -430,22 +428,12 @@ class NaturalLanguageGenerator:
         c_6.addCoordinate(s_3)
         c_6.addCoordinate(c_5)
 
-        # Create a sentence with the form "Can you say it again?"
-        subj_7 = self.nlg_factory.createNounPhrase("you")
-        verb_7 = self.nlg_factory.createVerbPhrase("say")
-        obj_7 = self.nlg_factory.createNounPhrase("again")
-        pron_7 = self.nlg_factory.createWord("it", LexicalCategory.PRONOUN)
-        obj_7.addPreModifier(pron_7)
-        s_7 = self.nlg_factory.createClause(subj_7, verb_7, obj_7)
-        s_7.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
-        s_7.setFeature(Feature.MODAL, "can")
-
         # I add the sentence to the dictionary
-        self.uncertain_answers.update({
-            f"{self.realiser.realiseSentence(c_6)} {self.realiser.realiseSentence(s_7)}": 1
+        self.backup_answers.update({
+            self.realiser.realiseSentence(c_6): 1
         })
 
-        # 3. Create a sentence with the form "Sorry, I missed what you just said. Could you say that one more time, please?"
+        # 3. Create a sentence with the form "Sorry, I missed what you just said."
         # Create a sentence with the form "Sorry"
         s_8 = self.nlg_factory.createClause("Sorry")
 
@@ -477,7 +465,69 @@ class NaturalLanguageGenerator:
         c_9.addCoordinate(c_8)
         c_9.addCoordinate(s_10)
 
-        # Create a sentence with the form "Could you say that one more time"
+        # I add the sentence to the dictionary
+        self.backup_answers.update({
+            self.realiser.realiseSentence(c_9): 1
+        })
+
+        # 4. Create a sentence with the form "I didn't get that."
+        subj_13 = self.nlg_factory.createNounPhrase("I")
+        verb_13 = self.nlg_factory.createVerbPhrase("get")
+        obj_13 = self.nlg_factory.createNounPhrase("that")
+        verb_13.setFeature(Feature.TENSE, Tense.PAST)
+        verb_13.setFeature(Feature.NEGATED, True)
+        s_13 = self.nlg_factory.createClause(subj_13, verb_13, obj_13)
+
+        # I add the sentence to the dictionary
+        self.backup_answers.update({
+            self.realiser.realiseSentence(s_13): 1
+        })
+
+        # 5. Create a sentence with the form "I didn't quite understand it."
+        subj_17 = self.nlg_factory.createNounPhrase("I")
+        verb_17 = self.nlg_factory.createVerbPhrase("understand")
+        obj_17 = self.nlg_factory.createNounPhrase("it")
+        adv_17 = self.nlg_factory.createWord("entirely", LexicalCategory.ADVERB)
+        verb_17.addModifier(adv_17)
+        verb_17.setFeature(Feature.TENSE, Tense.PAST)
+        verb_17.setFeature(Feature.NEGATED, True)
+        s_17 = self.nlg_factory.createClause(subj_17, verb_17, obj_17)
+
+        # I add the sentence to the dictionary
+        self.backup_answers.update({
+            self.realiser.realiseSentence(s_17): 1
+        })
+
+    def _generate_retry_initiative(self) -> str:
+        # 1. Create a sentence with the form "Could you please repeat?"
+        subj_2 = self.nlg_factory.createNounPhrase("you")
+        verb_2 = self.nlg_factory.createVerbPhrase("repeat")
+        verb_2.addModifier("please")
+        s_2 = self.nlg_factory.createClause(subj_2, verb_2)
+        s_2.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
+        s_2.setFeature(Feature.MODAL, "could")
+
+        # I add the sentence to the dictionary
+        self.retry_initiative.update({
+            self.realiser.realiseSentence(s_2): 1
+        })
+
+        # 2. Create a sentence with the form "Can you say it again?"
+        subj_7 = self.nlg_factory.createNounPhrase("you")
+        verb_7 = self.nlg_factory.createVerbPhrase("say")
+        obj_7 = self.nlg_factory.createNounPhrase("again")
+        pron_7 = self.nlg_factory.createWord("it", LexicalCategory.PRONOUN)
+        obj_7.addPreModifier(pron_7)
+        s_7 = self.nlg_factory.createClause(subj_7, verb_7, obj_7)
+        s_7.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
+        s_7.setFeature(Feature.MODAL, "can")
+
+        # I add the sentence to the dictionary
+        self.retry_initiative.update({
+            self.realiser.realiseSentence(s_7): 1
+        })
+
+        # 3. Create a sentence with the form "Could you say that one more time"
         subj_11 = self.nlg_factory.createNounPhrase("you")
         verb_11 = self.nlg_factory.createVerbPhrase("say")
         s_11 = self.nlg_factory.createClause(subj_11, verb_11)
@@ -500,20 +550,11 @@ class NaturalLanguageGenerator:
         c_10.addCoordinate(s_12)
 
         # I add the sentence to the dictionary
-        self.uncertain_answers.update({
-            f"{self.realiser.realiseSentence(c_9)} {self.realiser.realiseSentence(c_10)}": 1
+        self.retry_initiative.update({
+            self.realiser.realiseSentence(c_10): 1
         })
 
-        # 4. Create a sentence with the form "I didn't get that. Could you please reiterate your point?"
-        # Create a sentence with the form "I didn't get that."
-        subj_13 = self.nlg_factory.createNounPhrase("I")
-        verb_13 = self.nlg_factory.createVerbPhrase("get")
-        obj_13 = self.nlg_factory.createNounPhrase("that")
-        verb_13.setFeature(Feature.TENSE, Tense.PAST)
-        verb_13.setFeature(Feature.NEGATED, True)
-        s_13 = self.nlg_factory.createClause(subj_13, verb_13, obj_13)
-
-        # Create a sentence with the form "Could you please reiterate your point?"
+        # 4. Create a sentence with the form "Could you please reiterate your point?"
         subj_14 = self.nlg_factory.createNounPhrase("you")
         verb_14 = self.nlg_factory.createVerbPhrase("reiterate")
         adv_14 = self.nlg_factory.createWord("please", LexicalCategory.ADVERB)
@@ -527,12 +568,11 @@ class NaturalLanguageGenerator:
         s_14.setFeature(Feature.MODAL, "could")
 
         # I add the sentence to the dictionary
-        self.uncertain_answers.update({
-            f"{self.realiser.realiseSentence(s_13)} {self.realiser.realiseSentence(s_14)}": 1
+        self.retry_initiative.update({
+            self.realiser.realiseSentence(s_14): 1
         })
 
-        # 5. Create a sentence with the form "Could you kindly rephrase what you just said? I didn't quite understand it."
-        # Create a sentence with the form "Could you kindly rephrase what you just said?"
+        # 5. Create a sentence with the form "Could you kindly rephrase what you just said?"
         subj_15 = self.nlg_factory.createNounPhrase("you")
         verb_15 = self.nlg_factory.createVerbPhrase("rephrase")
         adj_15 = self.nlg_factory.createWord("kindly", LexicalCategory.ADVERB)
@@ -557,32 +597,25 @@ class NaturalLanguageGenerator:
         c_11.addCoordinate(s_15)
         c_11.addCoordinate(s_16)
 
-        # Create a sentence with the form "I didn't entirely understand it."
-        subj_17 = self.nlg_factory.createNounPhrase("I")
-        verb_17 = self.nlg_factory.createVerbPhrase("understand")
-        obj_17 = self.nlg_factory.createNounPhrase("it")
-        adv_17 = self.nlg_factory.createWord("entirely", LexicalCategory.ADVERB)
-        verb_17.addModifier(adv_17)
-        verb_17.setFeature(Feature.TENSE, Tense.PAST)
-        verb_17.setFeature(Feature.NEGATED, True)
-        s_17 = self.nlg_factory.createClause(subj_17, verb_17, obj_17)
-
         # I add the sentence to the dictionary
-        self.uncertain_answers.update({
-            f"{self.realiser.realiseSentence(c_11)[:-1]}? {self.realiser.realiseSentence(s_17)}": 1
+        self.retry_initiative.update({
+            f"{self.realiser.realiseSentence(c_11)[:-1]}?": 1
         })
 
-    def _generate_answer(self, response_type: Response) -> str:
+    def _generate_answer(self, initiative_type: bool, response_type: Response) -> str:
         # Extract the negative or affirmative sentences that have yet to be used
-        match response_type:
-            case Response.CORRECT:
-                sentences = self.affirmative_answers
-            case Response.INCORRECT:
-                sentences = self.negative_answers
-            case Response.UNCERTAIN:
-                sentences = self.uncertain_answers
-            case _:
-                sentences = {"a": "vuoto"}
+        if not initiative_type:
+            match response_type:
+                case Response.CORRECT:
+                    sentences = self.affirmative_answers
+                case Response.INCORRECT:
+                    sentences = self.negative_answers
+                case Response.BACKUP:
+                    sentences = self.backup_answers
+                case _:
+                    sentences = {"a": "vuoto"}
+        else:
+            sentences = self.retry_initiative
         returnable_sentences = [key for key, value in sentences.items() if value == 1]
 
         # I randomly select one of the sentences
@@ -593,42 +626,57 @@ class NaturalLanguageGenerator:
 
         # I reset the dictionary if all the sentences have been used
         if len(returnable_sentences) == 1:
-            match response_type:
-                case Response.CORRECT:
-                    self.affirmative_answers = self.affirmative_answers.fromkeys(self.affirmative_answers, 1)
-                case Response.INCORRECT:
-                    self.negative_answers = self.negative_answers.fromkeys(self.negative_answers, 1)
-                case Response.UNCERTAIN:
-                    self.uncertain_answers = self.uncertain_answers.fromkeys(self.uncertain_answers, 1)
+            if not initiative_type:
+                match response_type:
+                    case Response.CORRECT:
+                        self.affirmative_answers = self.affirmative_answers.fromkeys(self.affirmative_answers, 1)
+                    case Response.INCORRECT:
+                        self.negative_answers = self.negative_answers.fromkeys(self.negative_answers, 1)
+                    case Response.BACKUP:
+                        self.backup_answers = self.backup_answers.fromkeys(self.backup_answers, 1)
+            else:
+                self.retry_initiative = self.retry_initiative.fromkeys(self.retry_initiative, 1)
 
-        return extracted_sentence
-    
+        return extracted_sentence 
 
-    def response(self, turn: Turn, last_respose: Response = None, name: str = None) -> str:
+    def response(self, turn: Turn, last_response: Response = None, name: str = None) -> str:
         match turn:
             case Turn.INTRO:
                 return self._greets_user(name)
             case Turn.QUESTION:
-                return self._generate_answer(last_respose)
+                return self._generate_answer(False, last_response)
         pass
 
-    def initiative(self, turn: Turn, last_response: Response = None, question: str = None, passed: bool = None) -> str:
+    def initiative(self, turn: Turn, last_response: Response = None, **kwargs) -> str:
         match turn:
             case Turn.INTRO:
                 return self._greetings()
             case Turn.QUESTION:
                 match last_response:
                     case Response.CORRECT:
-                        return self._ask_nth_question(question)
+                        return self._ask_nth_question(kwargs["question"])
+                    case Response.BACKUP:
+                        return self._generate_answer(True, last_response)
+                    case Response.INCORRECT:
+                        if kwargs and kwargs["question"]:
+                            return self._ask_nth_question(kwargs["question"])
+                        else:
+                            return self._generate_answer(True, last_response)
+                    case Response.UNCERTAIN:
+                        if kwargs and kwargs["total_slots"] and kwargs["incomplete_slots"]:
+                            return f"Non ho capito bene, hai {kwargs['total_slots']} slot, di cui {kwargs['incomplete_slots']} non sono stati ancora compilati."
+                        else:
+                            return self._generate_answer(True, last_response)
             case Turn.OUTRO:
                 pass
 
 
 if __name__ == "__main__":
     nlg = NaturalLanguageGenerator()
-    print(nlg.initiative(Turn.QUESTION, Response.CORRECT, "Ciaooo????"))
-    print(nlg.response(Turn.INTRO, None, "Giovanni"))
-    print(nlg.response(Turn.QUESTION, Response.INCORRECT))
+    # print(nlg.initiative(Turn.QUESTION, Response.CORRECT, question="Cosa è il 2+2?"))
+    # print(nlg.response(Turn.INTRO, None, "Giovanni"))
+    print(nlg.initiative(Turn.QUESTION, Response.UNCERTAIN, total_slots=3, incomplete_slots=2))
+    # print(nlg.initiative(Turn.QUESTION, Response.BACKUP))
 
 
     # initiative(turn: Turn, last_response: Response, question: str,  passed:bool)
