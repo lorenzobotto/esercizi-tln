@@ -55,7 +55,7 @@ class DialogController:
                     return self.nlg.initiative(turn=self.turn,
                                                last_response=self.last_response, **{"question": self.current_qst[1]})
                 else:
-                    return self.nlg.initiative(turn=self.turn)
+                    return self.nlg.initiative(turn=self.turn, last_response=self.last_response)
 
     def elaborate_user_input(self, user_input: str):
         match self.turn:
@@ -68,7 +68,7 @@ class DialogController:
                 kwargs = {}
                 resp, frame = self.context_model.decipher_response(user_input, self.current_qst[0])
                 if resp == Response.INCOMPLETE and not self.retry:
-                    kwargs = {"total_slots": len(frame.slots - 2), "complete_slots": frame.complete_slots}
+                    kwargs = {"total_slots": len(frame.slots) - 2, "complete_slots": frame.complete_slots}
                 elif resp == Response.INCOMPLETE:
                     resp = Response.INCORRECT
                 self.last_response = resp

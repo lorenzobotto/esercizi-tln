@@ -2,7 +2,7 @@ from utils.enumerators import Turn
 from dialog_manager.DialogController import DialogController
 from utils.io_utilities import *
 
-controller = DialogController()
+controller = DialogController(12)
 
 
 def main():

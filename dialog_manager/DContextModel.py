@@ -56,9 +56,11 @@ class DContextModel:
             case (True, False, True):
                 resp = Response.CORRECT
             case (False, True, _):
-                resp =  Response.INCORRECT
-            case (True, True, _) | (False, False, _), _:
-                resp =  Response.UNCERTAIN
+                resp = Response.INCORRECT
             case (True, False, False):
-                resp =  Response.INCOMPLETE
+                resp = Response.INCOMPLETE
+            case (True, True, _) | (False, False, _):
+                resp = Response.UNCERTAIN
+            case _:
+                resp = Response.UNCERTAIN
         return resp, frame
