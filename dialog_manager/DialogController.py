@@ -2,7 +2,7 @@ import shelve
 import random
 from dialog_manager.DContextModel import DContextModel
 from generation.NaturalLanguageGenerator import NaturalLanguageGenerator
-from speech.SpeechSynthesis import SpeechSynthesis
+from speech.SpeechSynthesizer import SpeechSynthesizer
 from utils.enumerators import Turn, Response
 
 
@@ -14,7 +14,6 @@ class DialogController:
         self.retry = False
         self.done = False
         self.nlg = NaturalLanguageGenerator()
-        self.synth = SpeechSynthesis()
         self.context_model = DContextModel()
         self.n_questions_to_ask = n_questions
         self.questions_dictionary = {}
