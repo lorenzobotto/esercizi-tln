@@ -4,8 +4,8 @@ from simplenlg.phrasespec import *
 from simplenlg.features import *
 import random
 
-# import sys
-# sys.path.append('C:\\Users\\lores\\Desktop\\mazzei-chatbot')
+import sys
+sys.path.append('C:\\Users\\lores\\Desktop\\mazzei-chatbot')
 
 from utils.enumerators import Response
 from utils.enumerators import Turn
@@ -20,13 +20,11 @@ class NaturalLanguageGenerator:
         self.affirmative_answers = {}
         self.negative_answers = {}
         self.uncertain_answers = {}
-        self.incomplete_answers = {}
         self.retry_answers = {}
         self.continue_answers = {}
         self._generate_affirmative_answers()
         self._generate_negative_answers()
         self._generate_uncertain_answers()
-        self._generate_incomplete_answers()
         self._generate_retry_answers()
         self._generate_continue_answers()
 
@@ -496,12 +494,33 @@ class NaturalLanguageGenerator:
             self.realiser.realiseSentence(s_11): 1
         })
 
-    def _generate_incomplete_answers(self) -> str:
-        # Create a sentence with the form "You said {x,y,z,...} but something is missing. Can you go on?"
-        pass
+    def _generate_incomplete_answer(self, **kwargs) -> str:
+        # I create the string of the slots completed by the user for adding it in the sentence
+        string_of_slots = " and ".join([", ".join(kwargs["slosts"][:-1]), kwargs["slosts"][-1]])
+        
+        # Create a sentence with the form "You said {x,y,z,...}"
+        subj_1 = self.nlg_factory.createNounPhrase("you")
+        verb_1 = self.nlg_factory.createVerbPhrase("say")
+        verb_1.setFeature(Feature.TENSE, Tense.PAST)
+        obj_1 = self.nlg_factory.createNounPhrase(string_of_slots)
+        s_1 = self.nlg_factory.createClause(subj_1, verb_1, obj_1)
+
+        # Create a sentence with the form "something is missing."
+        subj_2 = self.nlg_factory.createNounPhrase("something")
+        verb_2 = self.nlg_factory.createVerbPhrase("miss")
+        verb_2.setFeature(Feature.PROGRESSIVE, True)
+        s_2 = self.nlg_factory.createClause(subj_2, verb_2)
+
+        # I tie the two sentences together with a comma
+        c_3 = self.nlg_factory.createCoordinatedPhrase()
+        c_3.setConjunction("but")
+        c_3.addCoordinate(s_1)
+        c_3.addCoordinate(s_2)
+
+        return self.realiser.realiseSentence(c_3)
 
     def _generate_continue_answers(self) -> str:
-        # Create a sentence with the form "Can you go on?"
+        # 1. Create a sentence with the form "Can you go on?"
         subj_1 = self.nlg_factory.createNounPhrase("you")
         verb_1 = self.nlg_factory.createVerbPhrase("go")
         obj_1 = self.nlg_factory.createNounPhrase("on")
@@ -512,6 +531,64 @@ class NaturalLanguageGenerator:
         # I add the sentence to the dictionary
         self.continue_answers.update({
             self.realiser.realiseSentence(s_1): 1
+        })
+
+        # 2. Create a sentence with the form "Could you give more information?"
+        subj_2 = self.nlg_factory.createNounPhrase("you")
+        verb_2 = self.nlg_factory.createVerbPhrase("give")
+        obj_2 = self.nlg_factory.createNounPhrase("information")
+        adj_2 = self.nlg_factory.createAdjectivePhrase("more")
+        obj_2.addModifier(adj_2)
+        s_2 = self.nlg_factory.createClause(subj_2, verb_2, obj_2)
+        s_2.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
+        s_2.setFeature(Feature.MODAL, "could")
+
+        # I add the sentence to the dictionary
+        self.continue_answers.update({
+            self.realiser.realiseSentence(s_2): 1
+        })
+
+        # 3. Create a sentence with the form "Would you mind continuing?"
+        subj_3 = self.nlg_factory.createNounPhrase("you")
+        verb_3 = self.nlg_factory.createVerbPhrase("mind continuing")
+        s_3 = self.nlg_factory.createClause(subj_3, verb_3)
+        s_3.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
+        s_3.setFeature(Feature.MODAL, "would")
+
+        # I add the sentence to the dictionary
+        self.continue_answers.update({
+            self.realiser.realiseSentence(s_3): 1
+        })
+
+        # 4. Create a sentence with the form "Could you provide more details?"
+        subj_4 = self.nlg_factory.createNounPhrase("you")
+        verb_4 = self.nlg_factory.createVerbPhrase("provide")
+        obj_4 = self.nlg_factory.createNounPhrase("details")
+        adj_4 = self.nlg_factory.createWord("more", LexicalCategory.ADJECTIVE)
+        obj_4.addModifier(adj_4)
+        obj_4.setPlural(True)
+        s_4 = self.nlg_factory.createClause(subj_4, verb_4, obj_4)
+        s_4.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
+        s_4.setFeature(Feature.MODAL, "could")
+
+        # I add the sentence to the dictionary
+        self.continue_answers.update({
+            self.realiser.realiseSentence(s_4): 1
+        })
+
+        # 5. Create a sentence with the form "Can you expand a bit more?"
+        subj_5 = self.nlg_factory.createNounPhrase("you")
+        verb_5 = self.nlg_factory.createVerbPhrase("expand")
+        obj_5 = self.nlg_factory.createNounPhrase("a", "bit")
+        adj_5 = self.nlg_factory.createWord("more", LexicalCategory.ADJECTIVE)
+        obj_5.addPostModifier(adj_5)
+        s_5 = self.nlg_factory.createClause(subj_5, verb_5, obj_5)
+        s_5.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
+        s_5.setFeature(Feature.MODAL, "can")
+
+        # I add the sentence to the dictionary
+        self.continue_answers.update({
+            self.realiser.realiseSentence(s_5): 1
         })
 
     def _generate_retry_answers(self) -> str:
@@ -790,9 +867,12 @@ class NaturalLanguageGenerator:
                 case Response.UNCERTAIN:
                     sentences = self.uncertain_answers
                 case Response.INCOMPLETE:
-                    return f"Non ho capito bene, hai {kwargs['total_slots']} slot, ma ne hai azzeccate solo {kwargs['complete_slots']} non sono stati ancora compilati."
+                    return self._generate_incomplete_answer(**kwargs)
         else:
-            sentences = self.retry_answers
+            if response_type == Response.INCOMPLETE:
+                sentences = self.continue_answers
+            else:
+                sentences = self.retry_answers
         returnable_sentences = [key for key, value in sentences.items() if value == 1]
 
         # I randomly select one of the sentences
@@ -812,7 +892,10 @@ class NaturalLanguageGenerator:
                     case Response.UNCERTAIN:
                         self.uncertain_answers = self.uncertain_answers.fromkeys(self.uncertain_answers, 1)
             else:
-                self.retry_answers = self.retry_answers.fromkeys(self.retry_answers, 1)
+                if response_type == Response.INCOMPLETE:
+                    self.continue_answers = self.continue_answers.fromkeys(self.continue_answers, 1)
+                else:
+                    self.retry_answers = self.retry_answers.fromkeys(self.retry_answers, 1)
 
         return extracted_sentence 
 
@@ -837,7 +920,8 @@ class NaturalLanguageGenerator:
                         # If the turn is the question and the last response is correct, I ask the next question
                         return self._ask_nth_question(kwargs["question"])
                     case Response.UNCERTAIN | Response.INCOMPLETE | Response.INCORRECT:
-                        # If the turn is the question and the last response is incorrect, I ask the user to repeat the answer
+                        # If the turn is the question and the last response is incorrect or uncertain, I ask the user to repeat the answer
+                        # If the turn is the question and the last response is incomplete, I ask the user to complete the answer
                         return self._generate_answer(True, last_response)
             case Turn.OUTRO:
                 # If the turn is the outro, I say to the user if he passed or not the test for being a Padawan
@@ -850,5 +934,4 @@ if __name__ == "__main__":
     # print(nlg.response(Turn.INTRO, None, "Giovanni"))
     # print(nlg.initiative(Turn.QUESTION, Response.UNCERTAIN, total_slots=3, incomplete_slots=2))
     # print(nlg.initiative(Turn.QUESTION, Response.BACKUP))
-    # print(nlg.initiative(Turn.OUTRO, passed=False, tot_qst=3, correct_qst=3))
-    print(nlg.continue_answers)
+    print(nlg.response(Turn.QUESTION, Response.INCOMPLETE, **{"slosts": ["corusant", "pippo", "pluto"]}))
