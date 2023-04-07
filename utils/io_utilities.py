@@ -1,8 +1,6 @@
 import re
-import io
 import sys
 import time
-import contextlib
 from threading import Thread
 
 
@@ -39,7 +37,10 @@ def thread_dots(stop, info, time_interval: float = 0.5):
         sys.stdout.write("\b" * (len(info) + 3))
 
 
-def ask_input(): return input("\n?- ")
+def ask_input(handler):
+    if handler:
+        handler.speak()
+    return input("\n?- ")
 
 
 def print_words(string, wait: float = 0, speech=None, ):
