@@ -10,7 +10,6 @@ sys.path.append('C:\\Users\\lores\\Desktop\\mazzei-chatbot')
 from utils.enumerators import Response
 from utils.enumerators import Turn
 
-
 class NaturalLanguageGenerator:
 
     def __init__(self):
@@ -22,6 +21,7 @@ class NaturalLanguageGenerator:
         self.uncertain_answers = {}
         self.retry_answers = {}
         self.continue_answers = {}
+        self.SENTINEL = "sentinel"
         self._generate_affirmative_answers()
         self._generate_negative_answers()
         self._generate_uncertain_answers()
@@ -494,15 +494,13 @@ class NaturalLanguageGenerator:
             self.realiser.realiseSentence(s_11): 1
         })
 
-    def _generate_incomplete_answer(self, **kwargs) -> str:
+    def _generate_incomplete_answer(self) -> str:
         # I create the string of the slots completed by the user for adding it in the sentence
-        string_of_slots = " and ".join([", ".join(kwargs["slosts"][:-1]), kwargs["slosts"][-1]])
-        
         # Create a sentence with the form "You said {x,y,z,...}"
         subj_1 = self.nlg_factory.createNounPhrase("you")
         verb_1 = self.nlg_factory.createVerbPhrase("say")
         verb_1.setFeature(Feature.TENSE, Tense.PAST)
-        obj_1 = self.nlg_factory.createNounPhrase(string_of_slots)
+        obj_1 = self.nlg_factory.createNounPhrase(self.SENTINEL)
         s_1 = self.nlg_factory.createClause(subj_1, verb_1, obj_1)
 
         # Create a sentence with the form "something is missing."
@@ -934,4 +932,4 @@ if __name__ == "__main__":
     # print(nlg.response(Turn.INTRO, None, "Giovanni"))
     # print(nlg.initiative(Turn.QUESTION, Response.UNCERTAIN, total_slots=3, incomplete_slots=2))
     # print(nlg.initiative(Turn.QUESTION, Response.BACKUP))
-    print(nlg.response(Turn.QUESTION, Response.INCOMPLETE, **{"slosts": ["corusant", "pippo", "pluto"]}))
+    print(nlg.response(Turn.QUESTION, Response.INCOMPLETE))

@@ -66,10 +66,8 @@ class DialogController:
                 return response
             case Turn.QUESTION:
                 kwargs = {}
-                resp, frame = self.context_model.decipher_response(user_input, self.current_qst[0])
-                if resp == Response.INCOMPLETE and not self.retry:
-                    kwargs = {"total_slots": len(frame.slots) - 2, "complete_slots": frame.complete_slots}
-                elif resp == Response.INCOMPLETE:
+                resp, frame = self.context_model.decipher_response(user_input, self.current_qst[0])                    
+                if resp == Response.INCOMPLETE and self.retry:
                     resp = Response.INCORRECT
                 self.last_response = resp
                 response = self.nlg.response(turn=self.turn, last_response=self.last_response, **kwargs)
