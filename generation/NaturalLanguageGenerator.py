@@ -20,11 +20,15 @@ class NaturalLanguageGenerator:
         self.affirmative_answers = {}
         self.negative_answers = {}
         self.uncertain_answers = {}
+        self.incomplete_answers = {}
         self.retry_answers = {}
+        self.continue_answers = {}
         self._generate_affirmative_answers()
         self._generate_negative_answers()
         self._generate_uncertain_answers()
+        self._generate_incomplete_answers()
         self._generate_retry_answers()
+        self._generate_continue_answers()
 
     def _greetings(self) -> str:
         # Create a sentence with the form "Hello, I am Obi-1 and I will question you about Jedi culture. What is your name?"
@@ -492,6 +496,24 @@ class NaturalLanguageGenerator:
             self.realiser.realiseSentence(s_11): 1
         })
 
+    def _generate_incomplete_answers(self) -> str:
+        # Create a sentence with the form "You said {x,y,z,...} but something is missing. Can you go on?"
+        pass
+
+    def _generate_continue_answers(self) -> str:
+        # Create a sentence with the form "Can you go on?"
+        subj_1 = self.nlg_factory.createNounPhrase("you")
+        verb_1 = self.nlg_factory.createVerbPhrase("go")
+        obj_1 = self.nlg_factory.createNounPhrase("on")
+        s_1 = self.nlg_factory.createClause(subj_1, verb_1, obj_1)
+        s_1.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
+        s_1.setFeature(Feature.MODAL, "can")
+        
+        # I add the sentence to the dictionary
+        self.continue_answers.update({
+            self.realiser.realiseSentence(s_1): 1
+        })
+
     def _generate_retry_answers(self) -> str:
         # 1. Create a sentence with the form "Could you please repeat?"
         subj_1 = self.nlg_factory.createNounPhrase("you")
@@ -828,4 +850,5 @@ if __name__ == "__main__":
     # print(nlg.response(Turn.INTRO, None, "Giovanni"))
     # print(nlg.initiative(Turn.QUESTION, Response.UNCERTAIN, total_slots=3, incomplete_slots=2))
     # print(nlg.initiative(Turn.QUESTION, Response.BACKUP))
-    print(nlg.initiative(Turn.OUTRO, passed=False, tot_qst=3, correct_qst=3))
+    # print(nlg.initiative(Turn.OUTRO, passed=False, tot_qst=3, correct_qst=3))
+    print(nlg.continue_answers)
