@@ -1,5 +1,6 @@
 import shelve
 import random
+import itertools
 from dialog_manager.DContextModel import DContextModel
 from generation.NaturalLanguageGenerator import NaturalLanguageGenerator
 from speech.SpeechSynthesis import SpeechSynthesis
@@ -71,6 +72,12 @@ class DialogController:
                     resp = Response.INCORRECT
                 self.last_response = resp
                 response = self.nlg.response(turn=self.turn, last_response=self.last_response, **kwargs)
+                if self.last_response == Response.INCOMPLETE:
+                    completed_slots = [key for key, value in frame.slots.items() if value is not None][2:]
+                    response = response.replace(
+                        self.nlg.SENTINEL, 
+                        " and ".join([", ".join(completed_slots[:-1]),completed_slots[-1]]) if len(completed_slots) > 1 else completed_slots[0]
+                    )
                 if self.last_response == Response.CORRECT:
                     self.n_questions_to_ask -= 1
                     self.retry = False

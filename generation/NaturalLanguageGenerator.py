@@ -19,12 +19,14 @@ class NaturalLanguageGenerator:
         self.affirmative_answers = {}
         self.negative_answers = {}
         self.uncertain_answers = {}
+        self.incomplete_answers = {}
         self.retry_answers = {}
         self.continue_answers = {}
         self.SENTINEL = "sentinel"
         self._generate_affirmative_answers()
         self._generate_negative_answers()
         self._generate_uncertain_answers()
+        self._generate_incomplete_answers()
         self._generate_retry_answers()
         self._generate_continue_answers()
 
@@ -494,9 +496,9 @@ class NaturalLanguageGenerator:
             self.realiser.realiseSentence(s_11): 1
         })
 
-    def _generate_incomplete_answer(self) -> str:
-        # I create the string of the slots completed by the user for adding it in the sentence
-        # Create a sentence with the form "You said {x,y,z,...}"
+    def _generate_incomplete_answers(self) -> str:
+        # 1. Create a sentence with the form "You said {x,y,z,...} but something is missing."
+        # Create a sentence with the form "you said {x,y,z,...}"
         subj_1 = self.nlg_factory.createNounPhrase("you")
         verb_1 = self.nlg_factory.createVerbPhrase("say")
         verb_1.setFeature(Feature.TENSE, Tense.PAST)
@@ -509,13 +511,142 @@ class NaturalLanguageGenerator:
         verb_2.setFeature(Feature.PROGRESSIVE, True)
         s_2 = self.nlg_factory.createClause(subj_2, verb_2)
 
-        # I tie the two sentences together with a comma
+        # I tie the two sentences together with "but"
         c_3 = self.nlg_factory.createCoordinatedPhrase()
         c_3.setConjunction("but")
         c_3.addCoordinate(s_1)
         c_3.addCoordinate(s_2)
 
-        return self.realiser.realiseSentence(c_3)
+        # I add the sentence to the dictionary
+        self.incomplete_answers.update({
+            self.realiser.realiseSentence(c_3): 1
+        })
+
+        # 2. Create a sentence with the form "I understand you have referenced {x,y,z,...} but something is absent."
+        # Create a sentence with the form "I understand you've referenced {x,y,z,...}"
+        subj_3 = self.nlg_factory.createNounPhrase("I")
+        verb_3 = self.nlg_factory.createVerbPhrase("understand")
+        s_3 = self.nlg_factory.createClause(subj_3, verb_3)
+        subj_4 = self.nlg_factory.createNounPhrase("you")
+        verb_4 = self.nlg_factory.createVerbPhrase("have referenced")
+        obj_4 = self.nlg_factory.createNounPhrase(self.SENTINEL)
+        s_4 = self.nlg_factory.createClause(subj_4, verb_4, obj_4)
+
+        # I tie the two sentences together without space
+        c_4 = self.nlg_factory.createCoordinatedPhrase()
+        c_4.setConjunction("")
+        c_4.addCoordinate(s_3)
+        c_4.addCoordinate(s_4)
+        
+        # Create a sentence with the form "something is absent."
+        subj_5 = self.nlg_factory.createNounPhrase("something")
+        verb_5 = self.nlg_factory.createVerbPhrase("be")
+        adj_5 = self.nlg_factory.createAdjectivePhrase("absent")
+        s_5 = self.nlg_factory.createClause(subj_5, verb_5, adj_5)
+
+        # I tie the two sentences together with "but"
+        c_5 = self.nlg_factory.createCoordinatedPhrase()
+        c_5.setConjunction("but")
+        c_5.addCoordinate(c_4)
+        c_5.addCoordinate(s_5)
+
+        # I add the sentence to the dictionary
+        self.incomplete_answers.update({
+            self.realiser.realiseSentence(c_5): 1
+        })
+
+        # 3. Create a sentence with the form "You have spoken of {x,y,z,...} but it is incomplete."
+        # Create a sentence with the form "you've spoken of {x,y,z,...}"
+        subj_6 = self.nlg_factory.createNounPhrase("you")
+        verb_6 = self.nlg_factory.createVerbPhrase("speak")
+        verb_6.setFeature(Feature.PERFECT, True)
+        obj_6 = self.nlg_factory.createNounPhrase(self.SENTINEL)
+        obj_6.addPreModifier("of")
+        s_6 = self.nlg_factory.createClause(subj_6, verb_6, obj_6)
+
+        # Create a sentence with the form "is incomplete."
+        subj_7 = self.nlg_factory.createNounPhrase("it")
+        verb_7 = self.nlg_factory.createVerbPhrase("be")
+        adj_7 = self.nlg_factory.createAdjectivePhrase("incomplete")
+        s_7 = self.nlg_factory.createClause(subj_7, verb_7, adj_7)
+
+        # I tie the two sentences together with "but"
+        c_6 = self.nlg_factory.createCoordinatedPhrase()
+        c_6.setConjunction("but")
+        c_6.addCoordinate(s_6)
+        c_6.addCoordinate(s_7)
+
+        # I add the sentence to the dictionary
+        self.incomplete_answers.update({
+            self.realiser.realiseSentence(c_6): 1
+        })
+
+        # 4. Create a sentence with the form "Although you've mentioned {x,y,z,...}, there appears to be something lacking."
+        # Create a sentence with the form "you've mentioned {x,y,z,...}"
+        subj_8 = self.nlg_factory.createNounPhrase("you")
+        subj_8.addPreModifier("although")
+        verb_8 = self.nlg_factory.createVerbPhrase("mention")
+        verb_8.setFeature(Feature.PERFECT, True)
+        obj_8 = self.nlg_factory.createNounPhrase(self.SENTINEL)
+        s_8 = self.nlg_factory.createClause(subj_8, verb_8, obj_8)
+
+        # Create a sentence with the form "there appears to be something lacking."
+        subj_9 = self.nlg_factory.createNounPhrase("there")
+        verb_9 = self.nlg_factory.createVerbPhrase("appear to be")
+        verb_9.setFeature(Feature.PERSON, Person.THIRD)
+        obj_9 = self.nlg_factory.createNounPhrase("something")
+        adj_9 = self.nlg_factory.createWord("lacking", LexicalCategory.ADJECTIVE)
+        obj_9.addPostModifier(adj_9)
+        s_9 = self.nlg_factory.createClause(subj_9, verb_9, obj_9)
+
+        # I tie the two sentences together with comma
+        c_7 = self.nlg_factory.createCoordinatedPhrase()
+        c_7.setConjunction(",")
+        c_7.addCoordinate(s_8)
+        c_7.addCoordinate(s_9)
+
+        # I add the sentence to the dictionary
+        self.incomplete_answers.update({
+            self.realiser.realiseSentence(c_7): 1
+        })
+
+        # 5. Create a sentence with the form "You talked about {x,y,z,...} but there is something that has not been considered yet."
+        # Create a sentence with the form "you talked about {x,y,z,...}"
+        subj_10 = self.nlg_factory.createNounPhrase("you")
+        verb_10 = self.nlg_factory.createVerbPhrase("talk")
+        verb_10.setFeature(Feature.TENSE, Tense.PAST)
+        obj_10 = self.nlg_factory.createNounPhrase(self.SENTINEL)
+        prop_10 = self.nlg_factory.createPrepositionPhrase("about")
+        prop_10.addComplement(obj_10)
+        s_10 = self.nlg_factory.createClause(subj_10, verb_10, prop_10)
+
+        # Create a sentence with the form "there is something that has not been considered."
+        subj_11 = self.nlg_factory.createNounPhrase("there")
+        verb_11 = self.nlg_factory.createVerbPhrase("be")
+        obj_11 = self.nlg_factory.createNounPhrase("something")
+        s_11 = self.nlg_factory.createClause(subj_11, verb_11, obj_11)
+
+        # Create a sentence with the form "has not been considered."
+        verb_12 = self.nlg_factory.createVerbPhrase("be considered")
+        verb_12.setFeature(Feature.PERSON, Person.THIRD)
+        verb_12.setFeature(Feature.PERFECT, True)
+        verb_12.setFeature(Feature.NEGATED, True)
+        obj_12 = self.nlg_factory.createNounPhrase("yet")
+        s_12 = self.nlg_factory.createClause(verb=verb_12, directObject=obj_12)
+
+        s_11.addComplement(s_12)
+
+        # I tie the two sentences together with "but"
+        c_8 = self.nlg_factory.createCoordinatedPhrase()
+        c_8.setConjunction("but")
+        c_8.addCoordinate(s_10)
+        c_8.addCoordinate(s_11)
+
+        # I add the sentence to the dictionary
+        self.incomplete_answers.update({
+            self.realiser.realiseSentence(c_8): 1
+        })
+            
 
     def _generate_continue_answers(self) -> str:
         # 1. Create a sentence with the form "Can you go on?"
@@ -865,7 +996,7 @@ class NaturalLanguageGenerator:
                 case Response.UNCERTAIN:
                     sentences = self.uncertain_answers
                 case Response.INCOMPLETE:
-                    return self._generate_incomplete_answer(**kwargs)
+                    sentences = self.incomplete_answers
         else:
             if response_type == Response.INCOMPLETE:
                 sentences = self.continue_answers
@@ -889,6 +1020,8 @@ class NaturalLanguageGenerator:
                         self.negative_answers = self.negative_answers.fromkeys(self.negative_answers, 1)
                     case Response.UNCERTAIN:
                         self.uncertain_answers = self.uncertain_answers.fromkeys(self.uncertain_answers, 1)
+                    case Response.INCOMPLETE:
+                        self.incomplete_answers = self.incomplete_answers.fromkeys(self.incomplete_answers, 1)
             else:
                 if response_type == Response.INCOMPLETE:
                     self.continue_answers = self.continue_answers.fromkeys(self.continue_answers, 1)
@@ -931,5 +1064,6 @@ if __name__ == "__main__":
     # print(nlg.initiative(Turn.QUESTION, Response.CORRECT, question="Cosa è il 2+2?"))
     # print(nlg.response(Turn.INTRO, None, "Giovanni"))
     # print(nlg.initiative(Turn.QUESTION, Response.UNCERTAIN, total_slots=3, incomplete_slots=2))
-    # print(nlg.initiative(Turn.QUESTION, Response.BACKUP))
-    print(nlg.response(Turn.QUESTION, Response.INCOMPLETE))
+    # print(nlg.response(Turn.QUESTION, Response.INCOMPLETE))
+    # print(nlg.response(Turn.QUESTION, Response.INCOMPLETE))
+    print(nlg.initiative(Turn.QUESTION, Response.INCOMPLETE))
