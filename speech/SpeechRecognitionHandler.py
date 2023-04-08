@@ -1,5 +1,9 @@
 import speech_recognition
 
+class SpeechException(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
 
 class SpeechRecognitionHandler:
     def __init__(self):
@@ -12,9 +16,12 @@ class SpeechRecognitionHandler:
                 print("\nI'm listening...")
                 audio = self.handler.listen(audio_src)
             try:
-                print(self.handler.recognize_google(audio))
+                converted_text = self.handler.recognize_google(audio)
+                return converted_text
             except speech_recognition.UnknownValueError:
                 print("Quite not catched that. Can you repeat?")
-        except speech_recognition.RequestError:
-            print("ERROR: Speech Recognition API is not currently working")
+            except speech_recognition.RequestError:
+                raise SpeechException("ERROR: Speech Recognition API is not currently working")
+
+
 

@@ -2,6 +2,7 @@ import re
 import sys
 import time
 from threading import Thread
+from speech.SpeechRecognitionHandler import SpeechException
 
 
 def loading_bar_anim(time_interval: float = 0.01):
@@ -39,7 +40,13 @@ def thread_dots(stop, info, time_interval: float = 0.5):
 
 def ask_input(handler):
     if handler:
-        handler.speak()
+        try:
+            converted_text = handler.speak()
+            print(converted_text)
+            return converted_text
+        except SpeechException as ex:
+            print(ex)
+            print("\n Let's try writing it... you can type your input now:")
     return input("\n?- ")
 
 
@@ -62,7 +69,7 @@ def print_words(string, wait: float = 0, speech=None, ):
 
 
 def is_speech():
-    print("Do you want to use speech features to comunicate with Obi-1? (if it's the first run, a ~500MB model is "
+    print("Do you want to use speech features to comunicate with Obi-1? (if this is the first run, a ~500MB model is "
           "going to be downloaded.)[y/n]")
     while True:
         ans = input("?-")
