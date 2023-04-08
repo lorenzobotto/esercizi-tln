@@ -46,17 +46,19 @@ def ask_input(handler):
 def print_words(string, wait: float = 0, speech=None, ):
     words = re.findall(r'\S+|\n', string)
 
-    def _print(_string, _wait):
-        time.sleep(3)
+    def _print(_string, _wait, _is_thread=False):
+        time.sleep(2)
         for i in range(len(words)):
-            time.sleep(wait)
+            time.sleep(_wait)
             print(words[i], end="") if i == 0 or words[i - 1] == "\n" else print(f" {words[i]}", end="")
 
-    thread = Thread(target=_print, args=(string, wait,))
-    thread.start()
     if speech:
+        thread = Thread(target=_print, args=(string, 0.4, True))
+        thread.start()
         speech.play(string)
-    thread.join()
+        thread.join()
+    else:
+        _print(string, wait)
 
 
 def is_speech():

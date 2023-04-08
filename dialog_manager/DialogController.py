@@ -1,10 +1,9 @@
 import shelve
 import random
-import itertools
+from utils.enumerators import Turn, Response
 from dialog_manager.DContextModel import DContextModel
 from generation.NaturalLanguageGenerator import NaturalLanguageGenerator
-from speech.SpeechSynthesizer import SpeechSynthesizer
-from utils.enumerators import Turn, Response
+
 
 
 class DialogController:
@@ -75,7 +74,8 @@ class DialogController:
                     completed_slots = [key for key, value in frame.slots.items() if value is not None][2:]
                     response = response.replace(
                         self.nlg.SENTINEL, 
-                        " and ".join([", ".join(completed_slots[:-1]),completed_slots[-1]]) if len(completed_slots) > 1 else completed_slots[0]
+                        " and ".join([", ".join(completed_slots[:-1]),completed_slots[-1]]) if
+                        len(completed_slots) > 1 else completed_slots[0]
                     )
                 if self.last_response == Response.CORRECT:
                     self.n_questions_to_ask -= 1
