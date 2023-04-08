@@ -1,5 +1,6 @@
 import shelve
 import random
+import itertools
 from dialog_manager.DContextModel import DContextModel
 from generation.NaturalLanguageGenerator import NaturalLanguageGenerator
 from speech.SpeechSynthesizer import SpeechSynthesizer
@@ -65,13 +66,17 @@ class DialogController:
                 return response
             case Turn.QUESTION:
                 kwargs = {}
-                resp, frame = self.context_model.decipher_response(user_input, self.current_qst[0])
-                if resp == Response.INCOMPLETE and not self.retry:
-                    kwargs = {"total_slots": len(frame.slots) - 2, "complete_slots": frame.complete_slots}
-                elif resp == Response.INCOMPLETE:
+                resp, frame = self.context_model.decipher_response(user_input, self.current_qst[0])                    
+                if resp == Response.INCOMPLETE and self.retry:
                     resp = Response.INCORRECT
                 self.last_response = resp
                 response = self.nlg.response(turn=self.turn, last_response=self.last_response, **kwargs)
+                if self.last_response == Response.INCOMPLETE:
+                    completed_slots = [key for key, value in frame.slots.items() if value is not None][2:]
+                    response = response.replace(
+                        self.nlg.SENTINEL, 
+                        " and ".join([", ".join(completed_slots[:-1]),completed_slots[-1]]) if len(completed_slots) > 1 else completed_slots[0]
+                    )
                 if self.last_response == Response.CORRECT:
                     self.n_questions_to_ask -= 1
                     self.retry = False
