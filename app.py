@@ -19,11 +19,13 @@ def main():
     while True:
         initiative = controller.elaborate_initiative()
         print_words(initiative, wait=0.2, speech=speech_synth)
+
         if controller.done:
             break
         user_input = ask_input(handler=speech_handler)
+        print("\n", end="")
         response = controller.elaborate_user_input(user_input)
-        print_words(f"{response}\n", wait=0.2, speech=speech_synth)
+        print_words(response, wait=0.2, speech=speech_synth)
 
 
 if __name__ == "__main__":

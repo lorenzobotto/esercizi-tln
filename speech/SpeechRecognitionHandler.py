@@ -1,9 +1,11 @@
 import speech_recognition
 
+
 class SpeechException(Exception):
     def __init__(self, message):
         self.message = message
         super().__init__(self.message)
+
 
 class SpeechRecognitionHandler:
     def __init__(self):
@@ -22,6 +24,3 @@ class SpeechRecognitionHandler:
                 print("Quite not catched that. Can you repeat?")
             except speech_recognition.RequestError:
                 raise SpeechException("ERROR: Speech Recognition API is not currently working")
-
-
-

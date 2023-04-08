@@ -5,7 +5,6 @@ from dialog_manager.DContextModel import DContextModel
 from generation.NaturalLanguageGenerator import NaturalLanguageGenerator
 
 
-
 class DialogController:
     def __init__(self, n_questions: int = 3):
         assert 3 <= n_questions <= 12, "invalid number of questions!"
@@ -65,7 +64,7 @@ class DialogController:
                 return response
             case Turn.QUESTION:
                 kwargs = {}
-                resp, frame = self.context_model.decipher_response(user_input, self.current_qst[0])                    
+                resp, frame = self.context_model.decipher_response(user_input, self.current_qst[0])
                 if resp == Response.INCOMPLETE and self.retry:
                     resp = Response.INCORRECT
                 self.last_response = resp
@@ -73,8 +72,8 @@ class DialogController:
                 if self.last_response == Response.INCOMPLETE:
                     completed_slots = [key for key, value in frame.slots.items() if value is not None][2:]
                     response = response.replace(
-                        self.nlg.SENTINEL, 
-                        " and ".join([", ".join(completed_slots[:-1]),completed_slots[-1]]) if
+                        self.nlg.SENTINEL,
+                        " and ".join([", ".join(completed_slots[:-1]), completed_slots[-1]]) if
                         len(completed_slots) > 1 else completed_slots[0]
                     )
                 if self.last_response == Response.CORRECT:

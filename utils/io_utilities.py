@@ -52,12 +52,15 @@ def ask_input(handler):
 
 def print_words(string, wait: float = 0, speech=None, ):
     words = re.findall(r'\S+|\n', string)
+    block = '▇'
 
     def _print(_string, _wait, _is_thread=False):
-        time.sleep(2)
+        time.sleep(3) if _is_thread else time.sleep(0)
         for i in range(len(words)):
             time.sleep(_wait)
-            print(words[i], end="") if i == 0 or words[i - 1] == "\n" else print(f" {words[i]}", end="")
+            print(f"{words[i]} {block}", end="") if i == 0 or words[i - 1] == "\n" else \
+                (print(f"\b\b {words[i]} {block}", end="") if words[i] != "\n" else print("\b\b\n", end=""))
+        print("\b\b")
 
     if speech:
         thread = Thread(target=_print, args=(string, 0.4, True))
