@@ -3,12 +3,9 @@ from simplenlg.realiser.english import *
 from simplenlg.phrasespec import *
 from simplenlg.features import *
 import random
-
-import sys
-sys.path.append('C:\\Users\\lores\\Desktop\\mazzei-chatbot')
-
 from utils.enumerators import Response
 from utils.enumerators import Turn
+
 
 class NaturalLanguageGenerator:
 
@@ -537,7 +534,7 @@ class NaturalLanguageGenerator:
         c_4.setConjunction("")
         c_4.addCoordinate(s_3)
         c_4.addCoordinate(s_4)
-        
+
         # Create a sentence with the form "something is absent."
         subj_5 = self.nlg_factory.createNounPhrase("something")
         verb_5 = self.nlg_factory.createVerbPhrase("be")
@@ -646,7 +643,6 @@ class NaturalLanguageGenerator:
         self.incomplete_answers.update({
             self.realiser.realiseSentence(c_8): 1
         })
-            
 
     def _generate_continue_answers(self) -> str:
         # 1. Create a sentence with the form "Can you go on?"
@@ -656,7 +652,7 @@ class NaturalLanguageGenerator:
         s_1 = self.nlg_factory.createClause(subj_1, verb_1, obj_1)
         s_1.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO)
         s_1.setFeature(Feature.MODAL, "can")
-        
+
         # I add the sentence to the dictionary
         self.continue_answers.update({
             self.realiser.realiseSentence(s_1): 1
@@ -861,7 +857,6 @@ class NaturalLanguageGenerator:
 
                 s_1.addComplement(s_2)
 
-
             # I tie the two sentences together with a comma
             c_1 = self.nlg_factory.createCoordinatedPhrase()
             c_1.setConjunction(",")
@@ -876,7 +871,7 @@ class NaturalLanguageGenerator:
                 subj_1.addModifier(adv_2)
                 s_2 = self.nlg_factory.createClause(prep_2, subj_1)
                 s_2.setPlural(True)
-            
+
                 # I tie the two sentences together without a space
                 c_2 = self.nlg_factory.createCoordinatedPhrase()
                 c_2.setConjunction("")
@@ -896,7 +891,7 @@ class NaturalLanguageGenerator:
                 adv_3 = self.nlg_factory.createWord("only", LexicalCategory.ADVERB)
                 obj_3.addPreModifier(adv_3)
             s_3 = self.nlg_factory.createClause(subj_3, verb_3, obj_3)
-            
+
             # Create a sentence with the form "making you a Padawan!"
             verb_4 = self.nlg_factory.createVerbPhrase("make")
             verb_4.setFeature(Feature.PROGRESSIVE, True)
@@ -979,7 +974,7 @@ class NaturalLanguageGenerator:
             s_4 = self.nlg_factory.createClause(subj_4, verb_4, obj_4)
 
             s_3.addComplement(s_4)
-            
+
             if passed:
                 return f"{self.realiser.realiseSentence(s_0)[:-1]} {self.realiser.realiseSentence(s_1)[:-1]}, {self.realiser.realiseSentence(s_2)[3:-1]}, {self.realiser.realiseSentence(s_3)[3:-1]}"
             else:
@@ -1028,7 +1023,7 @@ class NaturalLanguageGenerator:
                 else:
                     self.retry_answers = self.retry_answers.fromkeys(self.retry_answers, 1)
 
-        return extracted_sentence 
+        return extracted_sentence
 
     def response(self, turn: Turn, last_response: Response = None, **kwargs) -> str:
         match turn:
@@ -1057,8 +1052,8 @@ class NaturalLanguageGenerator:
             case Turn.OUTRO:
                 # If the turn is the outro, I say to the user if he passed or not the test for being a Padawan
                 return self._generate_outro_answers(**kwargs)
-                
-                
+
+
 if __name__ == "__main__":
     nlg = NaturalLanguageGenerator()
     # print(nlg.initiative(Turn.QUESTION, Response.CORRECT, question="Cosa è il 2+2?"))

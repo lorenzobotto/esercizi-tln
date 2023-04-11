@@ -1,8 +1,6 @@
 import os
 import io
 import contextlib
-import re
-
 import pydub.playback
 from TTS.api import TTS
 from threading import Thread
