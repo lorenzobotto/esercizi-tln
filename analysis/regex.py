@@ -12,7 +12,7 @@ def create_db():
                                     ({q1NegPattern1, q1NegPattern2, q1NegPattern3, q1NegPattern4, q1NegPattern5,
                                       q1NegPattern6})])
         regex_db["children"] = tuple([({q2PosPattern1, q2PosPattern2, q2PosPattern3, q2PosPattern4, q2PosPattern5,
-                                     q2PosPattern6, q2PosPattern7, q2PosPattern8}),
+                                     q2PosPattern6, q2PosPattern7, q2PosPattern8,q2PosPattern9,q2PosPattern10}),
                                    ({q2NegPattern1, q2NegPattern2, q2NegPattern3, q2NegPattern4, q2NegPattern5,
                                      q2NegPattern6, q2NegPattern7,q2NegPattern8})])
         regex_db["force"] =  tuple([({q3PosPattern1_1, }),
@@ -137,7 +137,7 @@ many children
 some children
 can have many children
 """
-q2PosPattern1 = "(0|zero)"
+q2PosPattern1 = "(0|zero|nop|none|nobody)"
 q2PosPattern2 = "(cannot|can not|can't) have (children|child|daughter|son|baby)"
 q2PosPattern3 = "(forbidden|prohibited)"
 q2PosPattern4 = "(forbidden|prohibited) having any (children|child|daughter|son|baby)"
@@ -145,6 +145,8 @@ q2PosPattern5 = "have no (children|child|daughter|son|baby)"
 q2PosPattern6 = "(cannot|can not|can't) even have a (children|child|daughter|son|baby)"
 q2PosPattern7 = "(cannot|can not|can't) have"
 q2PosPattern8 = "(doesn't|dont|don't|do not) have"
+q2PosPattern9 = "can have (none|nobody)"
+q2PosPattern10 = "not even one"
 
 q2NegPattern1 = "[1-9]"
 q2NegPattern2 = "many"
@@ -152,11 +154,11 @@ q2NegPattern3 = "some"
 q2NegPattern4 = "(can|may) have"  # da chidere a nicola
 q2NegPattern5 = "(can|may) have (children|child|daughter|son|baby)"
 q2NegPattern6 = "(can|may) have (some|many) (children|child|daughter|son|baby)"
-q2NegPattern7 = "^((?!(zero|0)).)*$"
+q2NegPattern7 = "^((?!(0|zero|nop|none|nobody)).)*$"
 q2NegPattern8 = "[1-9][0-9]"
 
 regQuestion2 = {"children": tuple([({q2PosPattern1, q2PosPattern2, q2PosPattern3, q2PosPattern4, q2PosPattern5,
-                                     q2PosPattern6, q2PosPattern7, q2PosPattern8}),
+                                     q2PosPattern6, q2PosPattern7, q2PosPattern8,q2PosPattern9,q2PosPattern10}),
                                    ({q2NegPattern1, q2NegPattern2, q2NegPattern3, q2NegPattern4, q2NegPattern5,
                                      q2NegPattern6, q2NegPattern7,q2NegPattern8})])}
 
