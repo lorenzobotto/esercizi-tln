@@ -14,7 +14,7 @@ def create_db():
         regex_db["children"] = tuple([({q2PosPattern1, q2PosPattern2, q2PosPattern3, q2PosPattern4, q2PosPattern5,
                                      q2PosPattern6, q2PosPattern7, q2PosPattern8,q2PosPattern9,q2PosPattern10}),
                                    ({q2NegPattern1, q2NegPattern2, q2NegPattern3, q2NegPattern4, q2NegPattern5,
-                                     q2NegPattern6, q2NegPattern7,q2NegPattern8})])
+                                     q2NegPattern6,q2NegPattern8})])
         regex_db["force"] =  tuple([({q3PosPattern1_1, }),
                                   ({q3NegPattern1_1, })])
         regex_db["knowledge"] = tuple([({q3PosPattern1_2}),
@@ -35,7 +35,7 @@ def create_db():
         regex_db["master"] = tuple([({q8PosPattern1, q8PosPattern2, q8PosPattern3}),
                                     ({q8NegPattern1, q8NegPattern2, q8NegPattern3, q8NegPattern4})])
         regex_db["anakin"] = tuple([({q10PosPattern1, q10PosPattern2, q10PosPattern3,q10PosPattern4}),
-                                  ({q10NegPattern1, q10NegPattern2, q10NegPattern3, q10NegPattern4})])
+                                  ({q10NegPattern1, q10NegPattern2, q10NegPattern3, q10NegPattern4,q10NegPattern5})])
         regex_db["commander"] = tuple([({q11PosPattern1_2, q11PosPattern2_2, q11PosPattern3_2, q11PosPattern4_2}),
                                        ({q11NegPattern2_2, q11NegPattern3_2, q11NegPattern4_2,q11NegPattern5_2})])
         regex_db["general"] = tuple([({q11PosPattern1_1, q11PosPattern2_1, q11PosPattern3_1, q11PosPattern4_1}),
@@ -113,7 +113,7 @@ q1NegPattern1 = "(is not|isn't|not|it's|didn't|did not|don't|do not) on coruscan
 q1NegPattern2 = "(is not|isn't|not|it's|didn't|did not|don't|do not) (located|situated) on coruscant"
 q1NegPattern3 = "(is not|isn't|not|it's|didn't|did not|don't|do not) (located|situated) on (any planet|a planet)"
 q1NegPattern4 = "(is not|isn't|not|it's|didn't|did not|don't|do not) coruscant"
-q1NegPattern5 = "(located|situated) on ((?!coruscantant).)*$"  # dico che il centro di comando e situato su un altro pianeta
+q1NegPattern5 = "(located|situated) on ((?!coruscant).)*$"  # dico che il centro di comando e situato su un altro pianeta
 q1NegPattern6 = "^((?!coruscant).)*$"  # dico il nome di un altra citta
 
 regQuestion1 = {"coruscant": tuple([({q1PosPattern1,q1PosPattern3, q1PosPattern4, q1PosPattern5}),
@@ -146,7 +146,7 @@ q2PosPattern6 = "(cannot|can not|can't) even have a (children|child|daughter|son
 q2PosPattern7 = "(cannot|can not|can't) have"
 q2PosPattern8 = "(doesn't|dont|don't|do not) have"
 q2PosPattern9 = "can have (none|nobody)"
-q2PosPattern10 = "not even one"
+q2PosPattern10 = "(not even|no|not) one"
 
 q2NegPattern1 = "[1-9]"
 q2NegPattern2 = "many"
@@ -154,13 +154,12 @@ q2NegPattern3 = "some"
 q2NegPattern4 = "(can|may) have"  # da chidere a nicola
 q2NegPattern5 = "(can|may) have (children|child|daughter|son|baby)"
 q2NegPattern6 = "(can|may) have (some|many) (children|child|daughter|son|baby)"
-q2NegPattern7 = "^((?!(0|zero|nop|none|nobody)).)*$"
 q2NegPattern8 = "[1-9][0-9]"
 
 regQuestion2 = {"children": tuple([({q2PosPattern1, q2PosPattern2, q2PosPattern3, q2PosPattern4, q2PosPattern5,
                                      q2PosPattern6, q2PosPattern7, q2PosPattern8,q2PosPattern9,q2PosPattern10}),
                                    ({q2NegPattern1, q2NegPattern2, q2NegPattern3, q2NegPattern4, q2NegPattern5,
-                                     q2NegPattern6, q2NegPattern7,q2NegPattern8})])}
+                                     q2NegPattern6,q2NegPattern8})])}
 
 # Domanda: What are the three pillars of Jedi culture?---------------------------------------------------------------------------------------------------------------------------------
 # this question is divided into 3 slots
@@ -310,7 +309,7 @@ the color of the lightsaber of the sith is red (altro colore)
 """
 # pattern per frasi positive
 q7PosPattern1 = "red"
-q7PosPattern2 = "is red"
+q7PosPattern2 = "(similar to|similar at|is) red"
 
 # pattern per frasi con negazioneSW
 q7NegPattern1 = "is ((?!red).)*$"
@@ -403,9 +402,10 @@ q10NegPattern1 = "^yes$"
 q10NegPattern2 = "(received|granted|recognized) (it|him)"
 q10NegPattern3 = "was (received|granted|recognized|allowed)"
 q10NegPattern4 = "^((?!no).)*$"
+q10NegPattern5 = "he is a jedi master"
 
 regQuestion10 = {"anakin": tuple([({q10PosPattern1, q10PosPattern2, q10PosPattern3,q10PosPattern4}),
-                                  ({q10NegPattern1, q10NegPattern2, q10NegPattern3, q10NegPattern4})])}
+                                  ({q10NegPattern1, q10NegPattern2, q10NegPattern3, q10NegPattern4,q10NegPattern5})])}
 
 # Domanda: What are the two roles that a Jedi can assume in the military hierarchy ? -------------------------------------------------------------------------------------------------------------------
 """
@@ -531,7 +531,7 @@ regQuestion12_3 = {"consular": tuple([({q12PosPattern1_3, q12PosPattern2_3, q12P
                                       ({q12NegPattern1_2, q12NegPattern2_2, q12NegPattern3_2})])}
 
 # # testiamo se il pattern crea un match
-# match = re.search(q2NegPattern7, "0")
+# match = re.search(q1NegPattern5, "he is located on coruscant")
 
 # if match:
 #     print(match.group())
@@ -540,9 +540,9 @@ regQuestion12_3 = {"consular": tuple([({q12PosPattern1_3, q12PosPattern2_3, q12P
 #     print("pattern not found")
 
 
-#if __name__ == "__main__":
-    # resolve()
-    #create_db()
+if __name__ == "__main__":
+    #resolve()
+    create_db()
     # with shelve.open("regex") as regexp_db:
     #     for reg in regexp_db:
     #         print(reg)
