@@ -1,0 +1,21 @@
+{
+    "shopping": {    
+        "frame_name": "shopping.n.01",
+        "frame_elements": {
+            "shopper": "shopper.n.01",
+            "ground": "ground.n.03",
+            "good": "commodity.n.01",  
+            "manners": "manners.n.03",
+            "means": "means.n.02",
+            "outcome": "result.n.03",
+            "place": "place.v.02",
+            "depictive": "delineative.s.01",
+            "degree": "degree.n.01",
+            "purpose": "purpose.n.01",
+            "time": "time.n.01"
+        },
+        "lexical_units": {
+
+        }
+    }
+}
