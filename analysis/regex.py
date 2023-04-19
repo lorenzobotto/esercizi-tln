@@ -31,11 +31,11 @@ def create_db():
         regex_db["color"] = tuple([({q7PosPattern1, q7PosPattern2}),
                                    ({q7NegPattern1, q7NegPattern2, q7NegPattern3, q7NegPattern4})])
         regex_db["dagobah"] = tuple([({q9PosPattern1}),
-                                     ({q9NegPattern1, q9NegPattern2, q9NegPattern3, q9NegPattern4})])
+                                  ({q9NegPattern1, q9NegPattern2, q9NegPattern4})])
         regex_db["master"] = tuple([({q8PosPattern1, q8PosPattern2, q8PosPattern3}),
                                     ({q8NegPattern1, q8NegPattern2, q8NegPattern3, q8NegPattern4})])
-        regex_db["anakin"] = tuple([({q10PosPattern1, q10PosPattern2, q10PosPattern3,q10PosPattern4}),
-                                  ({q10NegPattern1, q10NegPattern2, q10NegPattern3, q10NegPattern4,q10NegPattern5})])
+        regex_db["anakin"] = tuple([({q10PosPattern1, q10PosPattern2, q10PosPattern3}),
+                                  ({q10NegPattern1, q10NegPattern2, q10NegPattern3,q10NegPattern5})])
         regex_db["commander"] = tuple([({q11PosPattern1_2, q11PosPattern2_2, q11PosPattern3_2, q11PosPattern4_2}),
                                        ({q11NegPattern2_2, q11NegPattern3_2, q11NegPattern4_2,q11NegPattern5_2})])
         regex_db["general"] = tuple([({q11PosPattern1_1, q11PosPattern2_1, q11PosPattern3_1, q11PosPattern4_1}),
@@ -340,11 +340,10 @@ q9PosPattern1 = "dagobah"
 # pattern per frasi con negazioneSW
 q9NegPattern1 = "is ((?!dagobah).)*$"
 q9NegPattern2 = "^((?!dagobah).)*$"
-q9NegPattern3 = "the planet where he hid is ((?!yoda).)*$"
 q9NegPattern4 = "(is not|isn't|not|it's|didn't|did not|don't|do not) dagobah"
 
 regQuestion9 = {"dagobah": tuple([({q9PosPattern1}),
-                                  ({q9NegPattern1, q9NegPattern2, q9NegPattern3, q9NegPattern4})])}
+                                  ({q9NegPattern1, q9NegPattern2, q9NegPattern4})])}
 
 # Domanda: What is the most important role a jedi can play ?-------------------------------------------------------------------------------------------------------------------
 """
@@ -395,17 +394,15 @@ he was granted/allowed
 q10PosPattern1 = "^no$"
 q10PosPattern2 = "(has|have|was) never (received|granted|recognized|allowed)"
 q10PosPattern3 = "(is not|isn't|not|it's|didn't|did not|don't|do not) (received|granted|recognized|allowed|think)"
-q10PosPattern4 = "(is not|isn't|not|it's|didn't|did not|don't|do not) (received|granted|recognized|allowed|think)"
 
 # pattern per frasi con negazioneSW
 q10NegPattern1 = "^yes$"
 q10NegPattern2 = "(received|granted|recognized) (it|him)"
 q10NegPattern3 = "was (received|granted|recognized|allowed)"
-q10NegPattern4 = "^((?!no).)*$"
 q10NegPattern5 = "he is a jedi master"
 
-regQuestion10 = {"anakin": tuple([({q10PosPattern1, q10PosPattern2, q10PosPattern3,q10PosPattern4}),
-                                  ({q10NegPattern1, q10NegPattern2, q10NegPattern3, q10NegPattern4,q10NegPattern5})])}
+regQuestion10 = {"anakin": tuple([({q10PosPattern1, q10PosPattern2, q10PosPattern3}),
+                                  ({q10NegPattern1, q10NegPattern2, q10NegPattern3,q10NegPattern5})])}
 
 # Domanda: What are the two roles that a Jedi can assume in the military hierarchy ? -------------------------------------------------------------------------------------------------------------------
 """
@@ -531,7 +528,7 @@ regQuestion12_3 = {"consular": tuple([({q12PosPattern1_3, q12PosPattern2_3, q12P
                                       ({q12NegPattern1_2, q12NegPattern2_2, q12NegPattern3_2})])}
 
 # # testiamo se il pattern crea un match
-# match = re.search(q1NegPattern5, "he is located on coruscant")
+# match = re.search(q6NegPattern1, "yoda")
 
 # if match:
 #     print(match.group())
@@ -540,9 +537,9 @@ regQuestion12_3 = {"consular": tuple([({q12PosPattern1_3, q12PosPattern2_3, q12P
 #     print("pattern not found")
 
 
-if __name__ == "__main__":
-    #resolve()
-    create_db()
-    # with shelve.open("regex") as regexp_db:
-    #     for reg in regexp_db:
-    #         print(reg)
+# if __name__ == "__main__":
+#     #resolve()
+#     create_db()
+#     # with shelve.open("regex") as regexp_db:
+#     #     for reg in regexp_db:
+#     #         print(reg)
