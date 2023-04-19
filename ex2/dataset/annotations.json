@@ -68,5 +68,33 @@
         "lexical_units": {
 
         }
-    }
+    },
+    "Collocation_image_schema": {
+        "frame_name": "juxtaposition.n.01",
+        "frame_elements": {
+            "ground": "ground.n.01",
+            "collocation": "juxtaposition.n.01"
+        },
+        "lexical_units": {
+
+        }
+    },
+    "Giving_in": {
+        "frame_name": "give.v.03",
+        "frame_elements": {
+            "capitulator": "capitulate.v.01",
+            "issue": "issue.n.01",
+            "compeller": "compel.v.01",
+            "time": "time.v.01",
+            "explanation": "explanation.n.03",
+            "force": "force.n.07",
+            "place": "place.v.02",
+            "purpose": "purpose.n.03",
+            "manner": "manner.n.01",
+            "degree": "degree.n.07",
+            "resultant": "resultant.v.01"
+        },
+        "lexical_units": {
+
+        }   
 }
