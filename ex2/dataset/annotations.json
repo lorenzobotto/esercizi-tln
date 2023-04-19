@@ -17,5 +17,56 @@
         "lexical_units": {
 
         }
+    },
+    "attributed_information": {
+        "frame_name": "'impute.v.01'",
+        "frame_elements": {
+            "proposition": "proposition.n.01",
+            "speaker": "speaker.n.01",
+            "text": "text.n.01"
+        },
+        "lexical_units": {
+
+        }
+    },
+    "response_scenario": {
+        "frame_name": "reaction.n.03",
+        "frame_elements": {
+            "responding": "react.v.01",
+            "trigger": "trigger.n.03",
+            "response": "response.n.03",
+            "agent": "agent.n.01",
+            "manner": "manner.n.01",
+            "place": "place.n.05",
+            "purpose": "purpose.v.01",
+            "time": "clock.v.01"
+        },
+        "lexical_units": {
+
+        }
+    },
+    "turning_out": {
+        "frame_name": "turn.v.19",
+        "frame_elements": {
+            "state": "state.n.01",
+            "time":"time.n.01"
+        },
+        "lexical_units": {
+
+        }
+    },
+    "custom": {
+        "frame_name": "custom.n.01",
+        "frame_elements": {
+            "behavior": "demeanor.n.01",
+            "protagonist": "supporter.n.01",
+            "domain":"sphere.n.01",
+            "description": "form.n.01",
+            "society": "society.n.01",
+            "place": "place.n.03"
+        },
+        "lexical_units": {
+
+        }
     }
 }
