@@ -79,7 +79,7 @@
 
         }
     },
-    "Giving_in": {
+    "giving_in": {
         "frame_name": "give.v.03",
         "frame_elements": {
             "capitulator": "capitulate.v.01",
@@ -96,5 +96,39 @@
         },
         "lexical_units": {
 
-        }   
+        } 
+    },
+    "dressing": {
+        "frame_name": "dressing.n.06",
+        "frame_elements": {
+            "wearer": "wearer.n.01",
+            "clothing": "clothing.n.01",
+            "body_location": "body.n.01",
+            "manner": "manner.n.02",
+            "depictive": "delineative.adj.01",
+            "means": "means.n.02",
+            "result": "result.n.01",
+            "duration": "duration.n.02",
+            "place": "place.n.01",
+            "explanation": "explanation.n.03",
+            "time": "time.n.01",
+            "purpose": "purpose.n.02"
+        },
+        "lexical_units": {
+
+        } 
+    },
+    "ordinal_numbers": {
+        "frame_name": "ordinal.n.01",
+        "frame_elements": {
+            "type": "type.n.01",
+            "starting_point": "start.v.01",
+            "basis_of_order": "basis.n.02",
+            "item": "item.adv.01",
+            "comparison_set": "comparison.n.02"
+        },
+        "lexical_units": {
+
+        } 
+    }
 }
