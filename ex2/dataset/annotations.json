@@ -98,6 +98,33 @@
 
         } 
     },
+    "cause_temperature_change": {
+        "frame_name": "cause.n.04",
+        "frame_elements": {
+            "agent": "agent.n.01",
+            "instrument": "instrument.n.04",
+            "item": "item.n.01",
+            "temperature_goal": "temperature.n.01",
+            "temperature_change": "temperature.n.01",
+            "temperature_start": "temperature.n.01",
+            "manner": "manner.n.01",
+            "means": "means.n.02",
+            "place": "place.n.01",
+            "purpose": "purpose.v.01",
+            "time": "time.n.01",
+            "result": "result.n.01",
+            "cause": "cause.n.04",
+            "duration":"duration.n.01",
+            "container": "container.n.01",
+            "depictive": "delineative.adj.01",
+            "hot_could_source": "hot.adj.01" ,
+            "circumstances": "circumstance.n.01",
+            "degree": "degree.n.01"
+        },
+        "lexical_units": {
+
+        } 
+    },
     "dressing": {
         "frame_name": "dressing.n.06",
         "frame_elements": {
