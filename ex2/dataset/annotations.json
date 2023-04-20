@@ -15,7 +15,8 @@
             "time": "time.n.01"
         },
         "lexical_units": {
-
+            "shopping": "shopping.n.01",
+            "shop": "shop.v.01"
         }
     },
     "attributed_information": {
@@ -26,7 +27,10 @@
             "text": "text.n.01"
         },
         "lexical_units": {
-
+            "according": "according.adj.01",
+            "source": "sorce.n.04",
+            "viewpoint": "viewpoint.n.02",
+            "authority": "authority.n.03"
         }
     },
     "response_scenario": {
@@ -42,7 +46,7 @@
             "time": "clock.v.01"
         },
         "lexical_units": {
-
+             
         }
     },
     "turning_out": {
@@ -52,7 +56,9 @@
             "time":"time.n.01"
         },
         "lexical_units": {
-
+            "prove":  "prove.v.04",
+            "turn out": "turn_out.v.01",
+            "end up": "end_up.v.01" 
         }
     },
     "custom": {
@@ -66,7 +72,18 @@
             "place": "place.n.03"
         },
         "lexical_units": {
-
+            "custom": "custom.n.01",
+            "pattern": "pattern.n.01",
+            "ritual": "ritual.n.03",
+            "tradition": "custom.n.02",
+            "habit": "habit.n.01",
+            "convention": "convention.n.05",
+            "traditional": "traditional.adj.01",
+            "ritualistic": "ritualistic.adj.01",
+            "habitual": "habitual.adj.01",
+            "customary": "customary.adj.02",
+            "traditionally": "traditionally.adj.01",
+            "ways": "way.n.10"
         }
     },
     "Collocation_image_schema": {
