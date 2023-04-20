@@ -4,8 +4,8 @@
         "frame_elements": {
             "shopper": "shopper.n.01",
             "ground": "ground.n.03",
-            "good": "commodity.n.01",  
-            "manners": "manners.n.03",
+            "goods": "commodity.n.01",  
+            "manner": "manner.n.03",
             "means": "means.n.02",
             "outcome": "result.n.03",
             "place": "place.v.02",
@@ -86,7 +86,7 @@
             "ways": "way.n.10"
         }
     },
-    "Collocation_image_schema": {
+    "collocation_image_schema": {
         "frame_name": "juxtaposition.n.01",
         "frame_elements": {
             "ground": "ground.n.01",
@@ -99,9 +99,7 @@
     "giving_in": {
         "frame_name": "give.v.03",
         "frame_elements": {
-            "capitulator": "capitulate.v.01",
             "issue": "issue.n.01",
-            "compeller": "compel.v.01",
             "time": "time.v.01",
             "explanation": "explanation.n.03",
             "force": "force.n.07",
