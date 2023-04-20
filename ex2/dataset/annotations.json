@@ -57,8 +57,8 @@
         },
         "lexical_units": {
             "prove":  "prove.v.04",
-            "turn out": "turn_out.v.01",
-            "end up": "end_up.v.01" 
+            "turn": "turn.v.01",
+            "end": "end.v.04" 
         }
     },
     "custom": {
@@ -112,7 +112,14 @@
             "resultant": "resultant.v.01"
         },
         "lexical_units": {
-
+            "relent": "relent.v.01",
+            "acquiesce": "acquiesce.v.01",
+            "yield": "concede.v.03",
+            "cave": "cave.v.01",
+            "give": "give.v.01",
+            "capitulate": "capitulate.v.01",
+            "fold:": "close_up.v.01",
+            "submit":  "submit.v.03"
         } 
     },
     "cause_temperature_change": {
@@ -139,7 +146,13 @@
             "degree": "degree.n.01"
         },
         "lexical_units": {
-
+            "heat": "heat.n.01",
+            "warm": "warm.v.01",
+            "cool": "cool.v.01",
+            "refrigerate": "refrigerate.v.01",
+            "reheat": "reheat.v.01",
+            "chill": "chill.v.02",
+            "overheat": "overheat.v.02"
         } 
     },
     "dressing": {
@@ -159,7 +172,13 @@
             "purpose": "purpose.n.02"
         },
         "lexical_units": {
-
+            "don": "wear.v.09",
+            "put": "put.v.04",
+            "slip": "slip.v.08",
+            "pull": "pull.v.01",
+            "dress": "dress.v.01",
+            "get": "get.v.01",
+            "throw": "throw.v.01"
         } 
     },
     "ordinal_numbers": {
@@ -172,7 +191,20 @@
             "comparison_set": "comparison.n.02"
         },
         "lexical_units": {
-
+            "first": "first.adj.02",
+            "second": "second.adj.01",
+            "third": "third.adj.01",
+            "fourth": "fourth.adj.01",
+            "fifth": "fifth.adj.01",
+            "thirteenth": "thirteenth.adj.01",
+            "nineteenth": "nineteenth.adj.01",
+            "last": "last.adj.02",
+            "eighth": "eighth.adj.01",
+            "tenth": "tenth.adj.01",
+            "ninth": "ninth.adj.01",
+            "seventeenth": "seventeenth.adj.01",
+            "sixteenth": "sixteenth.adj.01",
+            "final": "final.adj.02"
         } 
     }
 }
