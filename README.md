@@ -8,7 +8,7 @@ Questo chatbot permette di interrogare l'utente sulla conoscenza della cultura J
 
 Basterà installare i seguenti pacchetti:  
 
-[img.png](images/img.png)
+![img.png](images/img.png)
 
 Per verificare la versione di Python correntemente installata sul proprio terminale, basta aprire un'istanza del prompt 
 dei comandi e digitare  
