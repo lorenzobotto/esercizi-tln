@@ -1,7 +1,7 @@
 # obi-1  
 
 Questo chatbot permette di interrogare l'utente sulla conoscenza della cultura Jedi per decidere se quest'ultimo può diventare o meno un Padawan.  
-È richiesto ```Python >=3.10``` e ```pip``` per l'esecuzione di questo chatbot, con PATH salvata sulle variabili d'ambiente.  
+È richiesto ```Python >= 3.10 and < 3.11``` e ```pip``` per l'esecuzione di questo chatbot, con PATH salvata sulle variabili d'ambiente.  
 È richiesto inoltre di installare i C++ Build Tools. Il link è il seguente:  
 
 ```https://visualstudio.microsoft.com/visual-cpp-build-tools/```
@@ -33,6 +33,10 @@ a quel punto, attivarlo:
 Installare i requirements:  
 
 ```pip install -r requirements.txt```
+
+[Opzionale]: se si vuole eliminare il warning di ffmpeg (il quale viene usato nella libreria del TTS), scaricare la build essential dal link seguente e aggiungere il path alla cartella bin alle variabili di sistema (Es: C:\ffmpeg\bin):  
+
+```https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-essentials.7z```
 
 Terminata l'installazione dei vari requirements, si potrà inizializzare il chatbot:
 
