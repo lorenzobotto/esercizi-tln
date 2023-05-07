@@ -1,0 +1,208 @@
+{
+    "shopping": {    
+        "frame_name": "shopping.n.01",
+        "frame_elements": {
+            "shopper": "shopper.n.01",
+            "ground": "ground.n.03",
+            "goods": "commodity.n.01",  
+            "manner": "manner.n.03",
+            "means": "means.n.02",
+            "outcome": "result.n.03",
+            "place": "place.v.02",
+            "depictive": "delineative.s.01",
+            "degree": "degree.n.01",
+            "purpose": "purpose.n.01",
+            "time": "time.n.01"
+        },
+        "lexical_units": {
+            "shopping": "shopping.n.01",
+            "shop": "shop.v.01"
+        }
+    },
+    "attributed_information": {
+        "frame_name": "impute.v.01",
+        "frame_elements": {
+            "proposition": "proposition.n.01",
+            "speaker": "speaker.n.01",
+            "text": "text.n.01"
+        },
+        "lexical_units": {
+            "according": "according.s.02",
+            "source": "source.n.02",
+            "viewpoint": "point_of_view.n.01",
+            "authority": "authority.n.03"
+        }
+    },
+    "response_scenario": {
+        "frame_name": "reaction.n.03",
+        "frame_elements": {
+            "responding": "react.v.01",
+            "trigger": "trigger.n.03",
+            "response": "response.n.03",
+            "agent": "agent.n.01",
+            "manner": "manner.n.01",
+            "place": "place.n.05",
+            "purpose": "purpose.v.01",
+            "time": "clock.v.01"
+        },
+        "lexical_units": {
+             
+        }
+    },
+    "turning_out": {
+        "frame_name": "turn.v.01",
+        "frame_elements": {
+            "state": "state.n.01",
+            "time":"time.n.01"
+        },
+        "lexical_units": {
+            "prove":  "prove.v.01",
+            "turn": "turn.v.01",
+            "end": "end.n.02" 
+        }
+    },
+    "custom": {
+        "frame_name": "custom.n.01",
+        "frame_elements": {
+            "behavior": "demeanor.n.01",
+            "protagonist": "supporter.n.01",
+            "domain":"sphere.n.01",
+            "description": "form.n.01",
+            "society": "society.n.01",
+            "place": "place.n.03"
+        },
+        "lexical_units": {
+            "custom": "custom.n.01",
+            "pattern": "pattern.n.01",
+            "ritual": "ritual.n.03",
+            "tradition": "custom.n.02",
+            "habit": "habit.n.01",
+            "convention": "convention.n.05",
+            "traditional": "traditional.adj.01",
+            "ritualistic": "ritualistic.adj.01",
+            "habitual": "habitual.adj.01",
+            "customary": "customary.adj.02",
+            "traditionally": "traditionally.adj.01",
+            "ways": "way.n.10"
+        }
+    },
+    "collocation_image_schema": {
+        "frame_name": "juxtaposition.n.01",
+        "frame_elements": {
+            "ground": "ground.n.01",
+            "collocation": "juxtaposition.n.01"
+        },
+        "lexical_units": {
+
+        }
+    },
+    "giving_in": {
+        "frame_name": "give.v.03",
+        "frame_elements": {
+            "issue": "issue.n.01",
+            "time": "time.v.01",
+            "explanation": "explanation.n.03",
+            "force": "force.n.07",
+            "place": "place.v.02",
+            "purpose": "purpose.n.03",
+            "manner": "manner.n.01",
+            "degree": "degree.n.07",
+            "resultant": "resultant.v.01"
+        },
+        "lexical_units": {
+            "relent": "relent.v.01",
+            "acquiesce": "acquiesce.v.01",
+            "yield": "concede.v.03",
+            "cave": "cave.v.01",
+            "give": "give.v.01",
+            "capitulate": "capitulate.v.01",
+            "fold:": "close_up.v.01",
+            "submit":  "submit.v.03"
+        } 
+    },
+    "cause_temperature_change": {
+        "frame_name": "cause.n.04",
+        "frame_elements": {
+            "agent": "agent.n.01",
+            "instrument": "instrument.n.04",
+            "item": "item.n.01",
+            "temperature_goal": "temperature.n.01",
+            "temperature_change": "temperature.n.01",
+            "temperature_start": "temperature.n.01",
+            "manner": "manner.n.01",
+            "means": "means.n.02",
+            "place": "place.n.01",
+            "purpose": "purpose.v.01",
+            "time": "time.n.01",
+            "result": "result.n.01",
+            "cause": "cause.n.04",
+            "duration":"duration.n.01",
+            "container": "container.n.01",
+            "depictive": "delineative.s.01",
+            "hot_could_source": "hot.adj.01" ,
+            "circumstances": "circumstance.n.01",
+            "degree": "degree.n.01"
+        },
+        "lexical_units": {
+            "heat": "heat.n.01",
+            "warm": "warm.v.01",
+            "cool": "cool.n.01",
+            "refrigerate": "refrigerate.v.02",
+            "reheat": "reheat.v.01",
+            "chill": "chill.v.02",
+            "overheat": "overheat.v.02"
+        } 
+    },
+    "dressing": {
+        "frame_name": "dressing.n.06",
+        "frame_elements": {
+            "wearer": "wearer.n.01",
+            "clothing": "clothing.n.01",
+            "body_location": "body.n.02",
+            "manner": "manner.n.02",
+            "depictive": "delineative.s.01",
+            "means": "means.n.01",
+            "result": "result.n.01",
+            "duration": "duration.n.02",
+            "place": "place.n.01",
+            "explanation": "explanation.n.03",
+            "time": "time.n.01",
+            "purpose": "purpose.n.02"
+        },
+        "lexical_units": {
+            "don": "wear.v.09",
+            "put": "put.v.04",
+            "slip": "slip.v.08",
+            "pull": "pull.v.01",
+            "dress": "dress.v.01",
+            "get": "get.v.01",
+            "throw": "throw.v.01"
+        } 
+    },
+    "ordinal_numbers": {
+        "frame_name": "ordinal.n.01",
+        "frame_elements": {
+            "type": "type.n.01",
+            "starting_point": "start.v.01",
+            "basis_of_order": "basis.n.02",
+            "item": "item.adv.01",
+            "comparison_set": "comparison.n.02"
+        },
+        "lexical_units": {
+            "first": "first.adj.02",
+            "second": "second.adj.01",
+            "third": "third.adj.01",
+            "fourth": "fourth.adj.01",
+            "fifth": "fifth.adj.01",
+            "thirteenth": "thirteenth.adj.01",
+            "nineteenth": "nineteenth.adj.01",
+            "last": "last.adj.02",
+            "eighth": "eighth.adj.01",
+            "tenth": "tenth.adj.01",
+            "ninth": "ninth.adj.01",
+            "seventeenth": "seventeenth.adj.01",
+            "sixteenth": "sixteenth.adj.01",
+            "final": "final.adj.02"
+        } 
+    }
+}
