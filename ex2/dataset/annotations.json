@@ -27,9 +27,9 @@
             "text": "text.n.01"
         },
         "lexical_units": {
-            "according": "according.adj.01",
-            "source": "sorce.n.04",
-            "viewpoint": "viewpoint.n.02",
+            "according": "according.s.02",
+            "source": "source.n.02",
+            "viewpoint": "point_of_view.n.01",
             "authority": "authority.n.03"
         }
     },
@@ -50,15 +50,15 @@
         }
     },
     "turning_out": {
-        "frame_name": "turn.v.19",
+        "frame_name": "turn.v.01",
         "frame_elements": {
             "state": "state.n.01",
             "time":"time.n.01"
         },
         "lexical_units": {
-            "prove":  "prove.v.04",
+            "prove":  "prove.v.01",
             "turn": "turn.v.01",
-            "end": "end.v.04" 
+            "end": "end.n.02" 
         }
     },
     "custom": {
@@ -138,7 +138,7 @@
             "cause": "cause.n.04",
             "duration":"duration.n.01",
             "container": "container.n.01",
-            "depictive": "delineative.adj.01",
+            "depictive": "delineative.s.01",
             "hot_could_source": "hot.adj.01" ,
             "circumstances": "circumstance.n.01",
             "degree": "degree.n.01"
@@ -146,8 +146,8 @@
         "lexical_units": {
             "heat": "heat.n.01",
             "warm": "warm.v.01",
-            "cool": "cool.v.01",
-            "refrigerate": "refrigerate.v.01",
+            "cool": "cool.n.01",
+            "refrigerate": "refrigerate.v.02",
             "reheat": "reheat.v.01",
             "chill": "chill.v.02",
             "overheat": "overheat.v.02"
@@ -158,10 +158,10 @@
         "frame_elements": {
             "wearer": "wearer.n.01",
             "clothing": "clothing.n.01",
-            "body_location": "body.n.01",
+            "body_location": "body.n.02",
             "manner": "manner.n.02",
-            "depictive": "delineative.adj.01",
-            "means": "means.n.02",
+            "depictive": "delineative.s.01",
+            "means": "means.n.01",
             "result": "result.n.01",
             "duration": "duration.n.02",
             "place": "place.n.01",
