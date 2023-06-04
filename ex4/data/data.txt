@@ -53,7 +53,7 @@ regenerative system. It employs reuse, sharing, repair, refurbishment, remanufac
 the creation of waste, pollution and carbon emissions. The circular economy aims to keep products, materials, equipment and infrastructure in use for longer, thus 
 improving the productivity of these resources. Waste materials and energy should become input for other processes through waste valorization: either as a component for another 
 industrial process or as regenerative resources for nature (e.g., compost). The Ellen MacArthur Foundation (EMF) defines the circular economy as an industrial economy that is 
-restorative or regenerative by value and design. There are many definitions of the circular economy.
+restorative or regenerative by value and design.
 Circular economy strategies can be applied at various scales, from individual products and services to entire industries and cities. For example, industrial symbiosis is a 
 strategy where waste from one industry becomes an input for another, creating a network of resource exchange and reducing waste, pollution, and resource consumption.
 Similarly, circular cities aim to integrate circular principles into urban planning and development, fostering local resource loops and promoting sustainable lifestyles among 
