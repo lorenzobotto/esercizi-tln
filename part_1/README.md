@@ -1,5 +1,9 @@
 # part_1
+Esercizio per la Prima Parte del corso di TLN (Tecnologie del Linguaggio Naturale) - Unito 2023
+
+
 Questo chatbot permette di interrogare l'utente sulla conoscenza della cultura Jedi per decidere se quest'ultimo può diventare o meno un Padawan.  
+Il chatbot può essere utilizzato sia attraverso testo sia tramite audio.
 È richiesto ```Python >= 3.10 and < 3.11``` e ```pip``` per l'esecuzione di questo chatbot, con PATH salvata sulle variabili d'ambiente.  
 È richiesto inoltre di installare i C++ Build Tools. Il link è il seguente:  
 
