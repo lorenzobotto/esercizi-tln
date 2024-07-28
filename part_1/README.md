@@ -1,7 +1,4 @@
-# esercizi-radicioni
-Esercizi del Prof. Radicioni per la Seconda Parte del corso di TLN - Unito 2023
-
-# obi-1
+# part_1
 Questo chatbot permette di interrogare l'utente sulla conoscenza della cultura Jedi per decidere se quest'ultimo può diventare o meno un Padawan.  
 È richiesto ```Python >= 3.10 and < 3.11``` e ```pip``` per l'esecuzione di questo chatbot, con PATH salvata sulle variabili d'ambiente.  
 È richiesto inoltre di installare i C++ Build Tools. Il link è il seguente:  
@@ -44,6 +41,3 @@ Terminata l'installazione dei vari requirements, si potrà inizializzare il chat
 
 ```python app.py``` su Windows/Mac
 ```python3 app.py``` su Linux
-
-
-
